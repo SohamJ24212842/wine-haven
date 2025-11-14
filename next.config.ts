@@ -33,6 +33,32 @@ const nextConfig: NextConfig = {
 					},
 				],
 			},
+			{
+				source: "/:path*.webm",
+				headers: [
+					{
+						key: "Cache-Control",
+						value: "public, max-age=31536000, immutable",
+					},
+					{
+						key: "Accept-Ranges",
+						value: "bytes",
+					},
+				],
+			},
+			{
+				source: "/:path*.mov",
+				headers: [
+					{
+						key: "Cache-Control",
+						value: "public, max-age=31536000, immutable",
+					},
+					{
+						key: "Accept-Ranges",
+						value: "bytes",
+					},
+				],
+			},
 		];
 	},
 };
