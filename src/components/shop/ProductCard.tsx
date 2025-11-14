@@ -57,9 +57,10 @@ export function ProductCard({ product }: ProductCardProps) {
 		>
 			<Link href={`/product/${product.slug}`} className="block">
 				<motion.div 
-					className="overflow-hidden rounded-lg border border-maroon/10 bg-white shadow-sm transition-all duration-300"
+					className={`overflow-hidden rounded-lg border border-maroon/10 bg-white transition-all duration-300 ${
+						isHovered ? "shadow-xl" : "shadow-sm"
+					}`}
 					whileHover={{ 
-						shadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
 						y: -4
 					}}
 				>
