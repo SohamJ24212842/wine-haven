@@ -16,7 +16,8 @@ type ProductDetailClientProps = {
 
 export function ProductDetailClient({ product, discountPercentage }: ProductDetailClientProps) {
 	const [selectedImage, setSelectedImage] = useState(0);
-	const images = product.images && product.images.length > 0 ? product.images : [product.image];
+	// For now, use single image. Will update when product images are changed
+	const images = [product.image];
 
 	return (
 		<Container className="py-12">
