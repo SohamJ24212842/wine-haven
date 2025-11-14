@@ -1,0 +1,154 @@
+"use client";
+import { motion } from "framer-motion";
+import { Product } from "@/types/product";
+import { ProductCard } from "@/components/shop/ProductCard";
+import { SectionHeading } from "@/components/typography/SectionHeading";
+import { Container } from "@/components/ui/Container";
+import Link from "next/link";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
+
+type HorizontalScrollSectionProps = {
+	title: string;
+	subtitle?: string;
+	products: Product[];
+	filterUrl?: string; // URL params for filtering shop page
+};
+
+export function HorizontalScrollSection({ title, subtitle, products, filterUrl }: HorizontalScrollSectionProps) {
+	const scrollRef = useRef<HTMLDivElement>(null);
+	const [canScrollLeft, setCanScrollLeft] = useState(false);
+	const [canScrollRight, setCanScrollRight] = useState(true);
+	const [isAutoScrolling, setIsAutoScrolling] = useState(false);
+
+	// Build shop URL based on section type
+	const getShopUrl = () => {
+		if (filterUrl) return `/shop?${filterUrl}`;
+		
+		// Default filters based on section title
+		if (title.includes("Wine")) return "/shop?category=Wine";
+		if (title.includes("Spirit")) return "/shop?category=Spirit";
+		if (title.includes("Christmas")) return "/shop?christmasGift=true";
+		if (title.includes("New")) return "/shop?new=true";
+		
+		return "/shop";
+	};
+
+	// Check scroll position
+	const checkScroll = () => {
+		if (!scrollRef.current) return;
+		const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+		setCanScrollLeft(scrollLeft > 0);
+		setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+	};
+
+	// Scroll functions
+	const scroll = (direction: "left" | "right") => {
+		if (!scrollRef.current) return;
+		const scrollAmount = 320; // Width of card + gap
+		const newScrollLeft = scrollRef.current.scrollLeft + (direction === "right" ? scrollAmount : -scrollAmount);
+		scrollRef.current.scrollTo({ left: newScrollLeft, behavior: "smooth" });
+	};
+
+	// Auto-scroll on mount (subtle)
+	useEffect(() => {
+		if (products.length <= 3) return; // Don't auto-scroll if few items
+		
+		const interval = setInterval(() => {
+			if (!scrollRef.current || isAutoScrolling) return;
+			const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+			
+			if (scrollLeft >= scrollWidth - clientWidth - 10) {
+				// Reset to start
+				scrollRef.current.scrollTo({ left: 0, behavior: "smooth" });
+			} else {
+				// Scroll right
+				scrollRef.current.scrollBy({ left: 320, behavior: "smooth" });
+			}
+		}, 5000); // Auto-scroll every 5 seconds
+
+		return () => clearInterval(interval);
+	}, [products.length, isAutoScrolling]);
+
+	useEffect(() => {
+		checkScroll();
+		const scrollElement = scrollRef.current;
+		if (scrollElement) {
+			scrollElement.addEventListener("scroll", checkScroll);
+			scrollElement.addEventListener("mouseenter", () => setIsAutoScrolling(true));
+			scrollElement.addEventListener("mouseleave", () => setIsAutoScrolling(false));
+		}
+		return () => {
+			if (scrollElement) {
+				scrollElement.removeEventListener("scroll", checkScroll);
+				scrollElement.removeEventListener("mouseenter", () => setIsAutoScrolling(true));
+				scrollElement.removeEventListener("mouseleave", () => setIsAutoScrolling(false));
+			}
+		};
+	}, []);
+
+	return (
+		<section className="py-16 bg-cream relative">
+			<Container>
+				<div className="flex items-end justify-between mb-4">
+					<SectionHeading subtitle={subtitle}>{title}</SectionHeading>
+					<Link
+						href={getShopUrl()}
+						className="flex items-center gap-2 text-sm font-medium text-maroon hover:text-gold transition-colors group"
+					>
+						View All
+						<ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+					</Link>
+				</div>
+				<div className="mt-10 relative">
+					{/* Scroll buttons */}
+					{canScrollLeft && (
+						<button
+							onClick={() => scroll("left")}
+							className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white border border-maroon/20 rounded-full p-2 shadow-lg transition-all hover:scale-110"
+							aria-label="Scroll left"
+						>
+							<ChevronLeft className="w-5 h-5 text-maroon" />
+						</button>
+					)}
+					{canScrollRight && (
+						<button
+							onClick={() => scroll("right")}
+							className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white border border-maroon/20 rounded-full p-2 shadow-lg transition-all hover:scale-110"
+							aria-label="Scroll right"
+						>
+							<ChevronRight className="w-5 h-5 text-maroon" />
+						</button>
+					)}
+					
+					<div 
+						ref={scrollRef}
+						className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide scroll-smooth"
+						style={{ scrollBehavior: "smooth" }}
+					>
+						{products.map((product, index) => (
+							<motion.div
+								key={product.slug}
+								initial={{ opacity: 0, x: 20 }}
+								whileInView={{ opacity: 1, x: 0 }}
+								viewport={{ once: true, amount: 0.2 }}
+								transition={{ duration: 0.5, delay: index * 0.1 }}
+								className="flex-shrink-0 w-[280px] sm:w-[300px]"
+							>
+								<ProductCard product={product} />
+							</motion.div>
+						))}
+					</div>
+					
+					{/* Scroll hint */}
+					{products.length > 3 && (
+						<div className="text-center mt-4 text-xs text-maroon/60">
+							Scroll to see more →
+						</div>
+					)}
+				</div>
+			</Container>
+		</section>
+	);
+}
+

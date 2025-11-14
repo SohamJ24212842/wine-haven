@@ -1,7 +1,40 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+	images: {
+		remotePatterns: [
+			{
+				protocol: "https",
+				hostname: "images.unsplash.com",
+			},
+			{
+				protocol: "https",
+				hostname: "images.pexels.com",
+			},
+		],
+	},
+	turbopack: {
+		// Ensure Turbopack resolves the correct project root when multiple lockfiles exist
+		root: __dirname,
+	},
+	// Optimize video delivery
+	async headers() {
+		return [
+			{
+				source: "/:path*.mp4",
+				headers: [
+					{
+						key: "Cache-Control",
+						value: "public, max-age=31536000, immutable",
+					},
+					{
+						key: "Accept-Ranges",
+						value: "bytes",
+					},
+				],
+			},
+		];
+	},
 };
 
 export default nextConfig;

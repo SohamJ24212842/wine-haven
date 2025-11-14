@@ -1,0 +1,125 @@
+import { Product } from "@/types/product";
+import { wines } from "./wines";
+
+// Map existing wines to generic Product entries
+const wineProducts: Product[] = wines.map((w) => ({
+	slug: w.slug,
+	category: "Wine",
+	name: w.name,
+	price: w.price,
+	description: w.description,
+	image: w.image,
+	country: w.country,
+	region: w.region,
+	wineType: w.type,
+}));
+
+// Sample beers
+const beers: Product[] = [
+	{
+		slug: "local-lager-500ml",
+		category: "Beer",
+		name: "Local Lager 500ml",
+		price: 3.5,
+		description: "Crisp and refreshing lager with a clean finish.",
+		image: "https://images.unsplash.com/photo-1541557435984-1c79685a082b?auto=format&fit=crop&w=1200&q=60",
+		country: "Ireland",
+		beerStyle: "Lager",
+		abv: 4.5,
+		volumeMl: 500,
+	},
+	{
+		slug: "west-coast-ipa-440ml",
+		category: "Beer",
+		name: "West Coast IPA 440ml",
+		price: 4.5,
+		description: "Piney and citrus-forward IPA with a firm bitterness.",
+		image: "https://images.unsplash.com/photo-1559523182-a284c3fb7cff?auto=format&fit=crop&w=1200&q=60",
+		country: "USA",
+		beerStyle: "IPA",
+		abv: 6.2,
+		volumeMl: 440,
+	},
+	{
+		slug: "oatmeal-stout-500ml",
+		category: "Beer",
+		name: "Oatmeal Stout 500ml",
+		price: 4.2,
+		description: "Roasty stout with chocolate and smooth oatmeal body.",
+		image: "https://images.unsplash.com/photo-1576092768241-dec231879fc1?auto=format&fit=crop&w=1200&q=60",
+		country: "UK",
+		beerStyle: "Stout",
+		abv: 5.0,
+		volumeMl: 500,
+	},
+];
+
+// Sample spirits
+const spirits: Product[] = [
+	{
+		slug: "small-batch-gin-700ml",
+		category: "Spirit",
+		name: "Small Batch Gin 700ml",
+		price: 39.0,
+		description: "Juniper-led gin with citrus and floral botanicals.",
+		image: "https://images.unsplash.com/photo-1563213126-a4273aed2013?auto=format&fit=crop&w=1200&q=60",
+		country: "Ireland",
+		spiritType: "Gin",
+		abv: 41.0,
+		volumeMl: 700,
+	},
+	{
+		slug: "premium-vodka-700ml",
+		category: "Spirit",
+		name: "Premium Vodka 700ml",
+		price: 32.0,
+		description: "Clean, smooth vodka ideal for classic cocktails.",
+		image: "https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=1200&q=60",
+		country: "Poland",
+		spiritType: "Vodka",
+		abv: 40.0,
+		volumeMl: 700,
+	},
+	{
+		slug: "anejo-tequila-700ml",
+		category: "Spirit",
+		name: "Añejo Tequila 700ml",
+		price: 55.0,
+		description: "Aged tequila with vanilla, caramel, and agave richness.",
+		image: "https://images.unsplash.com/photo-1507057754646-2511ad05c8d8?auto=format&fit=crop&w=1200&q=60",
+		country: "Mexico",
+		spiritType: "Tequila",
+		abv: 38.0,
+		volumeMl: 700,
+	},
+	{
+		slug: "spiced-rum-700ml",
+		category: "Spirit",
+		name: "Spiced Rum 700ml",
+		price: 29.0,
+		description: "Warm spices, vanilla, and molasses sweetness.",
+		image: "https://images.unsplash.com/photo-1600697395544-f1fdde2f66ce?auto=format&fit=crop&w=1200&q=60",
+		country: "Caribbean",
+		spiritType: "Rum",
+		abv: 37.5,
+		volumeMl: 700,
+	},
+	{
+		slug: "orange-liqueur-700ml",
+		category: "Spirit",
+		name: "Orange Liqueur 700ml",
+		price: 24.0,
+		description: "Zesty orange peel and sweet citrus notes.",
+		image: "https://images.unsplash.com/photo-1626861520152-6b5199d7bac8?auto=format&fit=crop&w=1200&q=60",
+		country: "France",
+		spiritType: "Liqueur",
+		abv: 30.0,
+		volumeMl: 700,
+	},
+];
+
+export const products: Product[] = [...wineProducts, ...beers, ...spirits];
+
+
+
+

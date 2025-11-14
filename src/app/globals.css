@@ -1,26 +1,70 @@
 @import "tailwindcss";
 
+/* Brand palette - Enhanced vibrant colors */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --wh-maroon: #5A1A2D;
+  --wh-cream: #FFF9F3;
+  --wh-gray: #F5F5F5;
+  --wh-gold: #E8C547;
+  --wh-gold-light: #F4D03F;
+  --wh-maroon-light: #7A2A3D;
+
+  --background: var(--wh-cream);
+  --foreground: var(--wh-maroon);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-maroon: var(--wh-maroon);
+  --color-cream: var(--wh-cream);
+  --color-soft-gray: var(--wh-gray);
+  --color-gold: var(--wh-gold);
+
+  /* Fonts wired from next/font variables */
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Keep site in light brand theme even on system dark mode */
+    --background: var(--wh-cream);
+    --foreground: var(--wh-maroon);
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar for horizontal scroll sections */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
+/* Line clamp utilities */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

@@ -1,0 +1,212 @@
+// Database operations for products
+// Uses Supabase with fallback to local data
+import { createServerClient, createAdminClient } from '@/lib/supabase';
+import { Product } from '@/types/product';
+
+// Check if Supabase is configured
+const USE_SUPABASE = !!process.env.NEXT_PUBLIC_SUPABASE_URL;
+
+// Map database row to Product type (for Supabase)
+function mapRowToProduct(row: any): Product {
+  return {
+    slug: row.slug,
+    category: row.category,
+    name: row.name,
+    price: parseFloat(row.price),
+    description: row.description || '',
+    image: row.image || '',
+    country: row.country || '',
+    region: row.region || undefined,
+    wineType: row.wine_type || undefined,
+    spiritType: row.spirit_type || undefined,
+    beerStyle: row.beer_style || undefined,
+    abv: row.abv ? parseFloat(row.abv) : undefined,
+    volumeMl: row.volume_ml || undefined,
+    featured: row.featured || false,
+    new: row.new || false,
+    onSale: row.on_sale || false,
+    salePrice: row.sale_price ? parseFloat(row.sale_price) : undefined,
+    stock: row.stock || 0,
+    christmasGift: row.christmas_gift || false,
+  };
+}
+
+// Map Product type to database row (for Supabase)
+function mapProductToRow(product: Product): any {
+  return {
+    slug: product.slug,
+    category: product.category,
+    name: product.name,
+    price: product.price,
+    description: product.description,
+    image: product.image,
+    country: product.country,
+    region: product.region || null,
+    wine_type: product.wineType || null,
+    spirit_type: product.spiritType || null,
+    beer_style: product.beerStyle || null,
+    abv: product.abv || null,
+    volume_ml: product.volumeMl || null,
+    featured: product.featured || false,
+    new: product.new || false,
+    on_sale: product.onSale || false,
+    sale_price: product.salePrice || null,
+    stock: product.stock || 0,
+    christmas_gift: product.christmasGift || false,
+  };
+}
+
+// Get all products
+export async function getAllProducts(): Promise<Product[]> {
+  // Try Supabase if configured
+  if (USE_SUPABASE) {
+    const supabase = createServerClient();
+    if (supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('products')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (!error && data) {
+          return data.map(mapRowToProduct);
+        }
+      } catch (error) {
+        console.error('Error fetching from Supabase, falling back to local data:', error);
+      }
+    }
+  }
+
+  // Fallback to local data
+  const { products } = await import('@/data/products');
+  return products;
+}
+
+// Get product by slug
+export async function getProductBySlug(slug: string): Promise<Product | null> {
+  // Try Supabase if configured
+  if (USE_SUPABASE) {
+    const supabase = createServerClient();
+    if (supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('products')
+          .select('*')
+          .eq('slug', slug)
+          .single();
+
+        if (!error && data) {
+          return mapRowToProduct(data);
+        }
+      } catch (error) {
+        console.error('Error fetching from Supabase:', error);
+      }
+    }
+  }
+
+  // Fallback to local data
+  const { products } = await import('@/data/products');
+  return products.find(p => p.slug === slug) || null;
+}
+
+// Create product (admin only)
+export async function createProduct(product: Product): Promise<Product> {
+  // Try Supabase if configured
+  if (USE_SUPABASE) {
+    const supabase = createAdminClient();
+    if (supabase) {
+      try {
+        const row = mapProductToRow(product);
+        const { data, error } = await supabase
+          .from('products')
+          .insert(row)
+          .select()
+          .single();
+
+        if (error) {
+          console.error('Supabase error:', error);
+          throw new Error(`Failed to create product: ${error.message} (Code: ${error.code})`);
+        }
+
+        if (!data) {
+          throw new Error('No data returned from database');
+        }
+
+        return mapRowToProduct(data);
+      } catch (error: any) {
+        console.error('Error in createProduct:', error);
+        throw error;
+      }
+    }
+  }
+
+  throw new Error('Supabase not configured. Please set up Supabase to create products. Add NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY to .env.local');
+}
+
+// Update product (admin only)
+export async function updateProduct(slug: string, product: Partial<Product>): Promise<Product> {
+  // Try Supabase if configured
+  if (USE_SUPABASE) {
+    const supabase = createAdminClient();
+    if (supabase) {
+      try {
+        // First, get the existing product to merge with updates
+        const existing = await getProductBySlug(slug);
+        if (!existing) {
+          throw new Error(`Product with slug ${slug} not found`);
+        }
+
+        // Merge existing product with updates
+        const mergedProduct = { ...existing, ...product };
+        const row = mapProductToRow(mergedProduct);
+        
+        // Don't update the slug
+        delete row.slug;
+
+        const { data, error } = await supabase
+          .from('products')
+          .update(row)
+          .eq('slug', slug)
+          .select()
+          .single();
+
+        if (error) {
+          console.error('Supabase update error:', error);
+          throw new Error(`Failed to update product: ${error.message} (Code: ${error.code})`);
+        }
+
+        if (!data) {
+          throw new Error('No data returned from database after update');
+        }
+
+        return mapRowToProduct(data);
+      } catch (error: any) {
+        console.error('Error in updateProduct:', error);
+        throw error;
+      }
+    }
+  }
+
+  throw new Error('Supabase not configured. Please set up Supabase to update products.');
+}
+
+// Delete product (admin only)
+export async function deleteProduct(slug: string): Promise<void> {
+  // Try Supabase if configured
+  if (USE_SUPABASE) {
+    const supabase = createAdminClient();
+    if (supabase) {
+      const { error } = await supabase
+        .from('products')
+        .delete()
+        .eq('slug', slug);
+
+      if (error) {
+        throw new Error(`Failed to delete product: ${error.message}`);
+      }
+      return;
+    }
+  }
+
+  throw new Error('Supabase not configured. Please set up Supabase to delete products.');
+}
