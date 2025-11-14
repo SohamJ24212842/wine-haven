@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/typography/SectionHeading";
@@ -7,7 +7,7 @@ import { CheckCircle, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-export default function OrderConfirmationPage() {
+function OrderConfirmationContent() {
 	const searchParams = useSearchParams();
 	const orderId = searchParams.get("orderId");
 	const [orderDetails, setOrderDetails] = useState<any>(null);
@@ -101,6 +101,18 @@ export default function OrderConfirmationPage() {
 				</div>
 			</div>
 		</Container>
+	);
+}
+
+export default function OrderConfirmationPage() {
+	return (
+		<Suspense fallback={
+			<Container className="py-12">
+				<div className="text-center text-maroon/60">Loading order confirmation...</div>
+			</Container>
+		}>
+			<OrderConfirmationContent />
+		</Suspense>
 	);
 }
 
