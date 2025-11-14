@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { products } from "@/data/products";
 import { Product } from "@/types/product";
 import { Container } from "@/components/ui/Container";
@@ -11,7 +11,7 @@ import { SearchableSelect } from "@/components/admin/SearchableSelect";
 
 const ADMIN_PASSWORD = "winehaven2024"; // Change this in production!
 
-export default function AdminPage() {
+function AdminPageContent() {
 	// Hooks must be called in the same order on every render
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
@@ -1124,6 +1124,18 @@ function AdminNavLink({
 			{icon}
 			{label}
 		</Link>
+	);
+}
+
+export default function AdminPage() {
+	return (
+		<Suspense fallback={
+			<Container className="py-20">
+				<div className="text-center text-maroon/60">Loading admin panel...</div>
+			</Container>
+		}>
+			<AdminPageContent />
+		</Suspense>
 	);
 }
 
