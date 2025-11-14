@@ -16,9 +16,9 @@
 cd "E:\Wine Haven Website\wine-haven-next"
 git init
 git add .
-git commit -m "Ready for Vercel deployment"
+git commit -m "Next.js Wine Haven site - ready for Vercel deployment"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/wine-haven-next.git
+git remote add origin https://github.com/SohamJ24212842/wine-haven.git
 git push -u origin main
 ```
 
