@@ -2,7 +2,7 @@
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/typography/SectionHeading";
 import { ProductCard } from "@/components/shop/ProductCard";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, Suspense } from "react";
 import { ProductCategory, BeerStyle, SpiritType, WineType, Product } from "@/types/product";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -11,7 +11,7 @@ import { products as localProducts } from "@/data/products";
 
 const compulsoryCategories: ProductCategory[] = ["Wine", "Beer", "Spirit"];
 
-export default function ShopPage() {
+function ShopPageContent() {
 	const searchParams = useSearchParams();
 	const router = useRouter();
 	const [products, setProducts] = useState<Product[]>([]);
@@ -609,5 +609,17 @@ export default function ShopPage() {
 			</div>
 			</Container>
 		</div>
+	);
+}
+
+export default function ShopPage() {
+	return (
+		<Suspense fallback={
+			<Container className="py-12">
+				<div className="text-center text-maroon/60">Loading shop...</div>
+			</Container>
+		}>
+			<ShopPageContent />
+		</Suspense>
 	);
 }
