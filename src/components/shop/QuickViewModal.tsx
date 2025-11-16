@@ -22,12 +22,18 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 	const [quantity, setQuantity] = useState(1);
 	const [selectedImage, setSelectedImage] = useState(0);
 	const [zoom, setZoom] = useState(false);
+	const [zoomOrigin, setZoomOrigin] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
 
 	if (!product) return null;
 
 	const discountPercentage = product.onSale && product.salePrice 
 		? calculateDiscountPercentage(product.price, product.salePrice)
 		: null;
+
+	const images =
+		product.images && product.images.length
+			? [product.image, ...product.images.filter((u) => u !== product.image)]
+			: [product.image];
 
 	const handleAddToCart = () => {
 		// Add the product with the specified quantity
@@ -36,11 +42,6 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 		}
 		onClose();
 	};
-
-	const images =
-		product.images && product.images.length
-			? [product.image, ...product.images.filter((u) => u !== product.image)]
-			: [product.image];
 
 	return (
 		<AnimatePresence>
@@ -72,7 +73,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 							</button>
 
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
-								{/* Product Image */}
+								{/* Product Image with zoom + arrows (no thumbnail strip) */}
 								<div className="relative aspect-[4/5] overflow-hidden rounded-lg border border-maroon/10 bg-white flex items-center justify-center">
 									{/* Badges */}
 									<div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
@@ -87,20 +88,41 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 											</span>
 										)}
 									</div>
-									<Image
-										src={images[selectedImage]}
-										alt={product.name}
-										fill
-										className={`object-contain p-4 transition-transform duration-200 ${zoom ? "scale-125 cursor-zoom-out" : "cursor-zoom-in"}`}
-										onClick={() => setZoom((z) => !z)}
-										sizes="(max-width: 768px) 100vw, 50vw"
-										priority
-									/>
+									<div
+										className="absolute inset-0"
+										onMouseMove={(e) => {
+											if (!zoom) return;
+											const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+											const x = ((e.clientX - rect.left) / rect.width) * 100;
+											const y = ((e.clientY - rect.top) / rect.height) * 100;
+											setZoomOrigin({ x, y });
+										}}
+									>
+										<Image
+											src={images[selectedImage]}
+											alt={product.name}
+											fill
+											className={`object-contain p-4 transition-transform duration-200 ${
+												zoom ? "cursor-zoom-out" : "cursor-zoom-in"
+											}`}
+											style={
+												zoom
+													? {
+															transform: "scale(1.8)",
+															transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%`,
+													  }
+													: undefined
+											}
+											onClick={() => setZoom((z) => !z)}
+											sizes="(max-width: 768px) 100vw, 50vw"
+											priority
+										/>
+									</div>
 									{images.length > 1 && (
 										<>
 											<button
 												type="button"
-												aria-label="Previous"
+												aria-label="Previous image"
 												onClick={() => {
 													setSelectedImage((i) => (i - 1 + images.length) % images.length);
 													setZoom(false);
@@ -111,7 +133,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 											</button>
 											<button
 												type="button"
-												aria-label="Next"
+												aria-label="Next image"
 												onClick={() => {
 													setSelectedImage((i) => (i + 1) % images.length);
 													setZoom(false);
@@ -123,22 +145,8 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 										</>
 									)}
 								</div>
-								{images.length > 1 && (
-									<div className="mt-2 flex gap-2 overflow-x-auto md:col-span-1">
-										{images.map((img, idx) => (
-											<button
-												key={img + idx}
-												onClick={() => setSelectedImage(idx)}
-												className={`relative h-14 w-10 flex-shrink-0 rounded border ${selectedImage === idx ? "border-gold" : "border-maroon/20"}`}
-												aria-label={`Image ${idx + 1}`}
-											>
-												<Image src={img} alt={`${product.name} ${idx + 1}`} fill className="object-contain p-1" sizes="40px" />
-											</button>
-										))}
-									</div>
-								)}
 
-								{/* Product Details */}
+								{/* Product Details (side-by-side as before) */}
 								<div className="flex flex-col">
 									<h2 className="text-2xl font-semibold text-maroon mb-2">{product.name}</h2>
 									<p className="text-sm text-maroon/70 mb-4">
