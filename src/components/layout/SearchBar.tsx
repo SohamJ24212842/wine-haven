@@ -91,12 +91,13 @@ export function SearchBar() {
 
 					scored.sort((a, b) => b.score - a.score);
 					
-					// For short queries (1-2 words), require a minimum score to filter out weak matches
-					const minScore = qWords.length <= 2 ? 10 : 5;
+					// For short queries (1-2 words), require a strong match (name or region)
+					// This ensures "cotes" only shows wines with "cotes" in name or region
+					const minScore = qWords.length <= 2 ? 60 : 20;
 					
 					setResults(
 						scored
-							.filter((s) => s.score >= minScore) // filter out weak matches
+							.filter((s) => s.score >= minScore) // filter out weak matches aggressively
 							.slice(0, 8)
 							.map((s) => s.product)
 					);

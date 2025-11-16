@@ -90,11 +90,17 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
         // Add search filter if provided
         if (searchQuery && searchQuery.trim()) {
           const search = searchQuery.trim();
-          // Search in primary fields (name, region, country) for better accuracy
-          // Client-side ranking will prioritize the best matches
-          query = query.or(
-            `name.ilike.%${search}%,region.ilike.%${search}%,country.ilike.%${search}%,producer.ilike.%${search}%`
-          );
+          const searchWords = search.split(/\s+/).filter(Boolean);
+          
+          // For short queries (1-2 words), ONLY search name and region for accuracy
+          // For longer queries, also include country and producer
+          if (searchWords.length <= 2) {
+            query = query.or(`name.ilike.%${search}%,region.ilike.%${search}%`);
+          } else {
+            query = query.or(
+              `name.ilike.%${search}%,region.ilike.%${search}%,country.ilike.%${search}%,producer.ilike.%${search}%`
+            );
+          }
         }
 
         const { data, error } = await query.order('created_at', { ascending: false });
@@ -125,38 +131,25 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
     
     return products.filter(p => {
       const name = normalize(p.name);
-      const slug = normalize(p.slug);
-      const country = normalize(p.country);
       const region = normalize(p.region);
+      const country = normalize(p.country);
       const producer = normalize(p.producer);
-      const desc = normalize(p.description);
-      const taste = normalize(p.tasteProfile);
-      const food = normalize(p.foodPairing);
-      const grapes = normalize((p.grapes || []).join(', '));
       
-      // Primary matches (high priority) - at least one word must match here
-      const primaryMatch = searchWords.some(word => 
-        name.includes(word) || 
-        slug.includes(word) || 
-        region.includes(word) || 
-        country.includes(word) ||
-        grapes.includes(word)
-      );
-      
-      // Secondary matches (lower priority) - only if query is longer or primary match exists
-      const secondaryMatch = searchWords.some(word =>
-        producer.includes(word) ||
-        desc.includes(word) ||
-        taste.includes(word) ||
-        food.includes(word)
-      );
-      
-      // For short queries (1-2 words), require primary match
-      // For longer queries, allow secondary matches too
+      // For short queries (1-2 words), ONLY match name and region for accuracy
+      // This prevents false positives like "cotes" matching "Champagne" or "Chianti"
       if (searchWords.length <= 2) {
-        return primaryMatch;
+        return searchWords.some(word => 
+          name.includes(word) || region.includes(word)
+        );
       }
-      return primaryMatch || secondaryMatch;
+      
+      // For longer queries, also allow country and producer matches
+      return searchWords.some(word =>
+        name.includes(word) ||
+        region.includes(word) ||
+        country.includes(word) ||
+        producer.includes(word)
+      );
     });
   }
   
