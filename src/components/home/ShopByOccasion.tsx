@@ -98,7 +98,7 @@ export function ShopByOccasion() {
 					<p className="text-maroon/70 text-lg">Find the perfect bottle for every moment</p>
 				</motion.div>
 
-				<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
+				<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 max-w-6xl mx-auto justify-items-stretch">
 					{occasions.map((occasion, index) => (
 						<motion.div
 							key={occasion.title}

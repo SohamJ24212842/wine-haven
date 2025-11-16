@@ -105,10 +105,14 @@ function ShopPageContent() {
 	const [onSale, setOnSale] = useState<boolean>(false);
 	const [newOnly, setNewOnly] = useState<boolean>(false);
 
-	// Update state when URL params change
+	// Hydrate state from URL params ONCE (prevents fighting while typing)
+	const hydratedRef = useState(false)[0] as unknown as { current: boolean } & any; // trick to avoid extra imports
+	// we provide a simple ref-like pattern using useState to keep code local; safe here
+	// @ts-expect-error - we intentionally attach current
+	if (hydratedRef.current === undefined) hydratedRef.current = false;
 	useEffect(() => {
+		if (hydratedRef.current) return;
 		if (products.length === 0 || minAvailable === 0 || maxAvailable === 0) return; // Wait for products to load
-		
 		const params = parseUrlParams();
 		setQuery(params.query);
 		setSelectedWineTypes(params.wineTypes);
@@ -117,21 +121,14 @@ function ShopPageContent() {
 		setSelectedRegions(params.regions);
 		setSelectedCountries(params.countries);
 		// Only update price if URL has explicit values, otherwise use defaults
-		if (searchParams.get("minPrice")) {
-			setMinPrice(params.minPrice);
-		} else {
-			setMinPrice(minAvailable);
-		}
-		if (searchParams.get("maxPrice")) {
-			setMaxPrice(params.maxPrice);
-		} else {
-			setMaxPrice(maxAvailable);
-		}
+		setMinPrice(searchParams.get("minPrice") ? params.minPrice : minAvailable);
+		setMaxPrice(searchParams.get("maxPrice") ? params.maxPrice : maxAvailable);
 		setSortBy(params.sortBy);
 		setActiveCategoryTab(params.category);
 		setChristmasGift(params.christmasGift);
 		setOnSale(params.onSale);
 		setNewOnly(params.new);
+		hydratedRef.current = true;
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchParams, products.length, minAvailable, maxAvailable]);
 
