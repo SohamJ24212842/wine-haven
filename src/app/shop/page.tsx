@@ -2,7 +2,7 @@
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/typography/SectionHeading";
 import { ProductCard } from "@/components/shop/ProductCard";
-import { useMemo, useState, useEffect, Suspense } from "react";
+import { useMemo, useState, useEffect, Suspense, useRef } from "react";
 import { ProductCategory, BeerStyle, SpiritType, WineType, Product } from "@/types/product";
 import React from "react";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -106,10 +106,7 @@ function ShopPageContent() {
 	const [newOnly, setNewOnly] = useState<boolean>(false);
 
 	// Hydrate state from URL params ONCE (prevents fighting while typing)
-	const hydratedRef = useState(false)[0] as unknown as { current: boolean } & any; // trick to avoid extra imports
-	// we provide a simple ref-like pattern using useState to keep code local; safe here
-	// @ts-expect-error - we intentionally attach current
-	if (hydratedRef.current === undefined) hydratedRef.current = false;
+	const hydratedRef = useRef(false);
 	useEffect(() => {
 		if (hydratedRef.current) return;
 		if (products.length === 0 || minAvailable === 0 || maxAvailable === 0) return; // Wait for products to load
