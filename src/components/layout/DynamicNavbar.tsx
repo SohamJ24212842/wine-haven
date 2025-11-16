@@ -102,7 +102,7 @@ export function DynamicNavbar() {
 						{/* Hover buffer to prevent accidental close when moving to dropdown */}
 						{hoveredMenu === "gifts" && (
 							<div
-								className="absolute top-full left-0 h-3 w-[600px]"
+								className="absolute top-full left-0 h-4 w-[600px]"
 								onMouseEnter={() => handleMouseEnter("gifts")}
 								onMouseLeave={handleMouseLeave}
 							/>
@@ -220,7 +220,7 @@ export function DynamicNavbar() {
 						</Link>
 						{hoveredMenu === "wine" && (
 							<div
-								className="absolute top-full left-0 h-3 w-[720px]"
+								className="absolute top-full left-0 h-4 w-[720px]"
 								onMouseEnter={() => handleMouseEnter("wine")}
 								onMouseLeave={handleMouseLeave}
 							/>
@@ -370,7 +370,7 @@ export function DynamicNavbar() {
 						</Link>
 						{hoveredMenu === "spirits" && (
 							<div
-								className="absolute top-full left-0 h-3 w-[720px]"
+								className="absolute top-full left-0 h-4 w-[720px]"
 								onMouseEnter={() => handleMouseEnter("spirits")}
 								onMouseLeave={handleMouseLeave}
 							/>
@@ -488,7 +488,7 @@ export function DynamicNavbar() {
 						</Link>
 						{hoveredMenu === "champagne" && (
 							<div
-								className="absolute top-full right-0 h-3 w-[640px]"
+								className="absolute top-full right-0 h-4 w-[640px]"
 								onMouseEnter={() => handleMouseEnter("champagne")}
 								onMouseLeave={handleMouseLeave}
 							/>

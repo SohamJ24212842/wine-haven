@@ -92,6 +92,7 @@ function ShopPageContent() {
 
 	// Initialize state from URL params
 	const [query, setQuery] = useState("");
+	const [isTyping, setIsTyping] = useState(false);
 	const [selectedWineTypes, setSelectedWineTypes] = useState<WineType[]>([]);
 	const [selectedSpiritTypes, setSelectedSpiritTypes] = useState<SpiritType[]>([]);
 	const [selectedBeerStyles, setSelectedBeerStyles] = useState<BeerStyle[]>([]);
@@ -105,7 +106,7 @@ function ShopPageContent() {
 	const [onSale, setOnSale] = useState<boolean>(false);
 	const [newOnly, setNewOnly] = useState<boolean>(false);
 
-	// Hydrate state from URL params ONCE (prevents fighting while typing)
+	// Hydrate state from URL params ONCE (initial load)
 	const hydratedRef = useRef(false);
 	useEffect(() => {
 		if (hydratedRef.current) return;
@@ -128,6 +129,27 @@ function ShopPageContent() {
 		hydratedRef.current = true;
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchParams, products.length, minAvailable, maxAvailable]);
+
+	// React to URL changes after navigation (but don't override when typing)
+	useEffect(() => {
+		if (!hydratedRef.current) return;
+		if (isTyping) return;
+		const params = parseUrlParams();
+		setQuery(params.query);
+		setSelectedWineTypes(params.wineTypes);
+		setSelectedSpiritTypes(params.spiritTypes);
+		setSelectedBeerStyles(params.beerStyles);
+		setSelectedRegions(params.regions);
+		setSelectedCountries(params.countries);
+		setMinPrice(searchParams.get("minPrice") ? Number(searchParams.get("minPrice")) : minAvailable);
+		setMaxPrice(searchParams.get("maxPrice") ? Number(searchParams.get("maxPrice")) : maxAvailable);
+		setSortBy(params.sortBy);
+		setActiveCategoryTab(params.category);
+		setChristmasGift(params.christmasGift);
+		setOnSale(params.onSale);
+		setNewOnly(params.new);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [searchParams, isTyping, minAvailable, maxAvailable]);
 
 	// Update min/max price when products load (only if not set from URL)
 	useEffect(() => {
@@ -348,6 +370,8 @@ function ShopPageContent() {
 					className="flex-1 rounded-full border border-maroon/20 bg-white px-4 py-2 outline-none focus:border-maroon/40 transition-colors"
 					value={query}
 					onChange={(e) => setQuery(e.target.value)}
+					onFocus={() => setIsTyping(true)}
+					onBlur={() => setIsTyping(false)}
 					onKeyDown={(e) => {
 						if (e.key === "Enter") e.preventDefault();
 					}}
