@@ -1567,32 +1567,6 @@ function ProductForm({
 							}}
 							className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
 						/>
-{/* Additional images (optional) */}
-<div className="mt-6">
-  <label className="block text-sm font-medium text-maroon mb-1">
-    Additional Image URLs
-    <span className="block text-[11px] text-maroon/60">
-      Optional: comma-separated list. The primary image above will be shown first.
-    </span>
-  </label>
-  <textarea
-    rows={2}
-    placeholder="Add more images (comma-separated URLs)"
-    value={
-      Array.isArray((formData as any).images)
-        ? ((formData as any).images as string[]).join(", ")
-        : ""
-    }
-    onChange={(e) => {
-      const arr = e.target.value
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean);
-      setFormData({ ...formData, images: arr as unknown as any });
-    }}
-    className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
-  />
-</div>
 						{/* Additional gallery images (comma separated URLs) */}
 						<div className="mt-4">
 							<label className="block text-sm font-medium text-maroon mb-1">
