@@ -11,6 +11,8 @@ export interface Product {
 	price: number;
 	description: string;
 	image: string;
+	// Optional gallery of additional images (primary image is `image`)
+	images?: string[];
 	country: string;
 	region?: string;
 	// Producer / tasting info (optional)

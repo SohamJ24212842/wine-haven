@@ -335,7 +335,6 @@ function ShopPageContent() {
 			>
 				{(["All", "Wine", "Beer", "Spirit"] as const).map((cat) => {
 					const isActive = activeCategoryTab === cat;
-					const count = cat === "All" ? categoryCounts.all : categoryCounts[cat.toLowerCase() as keyof typeof categoryCounts];
 					return (
 						<button
 							key={cat}
@@ -351,7 +350,6 @@ function ShopPageContent() {
 							{cat === "Spirit" && <Sparkles size={16} />}
 							{cat === "All" && <Filter size={16} />}
 							<span>{cat}</span>
-							<span className={`text-xs ${isActive ? "text-maroon/60" : "text-maroon/40"}`}>({count})</span>
 						</button>
 					);
 				})}

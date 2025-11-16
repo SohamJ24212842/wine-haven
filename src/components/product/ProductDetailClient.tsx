@@ -15,8 +15,11 @@ type ProductDetailClientProps = {
 
 export function ProductDetailClient({ product, discountPercentage }: ProductDetailClientProps) {
 	const [selectedImage, setSelectedImage] = useState(0);
-	// For now, use single image. Will update when product images are changed
-	const images = [product.image];
+	const images =
+		product.images && product.images.length
+			? [product.image, ...product.images.filter((u) => u !== product.image)]
+			: [product.image];
+	const [zoom, setZoom] = useState(false);
 
 	return (
 		<Container className="py-12">
@@ -64,12 +67,39 @@ export function ProductDetailClient({ product, discountPercentage }: ProductDeta
 									src={images[selectedImage]}
 									alt={product.name}
 									fill
-									className="object-contain p-6"
+									className={`object-contain p-6 transition-transform duration-200 ${zoom ? "scale-125 cursor-zoom-out" : "cursor-zoom-in"}`}
+									onClick={() => setZoom((z) => !z)}
 									sizes="(max-width: 768px) 100vw, 50vw"
 									priority
 								/>
 							</motion.div>
 						</AnimatePresence>
+						{images.length > 1 && (
+							<>
+								<button
+									type="button"
+									aria-label="Previous"
+									onClick={() => {
+										setSelectedImage((i) => (i - 1 + images.length) % images.length);
+										setZoom(false);
+									}}
+									className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 border border-maroon/20 p-1 text-maroon hover:bg-white"
+								>
+									‹
+								</button>
+								<button
+									type="button"
+									aria-label="Next"
+									onClick={() => {
+										setSelectedImage((i) => (i + 1) % images.length);
+										setZoom(false);
+									}}
+									className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 border border-maroon/20 p-1 text-maroon hover:bg-white"
+								>
+									›
+								</button>
+							</>
+						)}
 					</div>
 					
 					{/* Thumbnail Gallery */}
@@ -89,7 +119,7 @@ export function ProductDetailClient({ product, discountPercentage }: ProductDeta
 										src={img}
 										alt={`${product.name} view ${index + 1}`}
 										fill
-										className="object-cover"
+										className="object-contain p-1"
 										sizes="80px"
 									/>
 								</button>

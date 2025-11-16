@@ -1146,7 +1146,7 @@ function ProductForm({
 			alert("Please upload an image or provide an image URL");
 			return;
 		}
-		const asProduct = formData as Product & { grapes?: string };
+		const asProduct = formData as Product & { grapes?: string; images?: string[] };
 		const prepared: Product = {
 			...asProduct,
 			grapes: asProduct.grapes
@@ -1155,7 +1155,13 @@ function ProductForm({
 						.map((g: string) => g.trim())
 						.filter(Boolean)
 				: undefined,
+			images: Array.isArray(asProduct.images) && asProduct.images.length ? asProduct.images : undefined,
 		};
+		// Ensure primary image appears first in gallery without duplicates
+		if (prepared.images && prepared.images.length) {
+			const unique = Array.from(new Set(prepared.images.filter(Boolean)));
+			prepared.images = [prepared.image, ...unique.filter((u) => u !== prepared.image)];
+		}
 
 		onSave(prepared);
 	};
@@ -1562,6 +1568,28 @@ function ProductForm({
 							}}
 							className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
 						/>
+						{/* Additional gallery images (comma separated URLs) */}
+						<div className="mt-4">
+							<label className="block text-sm font-medium text-maroon mb-1">
+								Additional Image URLs
+								<span className="block text-[11px] text-maroon/60">
+									Optional: comma-separated list. The primary image above will be shown first.
+								</span>
+							</label>
+							<textarea
+								rows={2}
+								placeholder="https://..., https://..., https://..."
+								value={Array.isArray((formData as any).images) ? ((formData as any).images as string[]).join(', ') : ''}
+								onChange={(e) => {
+									const arr = e.target.value
+										.split(',')
+										.map((s) => s.trim())
+										.filter(Boolean);
+									setFormData({ ...formData, images: arr as unknown as any });
+								}}
+								className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
+							/>
+						</div>
 					</div>
 
 					<div className="grid grid-cols-2 gap-4">

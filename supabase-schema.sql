@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS products (
   price DECIMAL(10, 2) NOT NULL,
   description TEXT,
   image TEXT,
+  images TEXT[],
   country TEXT,
   region TEXT,
   producer TEXT,

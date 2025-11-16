@@ -20,6 +20,8 @@ function calculateDiscountPercentage(originalPrice: number, salePrice: number): 
 export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps) {
 	const { addItem } = useCart();
 	const [quantity, setQuantity] = useState(1);
+	const [selectedImage, setSelectedImage] = useState(0);
+	const [zoom, setZoom] = useState(false);
 
 	if (!product) return null;
 
@@ -34,6 +36,11 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 		}
 		onClose();
 	};
+
+	const images =
+		product.images && product.images.length
+			? [product.image, ...product.images.filter((u) => u !== product.image)]
+			: [product.image];
 
 	return (
 		<AnimatePresence>
@@ -81,14 +88,55 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 										)}
 									</div>
 									<Image
-										src={product.image}
+										src={images[selectedImage]}
 										alt={product.name}
 										fill
-										className="object-contain p-4"
+										className={`object-contain p-4 transition-transform duration-200 ${zoom ? "scale-125 cursor-zoom-out" : "cursor-zoom-in"}`}
+										onClick={() => setZoom((z) => !z)}
 										sizes="(max-width: 768px) 100vw, 50vw"
 										priority
 									/>
+									{images.length > 1 && (
+										<>
+											<button
+												type="button"
+												aria-label="Previous"
+												onClick={() => {
+													setSelectedImage((i) => (i - 1 + images.length) % images.length);
+													setZoom(false);
+												}}
+												className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 border border-maroon/20 p-1 text-maroon hover:bg-white"
+											>
+												‹
+											</button>
+											<button
+												type="button"
+												aria-label="Next"
+												onClick={() => {
+													setSelectedImage((i) => (i + 1) % images.length);
+													setZoom(false);
+												}}
+												className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 border border-maroon/20 p-1 text-maroon hover:bg-white"
+											>
+												›
+											</button>
+										</>
+									)}
 								</div>
+								{images.length > 1 && (
+									<div className="mt-2 flex gap-2 overflow-x-auto md:col-span-1">
+										{images.map((img, idx) => (
+											<button
+												key={img + idx}
+												onClick={() => setSelectedImage(idx)}
+												className={`relative h-14 w-10 flex-shrink-0 rounded border ${selectedImage === idx ? "border-gold" : "border-maroon/20"}`}
+												aria-label={`Image ${idx + 1}`}
+											>
+												<Image src={img} alt={`${product.name} ${idx + 1}`} fill className="object-contain p-1" sizes="40px" />
+											</button>
+										))}
+									</div>
+								)}
 
 								{/* Product Details */}
 								<div className="flex flex-col">
