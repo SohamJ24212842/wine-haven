@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
-import { Gift, Star, Sparkles, UtensilsCrossed, ChevronDown } from "lucide-react";
+import { Gift, Star, Sparkles, UtensilsCrossed } from "lucide-react";
 
 type OccasionTile = {
 	title: string;
@@ -11,7 +11,6 @@ type OccasionTile = {
 	href: string;
 	color: string;
 	bgGradient: string;
-	menu?: { label: string; href: string }[];
 };
 
 const occasions: OccasionTile[] = [
@@ -30,11 +29,6 @@ const occasions: OccasionTile[] = [
 		href: "/shop?category=Wine",
 		color: "text-maroon",
 		bgGradient: "from-maroon/10 to-maroon/5",
-		menu: [
-			{ label: "Beef & lamb", href: "/shop?q=beef" },
-			{ label: "Pasta & pizza", href: "/shop?q=pasta" },
-			{ label: "Seafood & shellfish", href: "/shop?q=seafood" },
-		],
 	},
 	{
 		title: "Staff Picks",
@@ -51,11 +45,6 @@ const occasions: OccasionTile[] = [
 		href: "/shop?category=Wine&wineType=Sparkling",
 		color: "text-blue-600",
 		bgGradient: "from-blue-50 to-blue-100/50",
-		menu: [
-			{ label: "Champagne", href: "/shop?q=champagne" },
-			{ label: "Prosecco", href: "/shop?category=Wine&wineType=Prosecco" },
-			{ label: "Sparkling Rosé", href: "/shop?q=sparkling%20ros%C3%A9" },
-		],
 	},
 ];
 
@@ -108,34 +97,6 @@ export function ShopByOccasion() {
 									
 									{/* Hover effect overlay */}
 									<div className="absolute inset-0 bg-gradient-to-br from-gold/0 to-gold/0 group-hover:from-gold/5 group-hover:to-transparent transition-all duration-300" />
-
-									{/* Optional small hover menu trigger (bottom-facing arrow) */}
-									{occasion.menu && (
-										<div className="absolute bottom-3 right-3">
-											<div className="relative group/menu">
-												<button
-													type="button"
-													onClick={(e: React.MouseEvent<HTMLButtonElement>) => e.preventDefault()}
-													className="flex items-center gap-1 rounded-full bg-white/90 px-2 py-1 text-[11px] text-maroon shadow-sm border border-maroon/10 hover:bg-white"
-												>
-													<span>More</span>
-													<ChevronDown className="w-3 h-3" />
-												</button>
-												<div className="pointer-events-none opacity-0 group-hover/menu:opacity-100 group-hover/menu:pointer-events-auto absolute right-0 bottom-full mb-2 w-40 rounded-lg bg-white shadow-lg border border-maroon/10 text-left py-2 z-10">
-													{occasion.menu.map((item) => (
-														<Link
-															key={item.label}
-															href={item.href}
-															className="block px-3 py-1.5 text-xs text-maroon/80 hover:bg-soft-gray"
-															onClick={(e: React.MouseEvent<HTMLAnchorElement>) => e.stopPropagation()}
-														>
-															{item.label}
-														</Link>
-													))}
-												</div>
-											</div>
-										</div>
-									)}
 								</motion.div>
 							</Link>
 						</motion.div>
