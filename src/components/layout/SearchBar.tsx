@@ -34,6 +34,13 @@ export function SearchBar() {
 		};
 	}, [isOpen]);
 
+	// Helper to normalize for ranking (diacritics-insensitive)
+	const normalize = (s?: string) =>
+		(s || "")
+			.toLowerCase()
+			.normalize("NFD")
+			.replace(/\p{Diacritic}/gu, "");
+
 	// Debounced search
 	useEffect(() => {
 		if (!query.trim()) {
@@ -47,8 +54,38 @@ export function SearchBar() {
 				const response = await fetch(`/api/products?search=${encodeURIComponent(query)}`);
 				if (response.ok) {
 					const data = await response.json();
-					const productsArray = Array.isArray(data) ? data : (data.products || []);
-					setResults(productsArray.slice(0, 8)); // Limit to 8 results
+					const productsArray: Product[] = Array.isArray(data) ? data : (data.products || []);
+
+					// Rank results so the most relevant (name matches) appear first
+					const qNorm = normalize(query.trim());
+					const scored = productsArray.map((p) => {
+						const name = normalize(p.name);
+						const slug = normalize(p.slug);
+						const country = normalize(p.country);
+						const region = normalize(p.region);
+
+						let score = 0;
+						// Strong boost for name starting with query
+						if (name.startsWith(qNorm)) score += 100;
+						else if (name.includes(qNorm)) score += 70;
+
+						// Smaller boosts for matches in other fields
+						if (slug.startsWith(qNorm)) score += 30;
+						else if (slug.includes(qNorm)) score += 15;
+
+						if (country.includes(qNorm)) score += 10;
+						if (region.includes(qNorm)) score += 8;
+
+						return { product: p, score };
+					});
+
+					scored.sort((a, b) => b.score - a.score);
+					setResults(
+						scored
+							.filter((s) => s.score > 0) // only keep reasonably relevant matches
+							.slice(0, 8)
+							.map((s) => s.product)
+					);
 				}
 			} catch (error) {
 				console.error("Search error:", error);

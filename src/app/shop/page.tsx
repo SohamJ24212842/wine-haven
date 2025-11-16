@@ -415,6 +415,7 @@ function ShopPageContent() {
 					beerStyles={beerStyles}
 					selectedBeerStyles={selectedBeerStyles}
 					setSelectedBeerStyles={setSelectedBeerStyles}
+					setActiveCategoryTab={setActiveCategoryTab}
 				/>
 			</motion.div>
 
@@ -570,6 +571,7 @@ function AdvancedFilters({
 	beerStyles,
 	selectedBeerStyles,
 	setSelectedBeerStyles,
+	setActiveCategoryTab,
 }: {
 	minAvailable: number;
 	maxAvailable: number;
@@ -589,6 +591,7 @@ function AdvancedFilters({
 	beerStyles: BeerStyle[];
 	selectedBeerStyles: BeerStyle[];
 	setSelectedBeerStyles: React.Dispatch<React.SetStateAction<BeerStyle[]>>;
+	setActiveCategoryTab: React.Dispatch<React.SetStateAction<ProductCategory | "All">>;
 }) {
 	const [open, setOpen] = useState(false);
 
@@ -642,9 +645,15 @@ function AdvancedFilters({
 										<button
 											key={t}
 											onClick={() =>
-												setSelectedWineTypes((prev) =>
-													prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
-												)
+												setSelectedWineTypes((prev) => {
+													const exists = prev.includes(t);
+													const next = exists ? prev.filter((x) => x !== t) : [...prev, t];
+													// If any wine types are selected, focus category on Wine
+													if (next.length > 0) {
+														setActiveCategoryTab("Wine");
+													}
+													return next;
+												})
 											}
 											className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
 												active
@@ -673,9 +682,14 @@ function AdvancedFilters({
 										<button
 											key={t}
 											onClick={() =>
-												setSelectedSpiritTypes((prev) =>
-													prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
-												)
+												setSelectedSpiritTypes((prev) => {
+													const exists = prev.includes(t);
+													const next = exists ? prev.filter((x) => x !== t) : [...prev, t];
+													if (next.length > 0) {
+														setActiveCategoryTab("Spirit");
+													}
+													return next;
+												})
 											}
 											className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
 												active
@@ -704,9 +718,14 @@ function AdvancedFilters({
 										<button
 											key={t}
 											onClick={() =>
-												setSelectedBeerStyles((prev) =>
-													prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
-												)
+												setSelectedBeerStyles((prev) => {
+													const exists = prev.includes(t);
+													const next = exists ? prev.filter((x) => x !== t) : [...prev, t];
+													if (next.length > 0) {
+														setActiveCategoryTab("Beer");
+													}
+													return next;
+												})
 											}
 											className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
 												active
