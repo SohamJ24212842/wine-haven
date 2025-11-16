@@ -1415,6 +1415,8 @@ function ProductForm({
 							/>
 						</div>
 					</div>
+					{/* End Image Upload Section */}
+					</div>
 
 					<div className="grid grid-cols-2 gap-4">
 						<div>
