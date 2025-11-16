@@ -1415,9 +1415,6 @@ function ProductForm({
 							/>
 						</div>
 					</div>
-					{/* End Image Upload Section */}
-					</div>
-
 					<div className="grid grid-cols-2 gap-4">
 						<div>
 							<label className="block text-sm font-medium text-maroon mb-1">
@@ -1570,84 +1567,32 @@ function ProductForm({
 							}}
 							className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
 						/>
-						{/* Second Image: Upload or URL */}
-						<div className="mt-6">
-							<label className="block text-sm font-medium text-maroon mb-2">Second Image (optional)</label>
-							<div className="flex items-center gap-4">
-								{/* Preview second */}
-								{Array.isArray((formData as any).images) && (formData as any).images[0] && (
-									<div className="relative inline-block">
-										<img
-											src={(formData as any).images[0]}
-											alt="Second preview"
-											className="w-24 h-32 object-cover rounded-md border border-maroon/20"
-										/>
-										<button
-											type="button"
-											onClick={() => {
-												const existing = Array.isArray((formData as any).images) ? ((formData as any).images as string[]) : [];
-												const next = [...existing];
-												next.splice(0, 1);
-												setFormData({ ...formData, images: next as unknown as any });
-											}}
-											className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
-											aria-label="Remove second image"
-										>
-											<X size={14} />
-										</button>
-									</div>
-								)}
-								<label className="flex items-center gap-2 cursor-pointer w-fit px-3 py-2 rounded-md border border-maroon/20 bg-white text-sm text-maroon hover:bg-soft-gray transition-colors">
-									<Upload size={16} />
-									{uploadingImage ? "Uploading..." : "Upload Second Image"}
-									<input
-										type="file"
-										accept="image/*"
-										onChange={(e) => {
-											const file = e.target.files?.[0];
-											if (!file) return;
-											if (!file.type.startsWith("image/")) {
-												alert("Please select an image file");
-												return;
-											}
-											if (file.size > 5 * 1024 * 1024) {
-												alert("Image size must be less than 5MB");
-												return;
-											}
-											// read and add to images[0]
-											const reader = new FileReader();
-											reader.onloadend = () => {
-												const url = reader.result as string;
-												const existing = Array.isArray((formData as any).images) ? ((formData as any).images as string[]) : [];
-												const next = [...existing];
-												next[0] = url;
-												setFormData({ ...formData, images: next as unknown as any });
-											};
-											reader.readAsDataURL(file);
-										}}
-										className="hidden"
-										disabled={uploadingImage}
-									/>
-								</label>
-							</div>
-							<input
-								type="url"
-								placeholder="Add second image URL"
-								value={
-									Array.isArray((formData as any).images) && (formData as any).images[0]
-										? ((formData as any).images as string[])[0]
-										: ""
-								}
-								onChange={(e) => {
-									const val = e.target.value.trim();
-									const existing = Array.isArray((formData as any).images) ? ((formData as any).images as string[]) : [];
-									const next = [...existing];
-									if (val) next[0] = val;
-									else next.splice(0, 1);
-									setFormData({ ...formData, images: next as unknown as any });
-								}}
-								className="mt-2 w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
-							/>
+{/* Additional images (optional) */}
+<div className="mt-6">
+  <label className="block text-sm font-medium text-maroon mb-1">
+    Additional Image URLs
+    <span className="block text-[11px] text-maroon/60">
+      Optional: comma-separated list. The primary image above will be shown first.
+    </span>
+  </label>
+  <textarea
+    rows={2}
+    placeholder="Add more images (comma-separated URLs)"
+    value={
+      Array.isArray((formData as any).images)
+        ? ((formData as any).images as string[]).join(", ")
+        : ""
+    }
+    onChange={(e) => {
+      const arr = e.target.value
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+      setFormData({ ...formData, images: arr as unknown as any });
+    }}
+    className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
+  />
+</div>
 						{/* Additional gallery images (comma separated URLs) */}
 						<div className="mt-4">
 							<label className="block text-sm font-medium text-maroon mb-1">
