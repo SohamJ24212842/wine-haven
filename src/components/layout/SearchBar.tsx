@@ -56,33 +56,47 @@ export function SearchBar() {
 					const data = await response.json();
 					const productsArray: Product[] = Array.isArray(data) ? data : (data.products || []);
 
-					// Rank results so the most relevant (name matches) appear first
+					// Rank results so the most relevant (name/region matches) appear first
 					const qNorm = normalize(query.trim());
+					const qWords = qNorm.split(/\s+/).filter(Boolean);
+					
 					const scored = productsArray.map((p) => {
 						const name = normalize(p.name);
 						const slug = normalize(p.slug);
 						const country = normalize(p.country);
 						const region = normalize(p.region);
+						const grapes = normalize((p.grapes || []).join(', '));
 
 						let score = 0;
-						// Strong boost for name starting with query
-						if (name.startsWith(qNorm)) score += 100;
-						else if (name.includes(qNorm)) score += 70;
-
-						// Smaller boosts for matches in other fields
-						if (slug.startsWith(qNorm)) score += 30;
-						else if (slug.includes(qNorm)) score += 15;
-
-						if (country.includes(qNorm)) score += 10;
-						if (region.includes(qNorm)) score += 8;
+						
+						// Check each word in the query
+						for (const word of qWords) {
+							// Strong boost for name starting with word
+							if (name.startsWith(word)) score += 100;
+							else if (name.includes(word)) score += 70;
+							
+							// Strong boost for region match (Rioja, Bordeaux, etc.)
+							if (region.includes(word)) score += 80;
+							
+							// Boost for grapes match
+							if (grapes.includes(word)) score += 60;
+							
+							// Smaller boosts for other fields
+							if (slug.includes(word)) score += 20;
+							if (country.includes(word)) score += 10;
+						}
 
 						return { product: p, score };
 					});
 
 					scored.sort((a, b) => b.score - a.score);
+					
+					// For short queries (1-2 words), require a minimum score to filter out weak matches
+					const minScore = qWords.length <= 2 ? 10 : 5;
+					
 					setResults(
 						scored
-							.filter((s) => s.score > 0) // only keep reasonably relevant matches
+							.filter((s) => s.score >= minScore) // filter out weak matches
 							.slice(0, 8)
 							.map((s) => s.product)
 					);

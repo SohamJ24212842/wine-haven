@@ -89,10 +89,11 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
 
         // Add search filter if provided
         if (searchQuery && searchQuery.trim()) {
-          const search = searchQuery.trim().toLowerCase();
-          // Include more fields for matching (producer, taste_profile, food_pairing)
+          const search = searchQuery.trim();
+          // Search in primary fields (name, region, country) for better accuracy
+          // Client-side ranking will prioritize the best matches
           query = query.or(
-            `name.ilike.%${search}%,description.ilike.%${search}%,country.ilike.%${search}%,region.ilike.%${search}%,producer.ilike.%${search}%,taste_profile.ilike.%${search}%,food_pairing.ilike.%${search}%`
+            `name.ilike.%${search}%,region.ilike.%${search}%,country.ilike.%${search}%,producer.ilike.%${search}%`
           );
         }
 
@@ -120,17 +121,42 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
   // Filter local data if search query provided
   if (searchQuery && searchQuery.trim()) {
     const search = normalize(searchQuery.trim());
+    const searchWords = search.split(/\s+/).filter(Boolean);
+    
     return products.filter(p => {
-      const inName = normalize(p.name).includes(search);
-      const inSlug = normalize(p.slug).includes(search);
-      const inDesc = normalize(p.description).includes(search);
-      const inCountry = normalize(p.country).includes(search);
-      const inRegion = normalize(p.region).includes(search);
-      const inProducer = normalize(p.producer).includes(search);
-      const inTaste = normalize(p.tasteProfile).includes(search);
-      const inFood = normalize(p.foodPairing).includes(search);
-      const inGrapes = normalize((p.grapes || []).join(', ')).includes(search);
-      return inName || inSlug || inDesc || inCountry || inRegion || inProducer || inTaste || inFood || inGrapes;
+      const name = normalize(p.name);
+      const slug = normalize(p.slug);
+      const country = normalize(p.country);
+      const region = normalize(p.region);
+      const producer = normalize(p.producer);
+      const desc = normalize(p.description);
+      const taste = normalize(p.tasteProfile);
+      const food = normalize(p.foodPairing);
+      const grapes = normalize((p.grapes || []).join(', '));
+      
+      // Primary matches (high priority) - at least one word must match here
+      const primaryMatch = searchWords.some(word => 
+        name.includes(word) || 
+        slug.includes(word) || 
+        region.includes(word) || 
+        country.includes(word) ||
+        grapes.includes(word)
+      );
+      
+      // Secondary matches (lower priority) - only if query is longer or primary match exists
+      const secondaryMatch = searchWords.some(word =>
+        producer.includes(word) ||
+        desc.includes(word) ||
+        taste.includes(word) ||
+        food.includes(word)
+      );
+      
+      // For short queries (1-2 words), require primary match
+      // For longer queries, allow secondary matches too
+      if (searchWords.length <= 2) {
+        return primaryMatch;
+      }
+      return primaryMatch || secondaryMatch;
     });
   }
   
