@@ -4,12 +4,19 @@ import { products } from "@/data/products";
 import { Product } from "@/types/product";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/typography/SectionHeading";
-import { Plus, Edit, Trash2, Eye, EyeOff, Tag, Star, Sparkles, LayoutDashboard, Package, ShoppingCart, Settings, Search, Filter, Upload, X, Gift } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, EyeOff, Tag, Star, Sparkles, LayoutDashboard, Package, ShoppingCart, Settings, Search, Filter, Upload, X, Gift, Video, Image as ImageIcon, ArrowUp, ArrowDown } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { SearchableSelect } from "@/components/admin/SearchableSelect";
 
 const ADMIN_PASSWORD = "winehaven2024"; // Change this in production!
+
+// Frontend flag that mirrors NEXT_PUBLIC_USE_SUPABASE.
+// When false, the app is using local JSON data only and any
+// write operations (add / edit / delete / import) will not
+// hit the live database.
+const USE_SUPABASE =
+	typeof process !== "undefined" && process.env.NEXT_PUBLIC_USE_SUPABASE === "true";
 
 function AdminPageContent() {
 	// Hooks must be called in the same order on every render
@@ -25,9 +32,85 @@ function AdminPageContent() {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [categoryFilter, setCategoryFilter] = useState<Product["category"] | "All">("All");
 	const [selectedProducts, setSelectedProducts] = useState<Set<string>>(new Set());
-	const [activeSection, setActiveSection] = useState<"products" | "gifts">(
-		searchParams.get("section") === "gifts" ? "gifts" : "products"
+	const [activeSection, setActiveSection] = useState<"products" | "gifts" | "promotional">(
+		searchParams.get("section") === "gifts" ? "gifts" : searchParams.get("section") === "promotional" ? "promotional" : "products"
 	);
+	const [promotionalMedia, setPromotionalMedia] = useState<any[]>([]);
+	const [showPromoForm, setShowPromoForm] = useState(false);
+	const [editingPromo, setEditingPromo] = useState<any | null>(null);
+
+	// Bulk actions for selected products
+	const handleBulkAction = async (action: string) => {
+		if (selectedProducts.size === 0) return;
+
+		const count = selectedProducts.size;
+
+		let actionLabel = "";
+		switch (action) {
+			case "feature":
+				actionLabel = "mark as featured";
+				break;
+			case "unfeature":
+				actionLabel = "remove featured";
+				break;
+			case "gift-on":
+				actionLabel = "mark as Christmas gift";
+				break;
+			case "gift-off":
+				actionLabel = "remove Christmas gift";
+				break;
+			case "sale-on":
+				actionLabel = "mark as on sale";
+				break;
+			case "sale-off":
+				actionLabel = "remove on sale";
+				break;
+			default:
+				return;
+		}
+
+		if (!confirm(`Apply "${actionLabel}" to ${count} selected product(s)?`)) {
+			return;
+		}
+
+		try {
+			const promises = Array.from(selectedProducts).map(async (slug) => {
+				const product = productsList.find((p) => p.slug === slug);
+				if (!product) return;
+
+				let updates: Partial<Product> = {};
+				if (action === "feature") updates = { featured: true };
+				if (action === "unfeature") updates = { featured: false };
+				if (action === "gift-on") updates = { christmasGift: true };
+				if (action === "gift-off") updates = { christmasGift: false };
+				if (action === "sale-on") updates = { onSale: true };
+				if (action === "sale-off") updates = { onSale: false };
+
+				const response = await fetch(`/api/products/${slug}`, {
+					method: "PUT",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ ...product, ...updates }),
+				});
+
+				if (!response.ok) {
+					const errorData = await response.json();
+					throw new Error(`Failed to update ${product.name}: ${errorData.error || "Unknown error"}`);
+				}
+
+				return response.json();
+			});
+
+			await Promise.all(promises);
+			const selectedCount = count;
+			setSelectedProducts(new Set());
+			fetchProducts();
+			alert(`Successfully applied "${actionLabel}" to ${selectedCount} product(s).`);
+		} catch (error: any) {
+			alert(`Failed to update products: ${error.message}`);
+			console.error(error);
+			fetchProducts();
+		}
+	};
 
 	// Check if already authenticated (stored in sessionStorage)
 	useEffect(() => {
@@ -41,6 +124,7 @@ function AdminPageContent() {
 	useEffect(() => {
 		if (isAuthenticated) {
 			fetchProducts();
+			fetchPromotionalMedia();
 		}
 	}, [isAuthenticated]);
 
@@ -61,6 +145,18 @@ function AdminPageContent() {
 			setProductsList(products);
 		} finally {
 			setLoading(false);
+		}
+	};
+
+	const fetchPromotionalMedia = async () => {
+		try {
+			const response = await fetch("/api/promotional-media");
+			if (response.ok) {
+				const data = await response.json();
+				setPromotionalMedia(Array.isArray(data) ? data : []);
+			}
+		} catch (error) {
+			console.error("Error fetching promotional media:", error);
 		}
 	};
 
@@ -256,6 +352,15 @@ function AdminPageContent() {
 
 	return (
 		<Container className="py-12">
+			{!USE_SUPABASE && (
+				<div className="mb-6 rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-maroon/80">
+					<p className="font-semibold">Local JSON mode (no live database)</p>
+					<p className="mt-1">
+						This admin is currently using sample data only. Changes you make here (add / edit / delete /
+						import) will not be saved to the live database or appear on the production site.
+					</p>
+				</div>
+			)}
 			<div className="flex items-center justify-between mb-8">
 				<SectionHeading>Admin Dashboard</SectionHeading>
 				<button
@@ -289,6 +394,17 @@ function AdminPageContent() {
 				>
 					<Gift size={18} />
 					Gifts ({productsList.filter(p => p.christmasGift).length})
+				</button>
+				<button
+					onClick={() => setActiveSection("promotional")}
+					className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors border-b-2 ${
+						activeSection === "promotional"
+							? "border-gold text-maroon"
+							: "border-transparent text-maroon/60 hover:text-maroon hover:border-maroon/30"
+					}`}
+				>
+					<Sparkles size={18} />
+					Promotional Media
 				</button>
 				<AdminNavLink href="/admin/orders" icon={<ShoppingCart size={18} />} label="Orders" pathname={pathname} />
 				<AdminNavLink href="/admin/settings" icon={<Settings size={18} />} label="Settings" pathname={pathname} />
@@ -326,7 +442,198 @@ function AdminPageContent() {
 				</button>
 			</div>
 
+			{/* Promotional Media Section */}
+			{activeSection === "promotional" && (
+				<div>
+					<div className="mb-6 flex items-center justify-between">
+						<div>
+							<h2 className="text-xl font-semibold text-maroon">Promotional Media</h2>
+							<p className="text-sm text-maroon/60 mt-1">Manage store videos and images displayed on the home page</p>
+						</div>
+						<button
+							onClick={() => {
+								setShowPromoForm(true);
+								setEditingPromo(null);
+							}}
+							className="flex items-center gap-2 rounded-md bg-gold px-4 py-2 text-sm font-semibold text-maroon hover:brightness-95 transition-colors"
+						>
+							<Plus size={16} />
+							Add Media
+						</button>
+					</div>
+
+					{promotionalMedia.length === 0 ? (
+						<div className="text-center py-12 text-maroon/60">
+							No promotional media yet. Add your first video or image!
+						</div>
+					) : (
+						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+							{promotionalMedia.map((item, index) => (
+								<div key={item.id} className="border border-maroon/20 rounded-lg overflow-hidden bg-white">
+									<div className="relative aspect-video bg-soft-gray">
+										{item.type === "video" ? (
+											item.thumbnail ? (
+												<img src={item.thumbnail} alt={item.title || "Video"} className="w-full h-full object-cover" />
+											) : (
+												<div className="w-full h-full flex items-center justify-center">
+													<Video className="text-maroon/30" size={48} />
+												</div>
+											)
+										) : (
+											<img src={item.url} alt={item.title || "Image"} className="w-full h-full object-cover" />
+										)}
+										<div className="absolute top-2 right-2 flex gap-2">
+											<button
+												onClick={async () => {
+													const newOrder = Math.max(0, item.order - 1);
+													try {
+														await fetch(`/api/promotional-media/${item.id}`, {
+															method: "PUT",
+															headers: { "Content-Type": "application/json" },
+															body: JSON.stringify({ order: newOrder }),
+														});
+														fetchPromotionalMedia();
+													} catch (error) {
+														alert("Failed to update order");
+													}
+												}}
+												className="p-1 bg-white/90 rounded hover:bg-white transition-colors"
+												disabled={index === 0}
+											>
+												<ArrowUp size={14} />
+											</button>
+											<button
+												onClick={async () => {
+													const newOrder = item.order + 1;
+													try {
+														await fetch(`/api/promotional-media/${item.id}`, {
+															method: "PUT",
+															headers: { "Content-Type": "application/json" },
+															body: JSON.stringify({ order: newOrder }),
+														});
+														fetchPromotionalMedia();
+													} catch (error) {
+														alert("Failed to update order");
+													}
+												}}
+												className="p-1 bg-white/90 rounded hover:bg-white transition-colors"
+												disabled={index === promotionalMedia.length - 1}
+											>
+												<ArrowDown size={14} />
+											</button>
+										</div>
+									</div>
+									<div className="p-4">
+										<div className="flex items-center justify-between mb-2">
+											<span className="text-xs px-2 py-1 rounded bg-maroon/10 text-maroon">
+												{item.type === "video" ? "Video" : "Image"}
+											</span>
+											<label className="flex items-center gap-2 cursor-pointer">
+												<input
+													type="checkbox"
+													checked={item.active}
+													onChange={async (e) => {
+														try {
+															await fetch(`/api/promotional-media/${item.id}`, {
+																method: "PUT",
+																headers: { "Content-Type": "application/json" },
+																body: JSON.stringify({ active: e.target.checked }),
+															});
+															fetchPromotionalMedia();
+														} catch (error) {
+															alert("Failed to update");
+														}
+													}}
+													className="rounded border-maroon/20"
+												/>
+												<span className="text-xs text-maroon/60">Active</span>
+											</label>
+										</div>
+										{item.title && <p className="font-semibold text-maroon text-sm mb-1">{item.title}</p>}
+										{item.description && <p className="text-xs text-maroon/60 mb-3">{item.description}</p>}
+										<div className="flex gap-2">
+											<button
+												onClick={() => {
+													setEditingPromo(item);
+													setShowPromoForm(true);
+												}}
+												className="flex-1 flex items-center justify-center gap-1 rounded-md border border-maroon/20 bg-white px-3 py-1.5 text-xs text-maroon hover:bg-soft-gray transition-colors"
+											>
+												<Edit size={14} />
+												Edit
+											</button>
+											<button
+												onClick={async () => {
+													if (confirm("Delete this media?")) {
+														try {
+															await fetch(`/api/promotional-media/${item.id}`, { method: "DELETE" });
+															fetchPromotionalMedia();
+														} catch (error) {
+															alert("Failed to delete");
+														}
+													}
+												}}
+												className="flex-1 flex items-center justify-center gap-1 rounded-md border border-red-200 bg-white px-3 py-1.5 text-xs text-red-600 hover:bg-red-50 transition-colors"
+											>
+												<Trash2 size={14} />
+												Delete
+											</button>
+										</div>
+									</div>
+								</div>
+							))}
+						</div>
+					)}
+
+					{/* Promotional Media Form Modal */}
+					{showPromoForm && (
+						<PromotionalMediaForm
+							media={editingPromo}
+							onClose={() => {
+								setShowPromoForm(false);
+								setEditingPromo(null);
+							}}
+							onSave={async (mediaData) => {
+								try {
+									if (editingPromo) {
+										const response = await fetch(`/api/promotional-media/${editingPromo.id}`, {
+											method: "PUT",
+											headers: { "Content-Type": "application/json" },
+											body: JSON.stringify(mediaData),
+										});
+										if (response.ok) {
+											fetchPromotionalMedia();
+											setShowPromoForm(false);
+											setEditingPromo(null);
+										} else {
+											const result = await response.json();
+											alert(`Failed to update: ${result.error}`);
+										}
+									} else {
+										const response = await fetch("/api/promotional-media", {
+											method: "POST",
+											headers: { "Content-Type": "application/json" },
+											body: JSON.stringify(mediaData),
+										});
+										if (response.ok) {
+											fetchPromotionalMedia();
+											setShowPromoForm(false);
+										} else {
+											const result = await response.json();
+											alert(`Failed to create: ${result.error}`);
+										}
+									}
+								} catch (error: any) {
+									alert(`Error: ${error.message}`);
+								}
+							}}
+						/>
+					)}
+				</div>
+			)}
+
 			{/* Search and Filter Bar */}
+			{activeSection !== "promotional" && (
 			<div className="mb-6 flex flex-col sm:flex-row gap-4">
 				<div className="flex-1 relative">
 					<Search className="absolute left-3 top-1/2 -translate-y-1/2 text-maroon/40" size={18} />
@@ -335,10 +642,20 @@ function AdminPageContent() {
 						placeholder="Search products by name, country, region..."
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
-						className="w-full pl-10 pr-4 py-2 rounded-md border border-maroon/20 bg-white text-sm outline-none focus:border-gold"
+						className="w-full pl-10 pr-8 py-2 rounded-md border border-maroon/20 bg-white text-sm outline-none focus:border-gold"
 					/>
+					{searchQuery && (
+						<button
+							type="button"
+							onClick={() => setSearchQuery("")}
+							className="absolute right-2 top-1/2 -translate-y-1/2 text-maroon/40 hover:text-maroon"
+							aria-label="Clear search"
+						>
+							<X size={14} />
+						</button>
+					)}
 				</div>
-				<div className="flex gap-2">
+				<div className="flex gap-2 items-center">
 					<select
 						value={categoryFilter}
 						onChange={(e) => setCategoryFilter(e.target.value as Product["category"] | "All")}
@@ -351,52 +668,49 @@ function AdminPageContent() {
 					</select>
 					{selectedProducts.size > 0 && (
 						<>
-							<button
-								onClick={async () => {
-									const count = selectedProducts.size;
-									if (confirm(`Mark ${count} selected product(s) as featured?`)) {
-										try {
-											const promises = Array.from(selectedProducts).map(async (slug) => {
-												const product = productsList.find((p) => p.slug === slug);
-												if (!product) return;
-												const response = await fetch(`/api/products/${slug}`, {
-													method: "PUT",
-													headers: { "Content-Type": "application/json" },
-													body: JSON.stringify({ ...product, featured: true }),
-												});
-												if (!response.ok) {
-													const errorData = await response.json();
-													throw new Error(`Failed to update ${product.name}: ${errorData.error || "Unknown error"}`);
-												}
-												return response.json();
-											});
-											await Promise.all(promises);
-											const selectedCount = count;
-											setSelectedProducts(new Set());
-											fetchProducts();
-											alert(`Successfully marked ${selectedCount} product(s) as featured!`);
-										} catch (error: any) {
-											alert(`Failed to update products: ${error.message}`);
-											console.error(error);
-											fetchProducts();
-										}
-									}
-								}}
-								className="flex items-center gap-2 rounded-md bg-gold px-4 py-2 text-sm font-semibold text-maroon hover:brightness-95 transition-colors"
-							>
-								<Star size={16} />
-								Mark as Featured ({selectedProducts.size})
-							</button>
-							<button
-								onClick={() => setSelectedProducts(new Set())}
-								className="flex items-center gap-2 rounded-md border border-maroon/20 bg-white px-4 py-2 text-sm text-maroon hover:bg-soft-gray transition-colors"
-							>
-								Clear Selection
-							</button>
+							<div className="flex items-center gap-2">
+								<div className="flex items-center gap-2 rounded-full bg-soft-gray px-3 py-1 text-xs sm:text-sm text-maroon/80">
+									<span>Selected: {selectedProducts.size}</span>
+									<button
+										type="button"
+										onClick={() => setSelectedProducts(new Set())}
+										className="rounded-full px-1.5 text-maroon/60 hover:bg-maroon/10 hover:text-maroon text-xs"
+										aria-label="Clear selection"
+									>
+										×
+									</button>
+								</div>
+								<select
+									defaultValue=""
+									onChange={async (e) => {
+										const value = e.target.value;
+										if (!value) return;
+										await handleBulkAction(value);
+										e.target.value = "";
+									}}
+									className="px-3 py-2 rounded-md border border-maroon/20 bg-white text-sm outline-none focus:border-gold"
+								>
+									<option value="" disabled>
+										Bulk actions
+									</option>
+									<option value="feature">Mark as Featured</option>
+									<option value="unfeature">Unmark Featured</option>
+									<option value="gift-on">Mark as Christmas Gift</option>
+									<option value="gift-off">Unmark Christmas Gift</option>
+									<option value="sale-on">Mark as On Sale</option>
+									<option value="sale-off">Unmark On Sale</option>
+								</select>
+							</div>
 						</>
 					)}
 					<button
 						onClick={async () => {
+							if (!USE_SUPABASE) {
+								alert(
+									"Import is disabled in local JSON mode.\n\nEnable Supabase (NEXT_PUBLIC_USE_SUPABASE=true) to import products into the live database."
+								);
+								return;
+							}
 							if (confirm("Import all products from local data to database? This will skip products that already exist.")) {
 								try {
 									const response = await fetch("/api/products/import", { method: "POST" });
@@ -438,166 +752,181 @@ function AdminPageContent() {
 					</button>
 				</div>
 			</div>
+			)}
 
 			{/* Product List */}
-			{loading ? (
-				<div className="text-center py-12 text-maroon/60">Loading products...</div>
-			) : (() => {
-				// Filter products
-				const filteredProducts = productsList.filter((product) => {
-					// Filter by section (gifts vs products)
-					if (activeSection === "gifts" && !product.christmasGift) return false;
-					
-					const matchesSearch = !searchQuery || 
-						product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-						product.country?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-						product.region?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-						product.description?.toLowerCase().includes(searchQuery.toLowerCase());
-					
-					const matchesCategory = categoryFilter === "All" || product.category === categoryFilter;
-					
-					return matchesSearch && matchesCategory;
-				});
+			{activeSection !== "promotional" && (
+				loading ? (
+					<div className="text-center py-12 text-maroon/60">Loading products...</div>
+				) : (() => {
+					// Filter products
+					const normalize = (s?: string) =>
+						(s || "")
+							.toLowerCase()
+							.normalize("NFD")
+							.replace(/\p{Diacritic}/gu, "");
 
-				return filteredProducts.length === 0 ? (
-					<div className="text-center py-12 text-maroon/60">
-						{productsList.length === 0 
-							? "No products found. Add your first product!"
-							: "No products match your search/filter criteria."}
-					</div>
-				) : (
-					<>
-						<div className="mb-4 text-sm text-maroon/60">
-							Showing {filteredProducts.length} of {productsList.length} products
+					const filteredProducts = productsList.filter((product) => {
+						// Filter by section (gifts vs products)
+						if (activeSection === "gifts" && !product.christmasGift) return false;
+						
+						const q = normalize(searchQuery);
+						const matchesSearch = !q ||
+							normalize(product.name).includes(q) ||
+							normalize(product.slug).includes(q) ||
+							normalize(product.country).includes(q) ||
+							normalize(product.region).includes(q) ||
+							normalize(product.description).includes(q) ||
+							normalize(product.producer).includes(q) ||
+							normalize(product.tasteProfile).includes(q) ||
+							normalize(product.foodPairing).includes(q) ||
+							normalize((product.grapes || []).join(", ")).includes(q);
+						
+						const matchesCategory = categoryFilter === "All" || product.category === categoryFilter;
+						
+						return matchesSearch && matchesCategory;
+					});
+
+					return filteredProducts.length === 0 ? (
+						<div className="text-center py-12 text-maroon/60">
+							{productsList.length === 0 
+								? "No products found. Add your first product!"
+								: "No products match your search/filter criteria."}
 						</div>
-						<div className="overflow-x-auto">
-							<table className="w-full border-collapse border border-maroon/20">
-							<thead>
-								<tr className="bg-soft-gray">
-									<th className="border border-maroon/20 p-3 text-center text-sm font-semibold text-maroon">
+					) : (
+						<>
+							<div className="mb-4 text-sm text-maroon/60">
+								Showing {filteredProducts.length} of {productsList.length} products
+							</div>
+							<div className="overflow-x-auto">
+								<table className="w-full border-collapse border border-maroon/20">
+								<thead>
+									<tr className="bg-soft-gray">
+										<th className="border border-maroon/20 p-3 text-center text-sm font-semibold text-maroon">
+											<input
+												type="checkbox"
+												checked={filteredProducts.length > 0 && filteredProducts.every((p) => selectedProducts.has(p.slug))}
+												onChange={(e) => {
+													if (e.target.checked) {
+														setSelectedProducts(new Set(filteredProducts.map((p) => p.slug)));
+													} else {
+														setSelectedProducts(new Set());
+													}
+												}}
+												className="rounded border-maroon/20"
+											/>
+										</th>
+										<th className="border border-maroon/20 p-3 text-left text-sm font-semibold text-maroon">Name</th>
+										<th className="border border-maroon/20 p-3 text-left text-sm font-semibold text-maroon">Category</th>
+										<th className="border border-maroon/20 p-3 text-left text-sm font-semibold text-maroon">Price</th>
+								<th className="border border-maroon/20 p-3 text-center text-sm font-semibold text-maroon">Featured</th>
+								<th className="border border-maroon/20 p-3 text-center text-sm font-semibold text-maroon">New</th>
+								<th className="border border-maroon/20 p-3 text-center text-sm font-semibold text-maroon">On Sale</th>
+								<th className="border border-maroon/20 p-3 text-center text-sm font-semibold text-maroon">Xmas Gift</th>
+								<th className="border border-maroon/20 p-3 text-center text-sm font-semibold text-maroon">Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									{filteredProducts.map((product) => (
+								<tr key={product.slug} className="hover:bg-soft-gray/50">
+									<td className="border border-maroon/20 p-3 text-center">
 										<input
 											type="checkbox"
-											checked={filteredProducts.length > 0 && filteredProducts.every((p) => selectedProducts.has(p.slug))}
+											checked={selectedProducts.has(product.slug)}
 											onChange={(e) => {
+												const newSelected = new Set(selectedProducts);
 												if (e.target.checked) {
-													setSelectedProducts(new Set(filteredProducts.map((p) => p.slug)));
+													newSelected.add(product.slug);
 												} else {
-													setSelectedProducts(new Set());
+													newSelected.delete(product.slug);
 												}
+												setSelectedProducts(newSelected);
 											}}
 											className="rounded border-maroon/20"
 										/>
-									</th>
-									<th className="border border-maroon/20 p-3 text-left text-sm font-semibold text-maroon">Name</th>
-									<th className="border border-maroon/20 p-3 text-left text-sm font-semibold text-maroon">Category</th>
-									<th className="border border-maroon/20 p-3 text-left text-sm font-semibold text-maroon">Price</th>
-							<th className="border border-maroon/20 p-3 text-center text-sm font-semibold text-maroon">Featured</th>
-							<th className="border border-maroon/20 p-3 text-center text-sm font-semibold text-maroon">New</th>
-							<th className="border border-maroon/20 p-3 text-center text-sm font-semibold text-maroon">On Sale</th>
-							<th className="border border-maroon/20 p-3 text-center text-sm font-semibold text-maroon">Xmas Gift</th>
-							<th className="border border-maroon/20 p-3 text-center text-sm font-semibold text-maroon">Actions</th>
+									</td>
+									<td className="border border-maroon/20 p-3 text-sm text-maroon">{product.name}</td>
+									<td className="border border-maroon/20 p-3 text-sm text-maroon/70">{product.category}</td>
+									<td className="border border-maroon/20 p-3 text-sm text-maroon">
+										{product.onSale && product.salePrice ? (
+											<span>
+												<span className="line-through text-maroon/50">€{product.price.toFixed(2)}</span>{" "}
+												<span className="text-red-600 font-semibold">€{product.salePrice.toFixed(2)}</span>
+											</span>
+										) : (
+											`€${product.price.toFixed(2)}`
+										)}
+									</td>
+									<td className="border border-maroon/20 p-3 text-center">
+										<button
+											onClick={() => toggleFeatured(product.slug)}
+											className={`p-1 rounded transition-colors ${
+												product.featured ? "text-gold" : "text-maroon/30"
+											}`}
+										>
+											<Star size={18} fill={product.featured ? "currentColor" : "none"} />
+										</button>
+									</td>
+									<td className="border border-maroon/20 p-3 text-center">
+										<button
+											onClick={() => toggleNew(product.slug)}
+											className={`p-1 rounded transition-colors ${
+												product.new ? "text-gold" : "text-maroon/30"
+											}`}
+										>
+											<Sparkles size={18} fill={product.new ? "currentColor" : "none"} />
+										</button>
+									</td>
+									<td className="border border-maroon/20 p-3 text-center">
+										<button
+											onClick={() => toggleSale(product.slug)}
+											className={`p-1 rounded transition-colors ${
+												product.onSale ? "text-red-600" : "text-maroon/30"
+											}`}
+										>
+											<Tag size={18} fill={product.onSale ? "currentColor" : "none"} />
+										</button>
+									</td>
+									<td className="border border-maroon/20 p-3 text-center">
+										<button
+											onClick={() => toggleChristmasGift(product.slug)}
+											className={`p-1 rounded transition-colors ${
+												product.christmasGift ? "text-red-500" : "text-maroon/30"
+											}`}
+										>
+											<Gift size={18} fill={product.christmasGift ? "currentColor" : "none"} />
+										</button>
+									</td>
+									<td className="border border-maroon/20 p-3">
+										<div className="flex items-center justify-center gap-2">
+											<button
+												onClick={() => {
+													setEditingProduct(product);
+													setShowAddForm(true);
+												}}
+												className="p-1 text-maroon/70 hover:text-maroon transition-colors"
+												title="Edit"
+											>
+												<Edit size={16} />
+											</button>
+											<button
+												onClick={() => deleteProduct(product.slug)}
+												className="p-1 text-red-600 hover:text-red-700 transition-colors"
+												title="Delete"
+											>
+												<Trash2 size={16} />
+											</button>
+										</div>
+									</td>
 								</tr>
-							</thead>
-							<tbody>
-								{filteredProducts.map((product) => (
-							<tr key={product.slug} className="hover:bg-soft-gray/50">
-								<td className="border border-maroon/20 p-3 text-center">
-									<input
-										type="checkbox"
-										checked={selectedProducts.has(product.slug)}
-										onChange={(e) => {
-											const newSelected = new Set(selectedProducts);
-											if (e.target.checked) {
-												newSelected.add(product.slug);
-											} else {
-												newSelected.delete(product.slug);
-											}
-											setSelectedProducts(newSelected);
-										}}
-										className="rounded border-maroon/20"
-									/>
-								</td>
-								<td className="border border-maroon/20 p-3 text-sm text-maroon">{product.name}</td>
-								<td className="border border-maroon/20 p-3 text-sm text-maroon/70">{product.category}</td>
-								<td className="border border-maroon/20 p-3 text-sm text-maroon">
-									{product.onSale && product.salePrice ? (
-										<span>
-											<span className="line-through text-maroon/50">€{product.price.toFixed(2)}</span>{" "}
-											<span className="text-red-600 font-semibold">€{product.salePrice.toFixed(2)}</span>
-										</span>
-									) : (
-										`€${product.price.toFixed(2)}`
-									)}
-								</td>
-								<td className="border border-maroon/20 p-3 text-center">
-									<button
-										onClick={() => toggleFeatured(product.slug)}
-										className={`p-1 rounded transition-colors ${
-											product.featured ? "text-gold" : "text-maroon/30"
-										}`}
-									>
-										<Star size={18} fill={product.featured ? "currentColor" : "none"} />
-									</button>
-								</td>
-								<td className="border border-maroon/20 p-3 text-center">
-									<button
-										onClick={() => toggleNew(product.slug)}
-										className={`p-1 rounded transition-colors ${
-											product.new ? "text-gold" : "text-maroon/30"
-										}`}
-									>
-										<Sparkles size={18} fill={product.new ? "currentColor" : "none"} />
-									</button>
-								</td>
-								<td className="border border-maroon/20 p-3 text-center">
-									<button
-										onClick={() => toggleSale(product.slug)}
-										className={`p-1 rounded transition-colors ${
-											product.onSale ? "text-red-600" : "text-maroon/30"
-										}`}
-									>
-										<Tag size={18} fill={product.onSale ? "currentColor" : "none"} />
-									</button>
-								</td>
-								<td className="border border-maroon/20 p-3 text-center">
-									<button
-										onClick={() => toggleChristmasGift(product.slug)}
-										className={`p-1 rounded transition-colors ${
-											product.christmasGift ? "text-red-500" : "text-maroon/30"
-										}`}
-									>
-										<Gift size={18} fill={product.christmasGift ? "currentColor" : "none"} />
-									</button>
-								</td>
-								<td className="border border-maroon/20 p-3">
-									<div className="flex items-center justify-center gap-2">
-										<button
-											onClick={() => {
-												setEditingProduct(product);
-												setShowAddForm(true);
-											}}
-											className="p-1 text-maroon/70 hover:text-maroon transition-colors"
-											title="Edit"
-										>
-											<Edit size={16} />
-										</button>
-										<button
-											onClick={() => deleteProduct(product.slug)}
-											className="p-1 text-red-600 hover:text-red-700 transition-colors"
-											title="Delete"
-										>
-											<Trash2 size={16} />
-										</button>
-									</div>
-								</td>
-							</tr>
-								))}
-							</tbody>
-						</table>
-					</div>
-					</>
-				);
-			})()}
+									))}
+								</tbody>
+							</table>
+						</div>
+						</>
+					);
+				})()
+			)}
 
 			{/* Add/Edit Form Modal */}
 			{(showAddForm || editingProduct) && (
@@ -723,6 +1052,9 @@ function ProductForm({
 				beerStyle: product.beerStyle,
 				abv: product.abv,
 				volumeMl: product.volumeMl,
+				// Note: we keep grapes as a comma-separated string in form state
+				// and convert to string[] only right before saving.
+				grapes: product.grapes ? (product.grapes.join(", ") as any) : undefined,
 				featured: product.featured || false,
 				new: product.new || false,
 				onSale: product.onSale || false,
@@ -752,6 +1084,7 @@ function ProductForm({
 				image: "",
 				country: "",
 				region: "",
+				grapes: undefined,
 				featured: false,
 				new: false,
 				onSale: false,
@@ -813,7 +1146,18 @@ function ProductForm({
 			alert("Please upload an image or provide an image URL");
 			return;
 		}
-		onSave(formData as Product);
+		const asProduct = formData as Product & { grapes?: string };
+		const prepared: Product = {
+			...asProduct,
+			grapes: asProduct.grapes
+				? asProduct.grapes
+						.split(",")
+						.map((g: string) => g.trim())
+						.filter(Boolean)
+				: undefined,
+		};
+
+		onSave(prepared);
 	};
 
 	return (
@@ -844,10 +1188,23 @@ function ProductForm({
 							/>
 						</div>
 						<div>
-							<label className="block text-sm font-medium text-maroon mb-1">Slug *</label>
+							<label className="block text-sm font-medium text-maroon mb-1">
+								URL Name *{" "}
+								<span className="text-xs text-maroon/60">(used in the link, e.g. /product/url-name)</span>
+							</label>
 							<input
 								type="text"
 								value={formData.slug || ""}
+								onFocus={() => {
+									// Auto-generate from Name the first time user clicks into the field,
+									// but only if it's currently empty.
+									if (!formData.slug && formData.name) {
+										setFormData({
+											...formData,
+											slug: formData.name.toLowerCase().replace(/\s+/g, "-"),
+										});
+									}
+								}}
 								onChange={(e) =>
 									setFormData({
 										...formData,
@@ -904,19 +1261,165 @@ function ProductForm({
 						)}
 					</div>
 
+					{/* Category-specific type fields (optional but recommended for filters) */}
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+						{formData.category === "Wine" && (
+							<div>
+								<label className="block text-sm font-medium text-maroon mb-1">
+									Wine type
+									<span className="block text-[11px] text-maroon/60">
+										Used for filters (Red, White, Rosé, Sparkling, Prosecco)
+									</span>
+								</label>
+								<select
+									value={formData.wineType || ""}
+									onChange={(e) =>
+										setFormData({
+											...formData,
+											wineType: (e.target.value || undefined) as Product["wineType"],
+										})
+									}
+									className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
+								>
+									<option value="">Not set</option>
+									<option value="Red">Red</option>
+									<option value="White">White</option>
+									<option value="Rosé">Rosé</option>
+									<option value="Sparkling">Sparkling</option>
+								<option value="Prosecco">Prosecco</option>
+								</select>
+							</div>
+						)}
+
+						{formData.category === "Spirit" && (
+							<div>
+								<label className="block text-sm font-medium text-maroon mb-1">
+									Spirit type
+									<span className="block text-[11px] text-maroon/60">
+										Used for filters (Whiskey, Gin, etc.)
+									</span>
+								</label>
+								<select
+									value={formData.spiritType || ""}
+									onChange={(e) =>
+										setFormData({
+											...formData,
+											spiritType: (e.target.value || undefined) as Product["spiritType"],
+										})
+									}
+									className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
+								>
+									<option value="">Not set</option>
+									<option value="Whiskey">Whiskey</option>
+									<option value="Gin">Gin</option>
+									<option value="Vodka">Vodka</option>
+									<option value="Rum">Rum</option>
+									<option value="Tequila">Tequila</option>
+									<option value="Liqueur">Liqueur</option>
+								</select>
+							</div>
+						)}
+
+						{formData.category === "Beer" && (
+							<div>
+								<label className="block text-sm font-medium text-maroon mb-1">
+									Beer style
+									<span className="block text-[11px] text-maroon/60">
+										Used for filters (Lager, IPA, Stout, etc.)
+									</span>
+								</label>
+								<select
+									value={formData.beerStyle || ""}
+									onChange={(e) =>
+										setFormData({
+											...formData,
+											beerStyle: (e.target.value || undefined) as Product["beerStyle"],
+										})
+									}
+									className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
+								>
+									<option value="">Not set</option>
+									<option value="Lager">Lager</option>
+									<option value="IPA">IPA</option>
+									<option value="Pale Ale">Pale Ale</option>
+									<option value="Stout">Stout</option>
+									<option value="Porter">Porter</option>
+									<option value="Pilsner">Pilsner</option>
+									<option value="Sour">Sour</option>
+								</select>
+							</div>
+						)}
+					</div>
+
 					<div>
 						<label className="block text-sm font-medium text-maroon mb-1">Description</label>
 						<textarea
 							value={formData.description || ""}
 							onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-							rows={3}
+							rows={4}
 							className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
 						/>
 					</div>
 
+					{/* Producer / Tasting Info (optional) */}
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+						<div className="md:col-span-1">
+							<label className="block text-sm font-medium text-maroon mb-1">
+								Producer / Distillery
+								<span className="block text-[11px] text-maroon/60">
+									Winery, brewery or distillery name (optional)
+								</span>
+							</label>
+							<input
+								type="text"
+								value={formData.producer || ""}
+								onChange={(e) => setFormData({ ...formData, producer: e.target.value })}
+								className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
+								placeholder="e.g. Castello di Albola"
+							/>
+						</div>
+						<div className="md:col-span-1">
+							<label className="block text-sm font-medium text-maroon mb-1">
+								Taste profile
+								<span className="block text-[11px] text-maroon/60">
+									Short tasting notes (optional)
+								</span>
+							</label>
+							<textarea
+								value={formData.tasteProfile || ""}
+								onChange={(e) => setFormData({ ...formData, tasteProfile: e.target.value })}
+								rows={3}
+								className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
+								placeholder="Red cherry, dried rose, spice..."
+							/>
+						</div>
+						<div className="md:col-span-1">
+							<label className="block text-sm font-medium text-maroon mb-1">
+								Food pairing
+								<span className="block text-[11px] text-maroon/60">
+									Ideal dishes to serve with (optional)
+								</span>
+							</label>
+							<textarea
+								value={formData.foodPairing || ""}
+								onChange={(e) => setFormData({ ...formData, foodPairing: e.target.value })}
+								rows={3}
+								className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
+								placeholder="Braised beef, truffle risotto..."
+							/>
+						</div>
+					</div>
+
 					<div className="grid grid-cols-2 gap-4">
 						<div>
-							<label className="block text-sm font-medium text-maroon mb-1">Country</label>
+							<label className="block text-sm font-medium text-maroon mb-1">
+								Country
+								{formData.category === "Spirit" && formData.spiritType === "Whiskey" && (
+									<span className="block text-[11px] text-maroon/60">
+										For whiskey filters, use exactly: Ireland, Scotland, USA, or Japan.
+									</span>
+								)}
+							</label>
 							<SearchableSelect
 								value={formData.country || ""}
 								onChange={(value) => setFormData({ ...formData, country: value })}
@@ -947,8 +1450,8 @@ function ProductForm({
 						</div>
 					</div>
 
-					{/* ABV and Volume */}
-					<div className="grid grid-cols-2 gap-4">
+					{/* ABV, Volume & Grapes */}
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 						<div>
 							<label className="block text-sm font-medium text-maroon mb-1">ABV (%)</label>
 							<input
@@ -965,11 +1468,38 @@ function ProductForm({
 						<div>
 							<label className="block text-sm font-medium text-maroon mb-1">Volume (ml)</label>
 							<input
-								type="number"
-								min="0"
-								value={formData.volumeMl || ""}
-								onChange={(e) => setFormData({ ...formData, volumeMl: e.target.value ? parseInt(e.target.value) : undefined })}
+								type="text"
+								inputMode="numeric"
+								pattern="\d*"
+								value={formData.volumeMl ?? ""}
+								onChange={(e) => {
+									const raw = e.target.value.replace(/[^\d]/g, "");
+									setFormData({
+										...formData,
+										volumeMl: raw ? parseInt(raw, 10) : undefined,
+									});
+								}}
 								placeholder="e.g., 750"
+								className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
+							/>
+						</div>
+						<div>
+							<label className="block text-sm font-medium text-maroon mb-1">
+								Grapes
+								<span className="block text-[11px] text-maroon/60">
+									Comma-separated, e.g. Nebbiolo, Corvina, Rondinella
+								</span>
+							</label>
+							<input
+								type="text"
+								value={(formData.grapes as unknown as string) || ""}
+								onChange={(e) =>
+									setFormData({
+										...formData,
+										grapes: e.target.value as unknown as string[],
+									})
+								}
+								placeholder="e.g., Cabernet Sauvignon, Merlot"
 								className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
 							/>
 						</div>
@@ -1083,6 +1613,443 @@ function ProductForm({
 							className="flex-1 rounded-md bg-gold px-4 py-2 text-sm font-semibold text-maroon hover:brightness-95 transition-colors"
 						>
 							{product ? "Update Product" : "Add Product"}
+						</button>
+						<button
+							type="button"
+							onClick={onClose}
+							className="flex-1 rounded-md border border-maroon/20 bg-white px-4 py-2 text-sm text-maroon hover:bg-soft-gray transition-colors"
+						>
+							Cancel
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	);
+}
+
+function PromotionalMediaForm({
+	media,
+	onClose,
+	onSave,
+}: {
+	media: any | null;
+	onClose: () => void;
+	onSave: (media: any) => void;
+}) {
+	const [formData, setFormData] = useState({
+		type: media?.type || "image",
+		url: media?.url || "",
+		thumbnail: media?.thumbnail || "",
+		title: media?.title || "",
+		description: media?.description || "",
+		order: media?.order ?? 0,
+		active: media?.active !== false,
+	});
+	const [imagePreview, setImagePreview] = useState<string>(media?.url || "");
+	const [thumbnailPreview, setThumbnailPreview] = useState<string>(media?.thumbnail || "");
+	const [videoPreview, setVideoPreview] = useState<string>(media?.type === "video" ? media?.url || "" : "");
+	const [uploading, setUploading] = useState(false);
+
+	const handleImageUpload = async (file: File, isThumbnail: boolean = false) => {
+		setUploading(true);
+		try {
+			// Convert to base64 for now (can be upgraded to Supabase Storage later)
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				const base64String = reader.result as string;
+				if (isThumbnail) {
+					setThumbnailPreview(base64String);
+					setFormData({ ...formData, thumbnail: base64String });
+				} else {
+					setImagePreview(base64String);
+					setFormData({ ...formData, url: base64String });
+				}
+				setUploading(false);
+			};
+			reader.onerror = () => {
+				alert("Failed to read image file");
+				setUploading(false);
+			};
+			reader.readAsDataURL(file);
+		} catch (error) {
+			console.error("Error uploading image:", error);
+			alert("Failed to upload image");
+			setUploading(false);
+		}
+	};
+
+	const handleVideoUpload = async (file: File) => {
+		setUploading(true);
+		try {
+			// Convert to base64 for now (can be upgraded to Supabase Storage later)
+			// Note: Large videos will create very large base64 strings. Consider using Supabase Storage for production.
+			if (file.size > 20 * 1024 * 1024) {
+				alert("Video file is too large for base64 upload (max 20MB). Please use a URL or upload to a storage service.");
+				setUploading(false);
+				return;
+			}
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				const base64String = reader.result as string;
+				setVideoPreview(base64String);
+				setFormData({ ...formData, url: base64String });
+				setUploading(false);
+			};
+			reader.onerror = () => {
+				alert("Failed to read video file");
+				setUploading(false);
+			};
+			reader.readAsDataURL(file);
+		} catch (error) {
+			console.error("Error uploading video:", error);
+			alert("Failed to upload video");
+			setUploading(false);
+		}
+	};
+
+	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, isThumbnail: boolean = false) => {
+		const file = e.target.files?.[0];
+		if (file) {
+			// Validate file type
+			if (!file.type.startsWith("image/") && !file.type.startsWith("video/")) {
+				alert("Please select an image or video file");
+				return;
+			}
+			// Validate file size (max 10MB for images, 50MB for videos)
+			const maxSize = file.type.startsWith("video/") ? 50 * 1024 * 1024 : 10 * 1024 * 1024;
+			if (file.size > maxSize) {
+				alert(`File size must be less than ${maxSize / (1024 * 1024)}MB`);
+				return;
+			}
+			if (file.type.startsWith("image/")) {
+				handleImageUpload(file, isThumbnail);
+			} else if (file.type.startsWith("video/") && !isThumbnail) {
+				handleVideoUpload(file);
+			}
+		}
+	};
+
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+		
+		// Validation based on type
+		if (formData.type === "image") {
+			if (!formData.url) {
+				alert("Please upload an image or provide an image URL");
+				return;
+			}
+			// Check if it's a valid image URL or base64 image
+			const isImageUrl = formData.url.startsWith("data:image/") || 
+				/\.(jpg|jpeg|png|gif|webp|svg)(\?.*)?$/i.test(formData.url);
+			if (!isImageUrl && !formData.url.startsWith("data:")) {
+				alert("Please provide a valid image URL (jpg, png, gif, webp, svg) or upload an image");
+				return;
+			}
+		} else if (formData.type === "video") {
+			if (!formData.url) {
+				alert("Please upload a video or provide a video URL");
+				return;
+			}
+			// Check if it's a valid video URL or base64 video
+			const isVideoUrl = formData.url.startsWith("data:video/") ||
+				/\.(mp4|webm|mov|avi|mkv)(\?.*)?$/i.test(formData.url) ||
+				formData.url.includes("youtube.com") ||
+				formData.url.includes("youtu.be") ||
+				formData.url.includes("vimeo.com");
+			if (!isVideoUrl && !formData.url.startsWith("data:")) {
+				alert("Please provide a valid video URL (mp4, webm, mov, or YouTube/Vimeo link) or upload a video");
+				return;
+			}
+		}
+		
+		onSave(formData);
+	};
+
+	return (
+		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+			<div className="w-full max-w-2xl max-h-[90vh] bg-cream rounded-lg border border-maroon/20 flex flex-col">
+				<div className="flex items-center justify-between p-6 border-b border-maroon/20 flex-shrink-0">
+					<h2 className="text-xl font-semibold text-maroon">
+						{media ? "Edit Promotional Media" : "Add Promotional Media"}
+					</h2>
+					<button
+						onClick={onClose}
+						className="text-maroon/70 hover:text-maroon transition-colors text-2xl leading-none"
+					>
+						×
+					</button>
+				</div>
+
+				<form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-4">
+					<div>
+						<label className="block text-sm font-medium text-maroon mb-1">Type *</label>
+						<select
+							value={formData.type}
+							onChange={(e) => {
+								const newType = e.target.value as "video" | "image";
+								// Reset URL and previews when switching types
+								if (newType !== formData.type) {
+									setFormData({ ...formData, type: newType, url: "", thumbnail: "" });
+									setImagePreview("");
+									setThumbnailPreview("");
+									setVideoPreview("");
+								}
+							}}
+							className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
+							required
+						>
+							<option value="image">Image</option>
+							<option value="video">Video</option>
+						</select>
+					</div>
+
+					<div>
+						<label className="block text-sm font-medium text-maroon mb-1">
+							{formData.type === "image" ? "Image" : "Video"} {formData.type === "image" ? "Upload or URL" : "URL"} *
+						</label>
+						
+						{formData.type === "image" ? (
+							<>
+								{/* Image Preview */}
+								{imagePreview && (
+									<div className="mb-3 relative inline-block">
+										<img
+											src={imagePreview}
+											alt="Preview"
+											className="w-32 h-32 object-cover rounded-md border border-maroon/20"
+										/>
+										<button
+											type="button"
+											onClick={() => {
+												setImagePreview("");
+												setFormData({ ...formData, url: "" });
+											}}
+											className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+										>
+											<X size={16} />
+										</button>
+									</div>
+								)}
+
+								{/* File Upload */}
+								<div className="mb-3">
+									<label className="flex items-center gap-2 cursor-pointer w-fit px-4 py-2 rounded-md border border-maroon/20 bg-white text-sm text-maroon hover:bg-soft-gray transition-colors">
+										<Upload size={16} />
+										{uploading ? "Uploading..." : imagePreview ? "Change Image" : "Upload Image"}
+										<input
+											type="file"
+											accept="image/*"
+											onChange={(e) => handleFileChange(e, false)}
+											className="hidden"
+											disabled={uploading}
+										/>
+									</label>
+								</div>
+
+								{/* Or use URL */}
+								<div className="text-xs text-maroon/60 mb-2">OR paste image URL</div>
+								
+								<input
+									type="url"
+									value={formData.url && !formData.url.startsWith("data:") ? formData.url : ""}
+									onChange={(e) => {
+										const url = e.target.value;
+										if (url) {
+											setFormData({ ...formData, url: url });
+											setImagePreview(url);
+										} else {
+											setFormData({ ...formData, url: "" });
+											if (!imagePreview || imagePreview.startsWith("data:")) {
+												setImagePreview("");
+											}
+										}
+									}}
+									placeholder="https://example.com/image.jpg"
+									className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
+								/>
+								{!imagePreview && !formData.url && (
+									<p className="text-xs text-red-600 mt-1">Please upload an image or provide an image URL</p>
+								)}
+							</>
+						) : (
+							<>
+								{/* Video Preview */}
+								{videoPreview && (
+									<div className="mb-3 relative inline-block">
+										<video
+											src={videoPreview}
+											className="w-64 h-36 object-cover rounded-md border border-maroon/20"
+											controls
+										/>
+										<button
+											type="button"
+											onClick={() => {
+												setVideoPreview("");
+												setFormData({ ...formData, url: "" });
+											}}
+											className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+										>
+											<X size={16} />
+										</button>
+									</div>
+								)}
+
+								{/* Video File Upload */}
+								<div className="mb-3">
+									<label className="flex items-center gap-2 cursor-pointer w-fit px-4 py-2 rounded-md border border-maroon/20 bg-white text-sm text-maroon hover:bg-soft-gray transition-colors">
+										<Upload size={16} />
+										{uploading ? "Uploading..." : videoPreview ? "Change Video" : "Upload Video"}
+										<input
+											type="file"
+											accept="video/*"
+											onChange={(e) => handleFileChange(e, false)}
+											className="hidden"
+											disabled={uploading}
+										/>
+									</label>
+									<p className="text-xs text-maroon/60 mt-1">Max 20MB for direct upload (larger files: use URL)</p>
+								</div>
+
+								{/* Or use URL */}
+								<div className="text-xs text-maroon/60 mb-2">OR paste video URL</div>
+								<input
+									type="url"
+									value={formData.url && !formData.url.startsWith("data:") ? formData.url : ""}
+									onChange={(e) => {
+										const url = e.target.value;
+										if (url) {
+											setFormData({ ...formData, url: url });
+											setVideoPreview(url);
+										} else {
+											setFormData({ ...formData, url: "" });
+											if (!videoPreview || videoPreview.startsWith("data:")) {
+												setVideoPreview("");
+											}
+										}
+									}}
+									placeholder="https://example.com/video.mp4 or YouTube/Vimeo link"
+									className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
+								/>
+								{!videoPreview && !formData.url && (
+									<p className="text-xs text-red-600 mt-1">Please upload a video or provide a video URL (mp4, webm, mov, or YouTube/Vimeo)</p>
+								)}
+								<p className="text-xs text-maroon/60 mt-1">
+									Supported formats: MP4, WebM, MOV, or YouTube/Vimeo links
+								</p>
+							</>
+						)}
+					</div>
+
+					{formData.type === "video" && (
+						<div>
+							<label className="block text-sm font-medium text-maroon mb-1">Thumbnail Upload or URL (optional)</label>
+							
+							{/* Thumbnail Preview */}
+							{thumbnailPreview && (
+								<div className="mb-3 relative inline-block">
+									<img
+										src={thumbnailPreview}
+										alt="Thumbnail preview"
+										className="w-32 h-32 object-cover rounded-md border border-maroon/20"
+									/>
+									<button
+										type="button"
+										onClick={() => {
+											setThumbnailPreview("");
+											setFormData({ ...formData, thumbnail: "" });
+										}}
+										className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+									>
+										<X size={16} />
+									</button>
+								</div>
+							)}
+
+							{/* File Upload */}
+							<div className="mb-3">
+								<label className="flex items-center gap-2 cursor-pointer w-fit px-4 py-2 rounded-md border border-maroon/20 bg-white text-sm text-maroon hover:bg-soft-gray transition-colors">
+									<Upload size={16} />
+									{uploading ? "Uploading..." : thumbnailPreview ? "Change Thumbnail" : "Upload Thumbnail"}
+									<input
+										type="file"
+										accept="image/*"
+										onChange={(e) => handleFileChange(e, true)}
+										className="hidden"
+										disabled={uploading}
+									/>
+								</label>
+							</div>
+
+							{/* Or use URL */}
+							<div className="text-xs text-maroon/60 mb-2">OR</div>
+							<input
+								type="url"
+								value={formData.thumbnail && !formData.thumbnail.startsWith("data:") ? formData.thumbnail : ""}
+								onChange={(e) => {
+									const url = e.target.value;
+									if (url) {
+										setFormData({ ...formData, thumbnail: url });
+										setThumbnailPreview(url);
+									}
+								}}
+								placeholder="Or paste thumbnail URL here"
+								className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
+							/>
+						</div>
+					)}
+
+					<div>
+						<label className="block text-sm font-medium text-maroon mb-1">Title (optional)</label>
+						<input
+							type="text"
+							value={formData.title}
+							onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+							placeholder="Store Interior"
+							className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
+						/>
+					</div>
+
+					<div>
+						<label className="block text-sm font-medium text-maroon mb-1">Description (optional)</label>
+						<textarea
+							value={formData.description}
+							onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+							rows={3}
+							placeholder="A brief description of the media"
+							className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
+						/>
+					</div>
+
+					<div>
+						<label className="block text-sm font-medium text-maroon mb-1">Display Order</label>
+						<input
+							type="number"
+							value={formData.order}
+							onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
+							className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
+						/>
+						<p className="text-xs text-maroon/60 mt-1">Lower numbers appear first</p>
+					</div>
+
+					<div>
+						<label className="flex items-center gap-2 cursor-pointer">
+							<input
+								type="checkbox"
+								checked={formData.active}
+								onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
+								className="rounded border-maroon/20"
+							/>
+							<span className="text-sm text-maroon">Active (visible on home page)</span>
+						</label>
+					</div>
+
+					<div className="flex gap-4 pt-4 border-t border-maroon/20 flex-shrink-0">
+						<button
+							type="submit"
+							className="flex-1 rounded-md bg-gold px-4 py-2 text-sm font-semibold text-maroon hover:brightness-95 transition-colors"
+						>
+							{media ? "Update Media" : "Add Media"}
 						</button>
 						<button
 							type="button"

@@ -1,6 +1,6 @@
 export type ProductCategory = "Wine" | "Beer" | "Spirit";
 
-export type WineType = "Red" | "White" | "Rosé" | "Sparkling";
+export type WineType = "Red" | "White" | "Rosé" | "Sparkling" | "Prosecco";
 export type SpiritType = "Gin" | "Vodka" | "Rum" | "Tequila" | "Liqueur" | "Whiskey";
 export type BeerStyle = "Lager" | "IPA" | "Pale Ale" | "Stout" | "Porter" | "Pilsner" | "Sour";
 
@@ -13,6 +13,12 @@ export interface Product {
 	image: string;
 	country: string;
 	region?: string;
+	// Producer / tasting info (optional)
+	producer?: string;
+	tasteProfile?: string;
+	foodPairing?: string;
+	// Grapes (for wines, may be blends)
+	grapes?: string[];
 	// Specific attributes per category (optional)
 	wineType?: WineType;
 	spiritType?: SpiritType;

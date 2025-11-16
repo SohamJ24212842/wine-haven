@@ -26,10 +26,10 @@ export function PromoBanner() {
 			<div className="container mx-auto flex items-center justify-center gap-3 relative z-10">
 				<Sparkles className="w-4 h-4 text-gold flex-shrink-0" />
 				<Link
-					href="/shop?christmasGift=true"
+					href="/shop"
 					className="text-sm md:text-base font-semibold text-center hover:underline transition-all"
 				>
-					✨ Christmas Offers Now Live — Browse Gift Sets →
+					✨ 10% off all Wines & Spirits — Shop the full selection →
 				</Link>
 				<button
 					onClick={() => setIsVisible(false)}

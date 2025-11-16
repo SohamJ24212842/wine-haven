@@ -19,7 +19,7 @@ export async function GET() {
     const beerCount = products.filter(p => p.category === 'Beer').length;
     const giftCount = products.filter(p => p.christmasGift).length;
     const onSaleCount = products.filter(p => p.onSale).length;
-    const sparklingCount = products.filter(p => p.wineType === 'Sparkling').length;
+    const sparklingCount = products.filter(p => p.wineType === 'Sparkling' || p.wineType === 'Prosecco').length;
 
     return NextResponse.json({
       countries,

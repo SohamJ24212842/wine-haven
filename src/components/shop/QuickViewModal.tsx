@@ -3,7 +3,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Product } from "@/types/product";
 import { useCart } from "@/contexts/CartContext";
-import { X, ShoppingCart } from "lucide-react";
+import { X, ShoppingCart, Wine, UtensilsCrossed, Sparkles } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -66,7 +66,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
 								{/* Product Image */}
-								<div className="relative aspect-[4/5] overflow-hidden rounded-lg border border-maroon/10 bg-white">
+								<div className="relative aspect-[4/5] overflow-hidden rounded-lg border border-maroon/10 bg-white flex items-center justify-center">
 									{/* Badges */}
 									<div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
 										{product.onSale && discountPercentage && (
@@ -84,7 +84,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 										src={product.image}
 										alt={product.name}
 										fill
-										className="object-cover"
+										className="object-contain p-4"
 										sizes="(max-width: 768px) 100vw, 50vw"
 										priority
 									/>
@@ -126,9 +126,34 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 										<p className="text-sm text-maroon/70 mb-4">Volume: {product.volumeMl} ml</p>
 									)}
 
-									{/* Description */}
-									{product.description && (
-										<p className="text-maroon/90 leading-relaxed mb-6">{product.description}</p>
+									{/* Basic profiles */}
+									{(product.producer || product.tasteProfile || product.foodPairing) && (
+										<div className="mb-6 space-y-1 text-sm text-maroon/90">
+											{product.producer && (
+												<p className="flex items-start gap-2">
+													<Sparkles className="w-4 h-4 text-gold mt-0.5 flex-shrink-0" />
+													<span>
+														<span className="font-semibold">Producer:</span> {product.producer}
+													</span>
+												</p>
+											)}
+											{product.tasteProfile && (
+												<p className="flex items-start gap-2 whitespace-pre-line">
+													<Wine className="w-4 h-4 text-gold mt-0.5 flex-shrink-0" />
+													<span>
+														<span className="font-semibold">Tastes:</span> {product.tasteProfile}
+													</span>
+												</p>
+											)}
+											{product.foodPairing && (
+												<p className="flex items-start gap-2 whitespace-pre-line">
+													<UtensilsCrossed className="w-4 h-4 text-gold mt-0.5 flex-shrink-0" />
+													<span>
+														<span className="font-semibold">Food pairing:</span> {product.foodPairing}
+													</span>
+												</p>
+											)}
+										</div>
 									)}
 
 									{/* Quantity Selector */}

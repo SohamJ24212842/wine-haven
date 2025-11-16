@@ -3,9 +3,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAllProducts, createProduct } from '@/lib/db/products';
 import { Product } from '@/types/product';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const products = await getAllProducts();
+    const searchParams = request.nextUrl.searchParams;
+    const search = searchParams.get('search') || undefined;
+    
+    const products = await getAllProducts(search);
     return NextResponse.json(products);
   } catch (error) {
     console.error('Error fetching products:', error);

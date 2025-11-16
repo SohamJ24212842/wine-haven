@@ -3,8 +3,12 @@
 import { createServerClient, createAdminClient } from '@/lib/supabase';
 import { Product } from '@/types/product';
 
-// Check if Supabase is configured
-const USE_SUPABASE = !!process.env.NEXT_PUBLIC_SUPABASE_URL;
+// Check if Supabase is configured AND explicitly enabled.
+// This lets us point local development at the JSON data only
+// while production (e.g. Vercel) can still use Supabase.
+const USE_SUPABASE =
+  process.env.NEXT_PUBLIC_USE_SUPABASE === 'true' &&
+  !!process.env.NEXT_PUBLIC_SUPABASE_URL;
 
 // Map database row to Product type (for Supabase)
 function mapRowToProduct(row: any): Product {
@@ -17,6 +21,14 @@ function mapRowToProduct(row: any): Product {
     image: row.image || '',
     country: row.country || '',
     region: row.region || undefined,
+    producer: row.producer || undefined,
+    tasteProfile: row.taste_profile || undefined,
+    foodPairing: row.food_pairing || undefined,
+    grapes: Array.isArray(row.grapes)
+      ? row.grapes
+      : (typeof row.grapes === 'string' && row.grapes.length
+          ? row.grapes.split(',').map((g: string) => g.trim()).filter(Boolean)
+          : undefined),
     wineType: row.wine_type || undefined,
     spiritType: row.spirit_type || undefined,
     beerStyle: row.beer_style || undefined,
@@ -42,6 +54,12 @@ function mapProductToRow(product: Product): any {
     image: product.image,
     country: product.country,
     region: product.region || null,
+    producer: product.producer || null,
+    taste_profile: product.tasteProfile || null,
+    food_pairing: product.foodPairing || null,
+    grapes: product.grapes && product.grapes.length
+      ? product.grapes
+      : null,
     wine_type: product.wineType || null,
     spirit_type: product.spiritType || null,
     beer_style: product.beerStyle || null,
@@ -57,16 +75,26 @@ function mapProductToRow(product: Product): any {
 }
 
 // Get all products
-export async function getAllProducts(): Promise<Product[]> {
+export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
   // Try Supabase if configured
   if (USE_SUPABASE) {
     const supabase = createServerClient();
     if (supabase) {
       try {
-        const { data, error } = await supabase
+        let query = supabase
           .from('products')
-          .select('*')
-          .order('created_at', { ascending: false });
+          .select('*');
+
+        // Add search filter if provided
+        if (searchQuery && searchQuery.trim()) {
+          const search = searchQuery.trim().toLowerCase();
+          // Include more fields for matching (producer, taste_profile, food_pairing)
+          query = query.or(
+            `name.ilike.%${search}%,description.ilike.%${search}%,country.ilike.%${search}%,region.ilike.%${search}%,producer.ilike.%${search}%,taste_profile.ilike.%${search}%,food_pairing.ilike.%${search}%`
+          );
+        }
+
+        const { data, error } = await query.order('created_at', { ascending: false });
 
         if (!error && data) {
           return data.map(mapRowToProduct);
@@ -79,6 +107,31 @@ export async function getAllProducts(): Promise<Product[]> {
 
   // Fallback to local data
   const { products } = await import('@/data/products');
+  
+  // Helper to normalize diacritics for forgiving search (e.g. Côtes -> cotes)
+  const normalize = (s?: string) =>
+    (s || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/\p{Diacritic}/gu, '');
+  
+  // Filter local data if search query provided
+  if (searchQuery && searchQuery.trim()) {
+    const search = normalize(searchQuery.trim());
+    return products.filter(p => {
+      const inName = normalize(p.name).includes(search);
+      const inSlug = normalize(p.slug).includes(search);
+      const inDesc = normalize(p.description).includes(search);
+      const inCountry = normalize(p.country).includes(search);
+      const inRegion = normalize(p.region).includes(search);
+      const inProducer = normalize(p.producer).includes(search);
+      const inTaste = normalize(p.tasteProfile).includes(search);
+      const inFood = normalize(p.foodPairing).includes(search);
+      const inGrapes = normalize((p.grapes || []).join(', ')).includes(search);
+      return inName || inSlug || inDesc || inCountry || inRegion || inProducer || inTaste || inFood || inGrapes;
+    });
+  }
+  
   return products;
 }
 

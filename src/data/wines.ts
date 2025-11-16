@@ -146,6 +146,18 @@ export const wines: Wine[] = [
 			"https://images.unsplash.com/photo-1521017432531-fbd92d1cf00b?auto=format&fit=crop&w=1200&q=60",
 	},
 	{
+		slug: "franciacorta-brut-nv",
+		name: "Franciacorta Brut NV",
+		type: "Sparkling",
+		country: "Italy",
+		region: "Franciacorta",
+		price: 29.95,
+		description:
+			"Traditional-method Italian sparkling with fine bubbles, citrus, brioche and a creamy finish.",
+		image:
+			"https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1200&q=60",
+	},
+	{
 		slug: "cremant-de-loire-brut",
 		name: "Crémant de Loire Brut",
 		type: "Sparkling",

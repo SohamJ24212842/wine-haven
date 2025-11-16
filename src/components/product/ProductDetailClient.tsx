@@ -7,7 +7,6 @@ import { AddToCartButton } from "@/components/shop/AddToCartButton";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Wine, UtensilsCrossed, Sparkles } from "lucide-react";
-import { CountryFlag } from "@/components/ui/CountryFlag";
 
 type ProductDetailClientProps = {
 	product: Product;
@@ -25,7 +24,7 @@ export function ProductDetailClient({ product, discountPercentage }: ProductDeta
 			<div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-2">
 				{/* Sticky Image Gallery */}
 				<div className="lg:sticky lg:top-24 lg:self-start">
-					<div className="relative aspect-[4/5] overflow-hidden rounded-lg border border-maroon/10 bg-white shadow-lg">
+					<div className="relative aspect-[4/5] overflow-hidden rounded-lg border border-maroon/10 bg-white shadow-lg flex items-center justify-center">
 						{/* Badges - Top Left */}
 						<div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
 							{product.onSale && discountPercentage && (
@@ -65,7 +64,7 @@ export function ProductDetailClient({ product, discountPercentage }: ProductDeta
 									src={images[selectedImage]}
 									alt={product.name}
 									fill
-									className="object-cover"
+									className="object-contain p-6"
 									sizes="(max-width: 768px) 100vw, 50vw"
 									priority
 								/>
@@ -101,11 +100,12 @@ export function ProductDetailClient({ product, discountPercentage }: ProductDeta
 				
 				{/* Product Info */}
 				<div>
-					<p className="text-sm text-maroon/70 flex items-center gap-1.5">
+					<p className="text-sm text-maroon/70">
 						{product.category}
 						{product.wineType ? ` • ${product.wineType}` : ""}
 						{product.spiritType ? ` • ${product.spiritType}` : ""}
-						{product.beerStyle ? ` • ${product.beerStyle}` : ""} • <CountryFlag country={product.country} className="text-lg" /> {product.country}
+						{product.beerStyle ? ` • ${product.beerStyle}` : ""}
+						{product.country ? ` • ${product.country}` : ""}
 						{product.region ? ` • ${product.region}` : ""}
 					</p>
 					<div className="mt-4 flex items-center gap-3">
@@ -135,23 +135,46 @@ export function ProductDetailClient({ product, discountPercentage }: ProductDeta
 						</p>
 					)}
 					
-					<p className="mt-6 text-maroon/90 leading-relaxed text-lg">{product.description}</p>
+					<p className="mt-6 text-maroon/90 leading-relaxed text-lg whitespace-pre-line">
+						{product.description}
+					</p>
 					
-					{/* Tasting Notes Icons (Visual Enhancement) */}
-					<div className="mt-8 flex flex-wrap gap-4 pt-6 border-t border-maroon/10">
-						<div className="flex items-center gap-2 text-maroon/70">
-							<Wine className="w-5 h-5 text-gold" />
-							<span className="text-sm">Tasting Notes</span>
+					{/* Producer / Tasting info */}
+					{(product.producer || product.tasteProfile || product.foodPairing) && (
+						<div className="mt-8 grid gap-6 pt-6 border-t border-maroon/10 sm:grid-cols-2 lg:grid-cols-3">
+							{product.producer && (
+								<div>
+									<div className="flex items-center gap-2 text-maroon/80 mb-1">
+										<Sparkles className="w-5 h-5 text-gold" />
+										<span className="text-sm font-semibold">Producer</span>
+									</div>
+									<p className="text-sm text-maroon/80">{product.producer}</p>
+								</div>
+							)}
+							{product.tasteProfile && (
+								<div>
+									<div className="flex items-center gap-2 text-maroon/80 mb-1">
+										<Wine className="w-5 h-5 text-gold" />
+										<span className="text-sm font-semibold">Tastes</span>
+									</div>
+									<p className="text-sm text-maroon/80 whitespace-pre-line">
+										{product.tasteProfile}
+									</p>
+								</div>
+							)}
+							{product.foodPairing && (
+								<div>
+									<div className="flex items-center gap-2 text-maroon/80 mb-1">
+										<UtensilsCrossed className="w-5 h-5 text-gold" />
+										<span className="text-sm font-semibold">Food pairing</span>
+									</div>
+									<p className="text-sm text-maroon/80 whitespace-pre-line">
+										{product.foodPairing}
+									</p>
+								</div>
+							)}
 						</div>
-						<div className="flex items-center gap-2 text-maroon/70">
-							<UtensilsCrossed className="w-5 h-5 text-gold" />
-							<span className="text-sm">Food Pairing</span>
-						</div>
-						<div className="flex items-center gap-2 text-maroon/70">
-							<Sparkles className="w-5 h-5 text-gold" />
-							<span className="text-sm">Aroma Profile</span>
-						</div>
-					</div>
+					)}
 					
 					<div className="mt-8">
 						<AddToCartButton product={product} variant="large" />

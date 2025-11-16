@@ -694,7 +694,6 @@ export function Navbar() {
 					{/* Simple Links */}
 					<Link className="px-4 py-2 hover:text-gold transition-colors" href="/about">About</Link>
 					<Link className="px-4 py-2 hover:text-gold transition-colors" href="/visit-us">Visit Us</Link>
-					<Link className="px-4 py-2 hover:text-gold transition-colors" href="/contact">Contact</Link>
 					<CartTray />
 				</nav>
 				<div className="lg:hidden flex items-center gap-2">

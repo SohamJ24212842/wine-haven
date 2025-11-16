@@ -4,6 +4,7 @@ import { SectionHeading } from "@/components/typography/SectionHeading";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { useMemo, useState, useEffect, Suspense } from "react";
 import { ProductCategory, BeerStyle, SpiritType, WineType, Product } from "@/types/product";
+import React from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Wine, Beer, Sparkles, MapPin, Filter, X, Tag } from "lucide-react";
@@ -21,7 +22,11 @@ function ShopPageContent() {
 	useEffect(() => {
 		const fetchProducts = async () => {
 			try {
-				const response = await fetch('/api/products');
+				// Check if there's a search query in URL
+				const searchQuery = searchParams.get("search") || searchParams.get("q");
+				const url = searchQuery ? `/api/products?search=${encodeURIComponent(searchQuery)}` : '/api/products';
+				
+				const response = await fetch(url);
 				if (response.ok) {
 					const data = await response.json();
 					// API returns array directly, not wrapped in {products}
@@ -41,12 +46,23 @@ function ShopPageContent() {
 			}
 		};
 		fetchProducts();
-	}, []);
+	}, [searchParams]);
 
 	// Memoize regions, countries, and price calculations
 	const regions = useMemo(() => Array.from(new Set(products.map((p) => p.region).filter(Boolean))) as string[], [products]);
 	const countries = useMemo(() => Array.from(new Set(products.map((p) => p.country).filter(Boolean))) as string[], [products]);
-	const wineTypes = useMemo(() => Array.from(new Set(products.filter(p => p.wineType).map(p => p.wineType!))) as WineType[], [products]);
+	const wineTypes = useMemo(() => {
+		const base = Array.from(
+			new Set(products.filter((p) => p.wineType).map((p) => p.wineType!))
+		) as WineType[];
+
+		// Always show Prosecco first as a quick filter, even if there are
+		// currently no Prosecco products (it will just show 0 results).
+		if (base.includes("Prosecco")) {
+			return (["Prosecco", ...base.filter((t) => t !== "Prosecco")] as WineType[]);
+		}
+		return (["Prosecco", ...base] as WineType[]);
+	}, [products]);
 	const spiritTypes = useMemo(() => Array.from(new Set(products.filter(p => p.spiritType).map(p => p.spiritType!))) as SpiritType[], [products]);
 	const beerStyles = useMemo(() => Array.from(new Set(products.filter(p => p.beerStyle).map(p => p.beerStyle!))) as BeerStyle[], [products]);
 	
@@ -58,7 +74,7 @@ function ShopPageContent() {
 	// Helper function to parse URL params
 	const parseUrlParams = () => {
 		return {
-			query: searchParams.get("q") || "",
+			query: searchParams.get("q") || searchParams.get("search") || "",
 			wineTypes: (searchParams.get("wineType")?.split(",").filter(Boolean) as WineType[]) || [],
 			spiritTypes: (searchParams.get("spiritType")?.split(",").filter(Boolean) as SpiritType[]) || [],
 			beerStyles: (searchParams.get("beerStyle")?.split(",").filter(Boolean) as BeerStyle[]) || [],
@@ -168,6 +184,12 @@ function ShopPageContent() {
 	}, []);
 
 	const filteredSorted = useMemo(() => {
+		const normalize = (s?: string) =>
+			(s || "")
+				.toLowerCase()
+				.normalize("NFD")
+				.replace(/\p{Diacritic}/gu, "");
+
 		let filtered = products.filter((p) => {
 			// Category filter
 			if (activeCategoryTab !== "All" && p.category !== activeCategoryTab) return false;
@@ -184,13 +206,18 @@ function ShopPageContent() {
 			// Country filter
 			if (selectedCountries.length > 0 && !selectedCountries.includes(p.country)) return false;
 
-			const q = query.trim().toLowerCase();
+			const q = normalize(query.trim());
 			const matchesQuery =
 				q.length === 0 ||
-				p.name.toLowerCase().includes(q) ||
-				p.country.toLowerCase().includes(q) ||
-				(p.region ? p.region.toLowerCase().includes(q) : false) ||
-				(p.description ? p.description.toLowerCase().includes(q) : false);
+				normalize(p.name).includes(q) ||
+				normalize(p.slug).includes(q) ||
+				normalize(p.country).includes(q) ||
+				normalize(p.region).includes(q) ||
+				normalize(p.description).includes(q) ||
+				normalize(p.producer).includes(q) ||
+				normalize(p.tasteProfile).includes(q) ||
+				normalize(p.foodPairing).includes(q) ||
+				normalize((p.grapes || []).join(", ")).includes(q);
 
 			const matchesWineType =
 				p.category !== "Wine" || selectedWineTypes.length === 0 || (p.wineType ? selectedWineTypes.includes(p.wineType) : false);
@@ -279,15 +306,16 @@ function ShopPageContent() {
 	return (
 		<div className="min-h-screen" style={{ scrollBehavior: "smooth" }}>
 			<Container className="py-12">
+				<motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
 				<SectionHeading subtitle="Browse our curated selection">Shop</SectionHeading>
+				</motion.div>
 
-			{/* Segmented Category Tabs */}
+			{/* ROW 1 — Category Chips */}
 			<motion.div
 				initial={{ opacity: 0, y: 10 }}
-				whileInView={{ opacity: 1, y: 0 }}
-				viewport={{ once: true }}
-				transition={{ duration: 0.5 }}
-				className="mt-8 flex flex-wrap gap-2"
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.4 }}
+				className="mt-8 flex flex-wrap gap-3"
 			>
 				{(["All", "Wine", "Beer", "Spirit"] as const).map((cat) => {
 					const isActive = activeCategoryTab === cat;
@@ -313,84 +341,25 @@ function ShopPageContent() {
 				})}
 			</motion.div>
 
-			{/* Search and Filters */}
+			{/* ROW 2 — Search + Sort */}
 			<motion.div
 				initial={{ opacity: 0, y: 10 }}
-				whileInView={{ opacity: 1, y: 0 }}
-				viewport={{ once: true }}
-				transition={{ duration: 0.5, delay: 0.1 }}
-				className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-4"
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.4, delay: 0.05 }}
+				className="mt-6 flex flex-col md:flex-row md:items-center gap-4"
 			>
 				<input
 					type="text"
-					placeholder="Search by name, country, or region..."
-					className="md:col-span-2 w-full self-start rounded-full border border-maroon/20 bg-white px-4 py-2 outline-none focus:border-maroon/40 transition-colors"
+					placeholder="Search by name, country, region, producer, food…"
+					className="flex-1 rounded-full border border-maroon/20 bg-white px-4 py-2 outline-none focus:border-maroon/40 transition-colors"
 					value={query}
 					onChange={(e) => setQuery(e.target.value)}
 					onKeyDown={(e) => {
-						// Prevent lag on rapid typing
 						if (e.key === "Enter") e.preventDefault();
 					}}
 				/>
-				<div className="md:col-span-2 flex flex-wrap items-start gap-1.5 self-start">
-					{regions.slice(0, 8).map((r) => {
-						const active = selectedRegions.includes(r);
-						return (
-							<button
-								key={r}
-								onClick={() =>
-									setSelectedRegions((prev) =>
-										prev.includes(r) ? prev.filter((x) => x !== r) : [...prev, r]
-									)
-								}
-								className={`flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs transition-colors ${
-									active
-										? "border-maroon/30 bg-maroon/5 text-maroon"
-										: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
-								}`}
-								type="button"
-							>
-								<MapPin size={12} />
-								{r}
-							</button>
-						);
-					})}
-				</div>
-			</motion.div>
-
-			{/* Price and Sort */}
-			<motion.div
-				initial={{ opacity: 0, y: 10 }}
-				whileInView={{ opacity: 1, y: 0 }}
-				viewport={{ once: true }}
-				transition={{ duration: 0.5, delay: 0.2 }}
-				className="mt-4 grid grid-cols-1 items-end gap-4 md:grid-cols-4"
-			>
-				<div className="flex flex-col">
-					<label className="text-sm text-maroon/70">Min Price: €{minPrice}</label>
-					<input
-						type="range"
-						min={minAvailable}
-						max={maxAvailable}
-						value={minPrice}
-						onChange={(e) => setMinPrice(Number(e.target.value))}
-						className="accent-maroon"
-					/>
-				</div>
-				<div className="flex flex-col">
-					<label className="text-sm text-maroon/70">Max Price: €{maxPrice}</label>
-					<input
-						type="range"
-						min={minAvailable}
-						max={maxAvailable}
-						value={maxPrice}
-						onChange={(e) => setMaxPrice(Number(e.target.value))}
-						className="accent-maroon"
-					/>
-				</div>
-				<div className="md:col-span-2">
 					<select
-						className="w-full rounded-full border border-maroon/20 bg-white px-4 py-2 outline-none focus:border-maroon/40 transition-colors"
+					className="w-full md:w-64 rounded-full border border-maroon/20 bg-white px-4 py-2 outline-none focus:border-maroon/40 transition-colors"
 						value={sortBy}
 						onChange={(e) => setSortBy(e.target.value)}
 					>
@@ -400,89 +369,35 @@ function ShopPageContent() {
 						<option value="name-asc">Name: A → Z</option>
 						<option value="name-desc">Name: Z → A</option>
 					</select>
-				</div>
 			</motion.div>
 
-			{/* Sub-category chips */}
+			{/* ROW 3 — Collapsible Advanced Filters */}
 			<motion.div
 				initial={{ opacity: 0, y: 10 }}
-				whileInView={{ opacity: 1, y: 0 }}
-				viewport={{ once: true }}
-				transition={{ duration: 0.5, delay: 0.3 }}
-				className="mt-6 space-y-3"
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.4, delay: 0.1 }}
+				className="mt-4"
 			>
-				<div className="flex flex-wrap gap-1.5">
-					{wineTypes.map((t) => {
-						const active = selectedWineTypes.includes(t);
-						return (
-							<button
-								key={t}
-								onClick={() =>
-									setSelectedWineTypes((prev) =>
-										prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
-									)
-								}
-								className={`flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] transition-colors ${
-									active
-										? "border-maroon/30 bg-maroon/5 text-maroon"
-										: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
-								}`}
-								type="button"
-							>
-								<Wine size={12} />
-								Wine: {t}
-							</button>
-						);
-					})}
-				</div>
-				<div className="flex flex-wrap gap-1.5">
-					{spiritTypes.map((t) => {
-						const active = selectedSpiritTypes.includes(t);
-						return (
-							<button
-								key={t}
-								onClick={() =>
-									setSelectedSpiritTypes((prev) =>
-										prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
-									)
-								}
-								className={`flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] transition-colors ${
-									active
-										? "border-maroon/30 bg-maroon/5 text-maroon"
-										: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
-								}`}
-								type="button"
-							>
-								<Sparkles size={12} />
-								Spirit: {t}
-							</button>
-						);
-					})}
-				</div>
-				<div className="flex flex-wrap gap-1.5">
-					{beerStyles.map((t) => {
-						const active = selectedBeerStyles.includes(t);
-						return (
-							<button
-								key={t}
-								onClick={() =>
-									setSelectedBeerStyles((prev) =>
-										prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
-									)
-								}
-								className={`flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] transition-colors ${
-									active
-										? "border-maroon/30 bg-maroon/5 text-maroon"
-										: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
-								}`}
-								type="button"
-							>
-								<Beer size={12} />
-								Beer: {t}
-							</button>
-						);
-					})}
-				</div>
+				<AdvancedFilters
+					minAvailable={minAvailable}
+					maxAvailable={maxAvailable}
+					minPrice={minPrice}
+					maxPrice={maxPrice}
+					setMinPrice={setMinPrice}
+					setMaxPrice={setMaxPrice}
+					regions={regions}
+					selectedRegions={selectedRegions}
+					setSelectedRegions={setSelectedRegions}
+					wineTypes={wineTypes}
+					selectedWineTypes={selectedWineTypes}
+					setSelectedWineTypes={setSelectedWineTypes}
+					spiritTypes={spiritTypes}
+					selectedSpiritTypes={selectedSpiritTypes}
+					setSelectedSpiritTypes={setSelectedSpiritTypes}
+					beerStyles={beerStyles}
+					selectedBeerStyles={selectedBeerStyles}
+					setSelectedBeerStyles={setSelectedBeerStyles}
+				/>
 			</motion.div>
 
 			{/* Active filter chips */}
@@ -597,21 +512,235 @@ function ShopPageContent() {
 			)}
 
 			{/* Results count */}
-			<div className="mt-8 text-sm text-maroon/60">
+			<motion.div className="mt-8 text-sm text-maroon/60" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
 				Showing {filteredSorted.length} {filteredSorted.length === 1 ? "product" : "products"}
-			</div>
+			</motion.div>
 
 			{/* Product Grid */}
-			<div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:gap-6">
+			<motion.div
+				className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:gap-6"
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				transition={{ duration: 0.35 }}
+			>
 				{filteredSorted.map((product) => (
 					<ProductCard key={product.slug} product={product} />
 				))}
-			</div>
+			</motion.div>
 			</Container>
 		</div>
 	);
 }
 
+// Collapsible Advanced Filters component
+function AdvancedFilters({
+	minAvailable,
+	maxAvailable,
+	minPrice,
+	maxPrice,
+	setMinPrice,
+	setMaxPrice,
+	regions,
+	selectedRegions,
+	setSelectedRegions,
+	wineTypes,
+	selectedWineTypes,
+	setSelectedWineTypes,
+	spiritTypes,
+	selectedSpiritTypes,
+	setSelectedSpiritTypes,
+	beerStyles,
+	selectedBeerStyles,
+	setSelectedBeerStyles,
+}: {
+	minAvailable: number;
+	maxAvailable: number;
+	minPrice: number;
+	maxPrice: number;
+	setMinPrice: (v: number) => void;
+	setMaxPrice: (v: number) => void;
+	regions: string[];
+	selectedRegions: string[];
+	setSelectedRegions: React.Dispatch<React.SetStateAction<string[]>>;
+	wineTypes: WineType[];
+	selectedWineTypes: WineType[];
+	setSelectedWineTypes: React.Dispatch<React.SetStateAction<WineType[]>>;
+	spiritTypes: SpiritType[];
+	selectedSpiritTypes: SpiritType[];
+	setSelectedSpiritTypes: React.Dispatch<React.SetStateAction<SpiritType[]>>;
+	beerStyles: BeerStyle[];
+	selectedBeerStyles: BeerStyle[];
+	setSelectedBeerStyles: React.Dispatch<React.SetStateAction<BeerStyle[]>>;
+}) {
+	const [open, setOpen] = useState(false);
+
+	return (
+		<div className="rounded-xl border border-maroon/20 bg-white/60">
+			<button
+				onClick={() => setOpen((o) => !o)}
+				className="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-maroon hover:bg-soft-gray rounded-t-xl transition-colors"
+				aria-expanded={open}
+			>
+				<span>Advanced Filters</span>
+				<span className={`transition-transform ${open ? "rotate-180" : ""}`}>▾</span>
+			</button>
+
+			{open && (
+				<div className="p-4 grid gap-6">
+					{/* Price */}
+					<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+						<div className="flex flex-col">
+							<label className="text-sm text-maroon/70">Min Price: €{minPrice}</label>
+							<input
+								type="range"
+								min={minAvailable}
+								max={maxAvailable}
+								value={minPrice}
+								onChange={(e) => setMinPrice(Number(e.target.value))}
+								className="accent-maroon"
+							/>
+						</div>
+						<div className="flex flex-col">
+							<label className="text-sm text-maroon/70">Max Price: €{maxPrice}</label>
+							<input
+								type="range"
+								min={minAvailable}
+								max={maxAvailable}
+								value={maxPrice}
+								onChange={(e) => setMaxPrice(Number(e.target.value))}
+								className="accent-maroon"
+							/>
+						</div>
+					</div>
+
+					{/* Wine Types */}
+					{wineTypes.length > 0 && (
+						<div className="space-y-2">
+							<p className="text-sm font-medium text-maroon">Wine Types</p>
+							<div className="flex flex-wrap gap-2">
+								{wineTypes.map((t) => {
+									const active = selectedWineTypes.includes(t);
+									return (
+										<button
+											key={t}
+											onClick={() =>
+												setSelectedWineTypes((prev) =>
+													prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
+												)
+											}
+											className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
+												active
+													? "border-maroon/30 bg-maroon/5 text-maroon"
+													: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
+											}`}
+											type="button"
+										>
+											<Wine size={12} />
+											{t}
+										</button>
+									);
+								})}
+							</div>
+						</div>
+					)}
+
+					{/* Spirit Types */}
+					{spiritTypes.length > 0 && (
+						<div className="space-y-2">
+							<p className="text-sm font-medium text-maroon">Spirit Types</p>
+							<div className="flex flex-wrap gap-2">
+								{spiritTypes.map((t) => {
+									const active = selectedSpiritTypes.includes(t);
+									return (
+										<button
+											key={t}
+											onClick={() =>
+												setSelectedSpiritTypes((prev) =>
+													prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
+												)
+											}
+											className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
+												active
+													? "border-maroon/30 bg-maroon/5 text-maroon"
+													: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
+											}`}
+											type="button"
+										>
+											<Sparkles size={12} />
+											{t}
+										</button>
+									);
+								})}
+							</div>
+						</div>
+					)}
+
+					{/* Beer Styles */}
+					{beerStyles.length > 0 && (
+						<div className="space-y-2">
+							<p className="text-sm font-medium text-maroon">Beer Styles</p>
+							<div className="flex flex-wrap gap-2">
+								{beerStyles.map((t) => {
+									const active = selectedBeerStyles.includes(t);
+									return (
+										<button
+											key={t}
+											onClick={() =>
+												setSelectedBeerStyles((prev) =>
+													prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
+												)
+											}
+											className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
+												active
+													? "border-maroon/30 bg-maroon/5 text-maroon"
+													: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
+											}`}
+											type="button"
+										>
+											<Beer size={12} />
+											{t}
+										</button>
+									);
+								})}
+							</div>
+						</div>
+					)}
+
+					{/* Regions */}
+					{regions.length > 0 && (
+						<div className="space-y-2">
+							<p className="text-sm font-medium text-maroon">Regions</p>
+							<div className="flex flex-wrap gap-2">
+								{regions.map((r) => {
+									const active = selectedRegions.includes(r);
+									return (
+										<button
+											key={r}
+											onClick={() =>
+												setSelectedRegions((prev) =>
+													prev.includes(r) ? prev.filter((x) => x !== r) : [...prev, r]
+												)
+											}
+											className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
+												active
+													? "border-maroon/30 bg-maroon/5 text-maroon"
+													: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
+											}`}
+											type="button"
+										>
+											<MapPin size={12} />
+											{r}
+										</button>
+									);
+								})}
+							</div>
+						</div>
+					)}
+				</div>
+			)}
+		</div>
+	);
+}
 export default function ShopPage() {
 	return (
 		<Suspense fallback={

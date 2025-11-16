@@ -26,12 +26,12 @@ export default function WineDetailPage({ params }: { params: Params }) {
 		<Container className="py-12">
 			<SectionHeading>{wine.name}</SectionHeading>
 			<div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-2">
-				<div className="relative aspect-[4/5] overflow-hidden rounded-lg border border-maroon/10 bg-white">
+				<div className="relative aspect-[4/5] overflow-hidden rounded-lg border border-maroon/10 bg-white flex items-center justify-center">
 					<Image
 						src={wine.image}
 						alt={wine.name}
 						fill
-						className="object-cover"
+						className="object-contain p-6"
 						sizes="(max-width: 768px) 100vw, 50vw"
 						priority
 					/>
@@ -42,7 +42,9 @@ export default function WineDetailPage({ params }: { params: Params }) {
 						{wine.region ? ` • ${wine.region}` : ""}
 					</p>
 					<p className="mt-3 text-2xl font-semibold text-maroon">€{wine.price.toFixed(2)}</p>
-					<p className="mt-6 text-maroon/90 leading-relaxed">{wine.description}</p>
+					<p className="mt-6 text-maroon/90 leading-relaxed whitespace-pre-line">
+						{wine.description}
+					</p>
 					<div className="mt-8">
 						<button className="inline-flex items-center rounded-md border border-maroon/20 bg-white px-6 py-3 text-sm font-semibold text-maroon shadow-sm transition hover:bg-soft-gray">
 							Add to Cart (placeholder)

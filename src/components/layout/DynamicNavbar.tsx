@@ -4,6 +4,7 @@ import { Container } from "@/components/ui/Container";
 import { Menu, ChevronDown, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CartTray } from "@/components/cart/CartTray";
+import { SearchBar } from "@/components/layout/SearchBar";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -46,7 +47,7 @@ export function DynamicNavbar() {
 	const handleMouseLeave = () => {
 		timeoutRef.current = setTimeout(() => {
 			setHoveredMenu(null);
-		}, 150);
+		}, 400);
 	};
 
 	const buildShopUrl = (params: Record<string, string | boolean | undefined>) => {
@@ -98,6 +99,14 @@ export function DynamicNavbar() {
 							Gifts
 							<ChevronDown size={12} className={cn("transition-transform", hoveredMenu === "gifts" && "rotate-180")} />
 						</Link>
+						{/* Hover buffer to prevent accidental close when moving to dropdown */}
+						{hoveredMenu === "gifts" && (
+							<div
+								className="absolute top-full left-0 h-2 w-[600px]"
+								onMouseEnter={() => handleMouseEnter("gifts")}
+								onMouseLeave={handleMouseLeave}
+							/>
+						)}
 						<AnimatePresence>
 							{hoveredMenu === "gifts" && (
 								<motion.div
@@ -109,164 +118,85 @@ export function DynamicNavbar() {
 									onMouseEnter={() => handleMouseEnter("gifts")}
 									onMouseLeave={handleMouseLeave}
 								>
-									<div className="grid grid-cols-5 gap-6">
+									<div className="grid grid-cols-2 gap-6">
+										{/* Main gift sets */}
 										<div>
-											<h3 className="font-semibold text-maroon mb-3">Gift Of Choice</h3>
+											<h3 className="font-semibold text-maroon mb-3">Gift Sets</h3>
 											<ul className="space-y-2 text-sm">
 												<li>
-													<Link href="/shop" className="text-maroon/70 hover:text-gold transition-colors">
-														Store Voucher
+													<Link
+														href={buildShopUrl({ category: "Spirit", spiritType: "Gin", christmasGift: true })}
+														className="text-maroon/70 hover:text-gold transition-colors"
+													>
+														Gin & Glass Set
 													</Link>
 												</li>
 												<li>
-													<Link href="/shop" className="text-maroon/70 hover:text-gold transition-colors">
-														Digital Gift Card
+													<Link
+														href={buildShopUrl({ category: "Beer", christmasGift: true })}
+														className="text-maroon/70 hover:text-gold transition-colors"
+													>
+														Beer Gift Sets
+													</Link>
+												</li>
+												<li>
+													<Link
+														href={buildShopUrl({ category: "Beer", beerStyle: "Pale Ale", christmasGift: true })}
+														className="text-maroon/70 hover:text-gold transition-colors"
+													>
+														Pale Ale Gift Sets
+													</Link>
+												</li>
+												<li>
+													<Link
+														href={buildShopUrl({ category: "Wine", wineType: "Sparkling", christmasGift: true })}
+														className="text-maroon/70 hover:text-gold transition-colors"
+													>
+														Prosecco & Glass Gift Set
+													</Link>
+												</li>
+												<li>
+													<Link
+														href={buildShopUrl({ category: "Spirit", spiritType: "Whiskey", christmasGift: true })}
+														className="text-maroon/70 hover:text-gold transition-colors"
+													>
+														Whiskey & Cask Gifts
 													</Link>
 												</li>
 											</ul>
 										</div>
+
+										{/* Other gifts */}
 										<div>
-											<h3 className="font-semibold text-maroon mb-3">Wine Gifts</h3>
+											<h3 className="font-semibold text-maroon mb-3">Other Gifts</h3>
 											<ul className="space-y-2 text-sm">
 												<li>
-													<Link href={buildShopUrl({ category: 'Wine', christmasGift: true })} className="text-maroon/70 hover:text-gold transition-colors">
-														2 Bottle
+													<Link
+														href="/visit-us#personal-orders"
+														className="text-maroon/70 hover:text-gold transition-colors"
+													>
+														Personal Large Orders
 													</Link>
 												</li>
 												<li>
-													<Link href={buildShopUrl({ category: 'Wine', christmasGift: true })} className="text-maroon/70 hover:text-gold transition-colors">
-														3 Bottle
+													<Link
+														href={buildShopUrl({ christmasGift: true })}
+														className="text-maroon/70 hover:text-gold transition-colors"
+													>
+														All Christmas Gifts
 													</Link>
 												</li>
 												<li>
-													<Link href={buildShopUrl({ category: 'Wine', christmasGift: true })} className="text-maroon/70 hover:text-gold transition-colors">
-														6 Bottle
-													</Link>
-												</li>
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine', christmasGift: true })} className="text-maroon/70 hover:text-gold transition-colors">
-														12 Bottle
-													</Link>
-												</li>
-											</ul>
-										</div>
-										<div>
-											<h3 className="font-semibold text-maroon mb-3">Spirit Gifts</h3>
-											<ul className="space-y-2 text-sm">
-												{menuData.spiritTypes.filter(t => t === 'Whiskey' || t === 'Gin').map(type => (
-													<li key={type}>
-														<Link href={buildShopUrl({ category: 'Spirit', spiritType: type, christmasGift: true })} className="text-maroon/70 hover:text-gold transition-colors">
-															{type} Gifts
-														</Link>
-													</li>
-												))}
-												<li>
-													<Link href={buildShopUrl({ category: 'Spirit', christmasGift: true })} className="text-maroon/70 hover:text-gold transition-colors">
-														Other Spirit Gifts
-													</Link>
-												</li>
-											</ul>
-										</div>
-										<div>
-											<h3 className="font-semibold text-maroon mb-3">Champagne Gifts</h3>
-											<ul className="space-y-2 text-sm">
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine', wineType: 'Sparkling', christmasGift: true })} className="text-maroon/70 hover:text-gold transition-colors">
-														Glass Gift Set
-													</Link>
-												</li>
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine', wineType: 'Sparkling', christmasGift: true })} className="text-maroon/70 hover:text-gold transition-colors">
-														Gift Box
-													</Link>
-												</li>
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine', wineType: 'Sparkling', christmasGift: true })} className="text-maroon/70 hover:text-gold transition-colors">
-														Large Formats
-													</Link>
-												</li>
-											</ul>
-										</div>
-										<div>
-											<h3 className="font-semibold text-maroon mb-3">Miscellaneous</h3>
-											<ul className="space-y-2 text-sm">
-												<li>
-													<Link href="/shop" className="text-maroon/70 hover:text-gold transition-colors">
-														Wine Glassware
-													</Link>
-												</li>
-												<li>
-													<Link href="/shop" className="text-maroon/70 hover:text-gold transition-colors">
-														Wine Gadgets
-													</Link>
-												</li>
-												<li>
-													<Link href="/shop" className="text-maroon/70 hover:text-gold transition-colors">
-														Spirit Sets & Accessories
+													<Link
+														href="/visit-us#vouchers"
+														className="text-maroon/70 hover:text-gold transition-colors"
+													>
+														Store Voucher (in-store only)
 													</Link>
 												</li>
 											</ul>
 										</div>
 									</div>
-								</motion.div>
-							)}
-						</AnimatePresence>
-					</div>
-
-					{/* Offers */}
-					<div
-						className="relative"
-						onMouseEnter={() => handleMouseEnter("offers")}
-						onMouseLeave={handleMouseLeave}
-					>
-						<Link
-							href={buildShopUrl({ onSale: true })}
-							className={cn(
-								"flex items-center gap-1 px-3 py-2 hover:text-gold transition-colors text-sm",
-								hoveredMenu === "offers" && "text-gold"
-							)}
-						>
-							Offers
-							<ChevronDown size={12} className={cn("transition-transform", hoveredMenu === "offers" && "rotate-180")} />
-						</Link>
-						<AnimatePresence>
-							{hoveredMenu === "offers" && (
-								<motion.div
-									initial={{ opacity: 0, y: -10 }}
-									animate={{ opacity: 1, y: 0 }}
-									exit={{ opacity: 0, y: -10 }}
-									transition={{ duration: 0.2 }}
-									className="absolute top-full left-0 mt-2 w-64 rounded-md border border-maroon/10 bg-white shadow-xl p-4 z-50"
-									onMouseEnter={() => handleMouseEnter("offers")}
-									onMouseLeave={handleMouseLeave}
-								>
-									<ul className="space-y-2 text-sm">
-										<li>
-											<Link href={buildShopUrl({ onSale: true, category: 'Wine' })} className="text-maroon/70 hover:text-gold transition-colors">
-												Weekly Wine Offers ({menuData.counts.onSale})
-											</Link>
-										</li>
-										<li>
-											<Link href={buildShopUrl({ onSale: true })} className="text-maroon/70 hover:text-gold transition-colors">
-												Pre Selected Cases
-											</Link>
-										</li>
-										<li>
-											<Link href={buildShopUrl({ onSale: true, category: 'Wine' })} className="text-maroon/70 hover:text-gold transition-colors">
-												Wine Offers
-											</Link>
-										</li>
-										<li>
-											<Link href={buildShopUrl({ onSale: true, category: 'Spirit' })} className="text-maroon/70 hover:text-gold transition-colors">
-												Spirit Offers
-											</Link>
-										</li>
-										<li>
-											<Link href={buildShopUrl({ christmasGift: true })} className="text-maroon/70 hover:text-gold transition-colors">
-												Christmas Gifts ({menuData.counts.gifts})
-											</Link>
-										</li>
-									</ul>
 								</motion.div>
 							)}
 						</AnimatePresence>
@@ -279,7 +209,7 @@ export function DynamicNavbar() {
 						onMouseLeave={handleMouseLeave}
 					>
 						<Link
-							href={buildShopUrl({ category: 'Wine' })}
+							href={buildShopUrl({ category: "Wine" })}
 							className={cn(
 								"flex items-center gap-1 px-3 py-2 hover:text-gold transition-colors text-sm",
 								hoveredMenu === "wine" && "text-gold"
@@ -288,6 +218,13 @@ export function DynamicNavbar() {
 							Wine
 							<ChevronDown size={12} className={cn("transition-transform", hoveredMenu === "wine" && "rotate-180")} />
 						</Link>
+						{hoveredMenu === "wine" && (
+							<div
+								className="absolute top-full left-0 h-2 w-[720px]"
+								onMouseEnter={() => handleMouseEnter("wine")}
+								onMouseLeave={handleMouseLeave}
+							/>
+						)}
 						<AnimatePresence>
 							{hoveredMenu === "wine" && (
 								<motion.div
@@ -295,134 +232,119 @@ export function DynamicNavbar() {
 									animate={{ opacity: 1, y: 0 }}
 									exit={{ opacity: 0, y: -10 }}
 									transition={{ duration: 0.2 }}
-									className="absolute top-full left-0 mt-2 w-[900px] rounded-md border border-maroon/10 bg-white shadow-xl p-6 z-50"
+									className="absolute top-full left-0 mt-1 w-[720px] rounded-md border border-maroon/10 bg-white shadow-xl p-6 z-50"
 									onMouseEnter={() => handleMouseEnter("wine")}
 									onMouseLeave={handleMouseLeave}
 								>
-									<div className="grid grid-cols-6 gap-6">
-										<div>
-											<h3 className="font-semibold text-maroon mb-3">Type</h3>
-											<ul className="space-y-2 text-sm">
-												{menuData.wineTypes.map(type => (
-													<li key={type}>
-														<Link href={buildShopUrl({ category: 'Wine', wineType: type })} className="text-maroon/70 hover:text-gold transition-colors">
-															{type === 'Sparkling' ? 'Sparkling' : `${type} Wine`}
-														</Link>
-													</li>
-												))}
-											</ul>
-										</div>
+									<div className="grid grid-cols-2 gap-6">
+										{/* Left: Country */}
 										<div>
 											<h3 className="font-semibold text-maroon mb-3">Country</h3>
-											<ul className="space-y-2 text-sm max-h-64 overflow-y-auto">
-												{menuData.countries.slice(0, 10).map(country => (
-													<li key={country}>
-														<Link href={buildShopUrl({ category: 'Wine', country })} className="text-maroon/70 hover:text-gold transition-colors">
-															{country}
+											<ul className="space-y-2 text-sm">
+												{[
+													{ label: "Argentina", value: "Argentina" },
+													{ label: "Austria", value: "Austria" },
+													{ label: "Chile", value: "Chile" },
+													{ label: "France", value: "France" },
+													{ label: "Germany", value: "Germany" },
+													{ label: "Ireland", value: "Ireland" },
+													{ label: "Italy", value: "Italy" },
+													{ label: "New Zealand", value: "New Zealand" },
+													{ label: "Portugal", value: "Portugal" },
+													{ label: "South Africa", value: "South Africa" },
+													{ label: "Spain", value: "Spain" },
+													// Display California nicely but filter by USA, which matches product data
+													{ label: "California (USA)", value: "USA" },
+												].map(({ label, value }) => (
+													<li key={label}>
+														<Link
+															href={buildShopUrl({ category: "Wine", country: value })}
+															className="text-maroon/70 hover:text-gold transition-colors"
+														>
+															{label}
 														</Link>
 													</li>
 												))}
 											</ul>
 										</div>
-										<div>
-											<h3 className="font-semibold text-maroon mb-3">Grape</h3>
-											<ul className="space-y-2 text-sm">
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine' })} className="text-maroon/70 hover:text-gold transition-colors">
-														Cabernet Sauvignon
-													</Link>
-												</li>
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine' })} className="text-maroon/70 hover:text-gold transition-colors">
-														Merlot
-													</Link>
-												</li>
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine' })} className="text-maroon/70 hover:text-gold transition-colors">
-														Chardonnay
-													</Link>
-												</li>
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine' })} className="text-maroon/70 hover:text-gold transition-colors">
-														Sauvignon Blanc
-													</Link>
-												</li>
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine' })} className="text-maroon/70 hover:text-gold transition-colors">
-														Pinot Noir
-													</Link>
-												</li>
-											</ul>
-										</div>
-										<div>
-											<h3 className="font-semibold text-maroon mb-3">Other Formats</h3>
-											<ul className="space-y-2 text-sm">
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine' })} className="text-maroon/70 hover:text-gold transition-colors">
-														Magnum - 1.5l
-													</Link>
-												</li>
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine' })} className="text-maroon/70 hover:text-gold transition-colors">
-														Half Bottle - 37.5cl
-													</Link>
-												</li>
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine' })} className="text-maroon/70 hover:text-gold transition-colors">
-														Larger Formats
-													</Link>
-												</li>
-											</ul>
-										</div>
-										<div>
-											<h3 className="font-semibold text-maroon mb-3">Price</h3>
-											<ul className="space-y-2 text-sm">
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine', minPrice: '0', maxPrice: '25' })} className="text-maroon/70 hover:text-gold transition-colors">
-														&lt; €25
-													</Link>
-												</li>
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine', minPrice: '25', maxPrice: '75' })} className="text-maroon/70 hover:text-gold transition-colors">
-														€25 - €75
-													</Link>
-												</li>
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine', minPrice: '75', maxPrice: '150' })} className="text-maroon/70 hover:text-gold transition-colors">
-														€75 - €150
-													</Link>
-												</li>
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine', minPrice: '150' })} className="text-maroon/70 hover:text-gold transition-colors">
-														Over €150
-													</Link>
-												</li>
-											</ul>
-										</div>
-										<div>
-											<h3 className="font-semibold text-maroon mb-3">Drinking Style</h3>
-											<ul className="space-y-2 text-sm">
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine' })} className="text-maroon/70 hover:text-gold transition-colors">
-														Dry Refreshing White
-													</Link>
-												</li>
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine' })} className="text-maroon/70 hover:text-gold transition-colors">
-														Aromatic Fruity White
-													</Link>
-												</li>
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine' })} className="text-maroon/70 hover:text-gold transition-colors">
-														Light Fruity Red
-													</Link>
-												</li>
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine' })} className="text-maroon/70 hover:text-gold transition-colors">
-														Bold Armchair Red
-													</Link>
-												</li>
-											</ul>
+
+										{/* Right: Type of Wine + Grape Type (scrollable) */}
+										<div className="grid grid-cols-1 gap-6">
+											<div>
+												<h3 className="font-semibold text-maroon mb-3">Type of Wine</h3>
+												<ul className="space-y-2 text-sm">
+													<li>
+														<Link
+															href={buildShopUrl({ category: "Wine", wineType: "Red" })}
+															className="text-maroon/70 hover:text-gold transition-colors"
+														>
+															Red Wines
+														</Link>
+													</li>
+													<li>
+														<Link
+															href={buildShopUrl({ category: "Wine", wineType: "White" })}
+															className="text-maroon/70 hover:text-gold transition-colors"
+														>
+															White Wines
+														</Link>
+													</li>
+													<li>
+														<Link
+															href={buildShopUrl({ category: "Wine", wineType: "Rosé" })}
+															className="text-maroon/70 hover:text-gold transition-colors"
+														>
+															Rosé Wines
+														</Link>
+													</li>
+													<li>
+														<Link
+															href={buildShopUrl({ category: "Wine", wineType: "Sparkling" })}
+															className="text-maroon/70 hover:text-gold transition-colors"
+														>
+															Sparkling Wines
+														</Link>
+													</li>
+													<li>
+														<Link
+															href={buildShopUrl({ category: "Wine", wineType: "Prosecco" })}
+															className="text-maroon/70 hover:text-gold transition-colors"
+														>
+															Prosecco
+														</Link>
+													</li>
+												</ul>
+											</div>
+
+											<div>
+												<h3 className="font-semibold text-maroon mb-3">Grape Type</h3>
+												<ul className="space-y-2 text-sm h-40 overflow-y-auto pr-1">
+													{[
+														"Cabernet Sauvignon",
+														"Chardonnay",
+														"Malbec",
+														"Merlot",
+														"Pinot Noir",
+														"Riesling",
+														"Sauvignon Blanc",
+														"Syrah/Shiraz",
+														"Vinho Verde",
+														"Nebbiolo",
+														"Tempranillo",
+														"Sangiovese",
+														"Barbera",
+													].map((grape) => (
+														<li key={grape}>
+															<Link
+																href={buildShopUrl({ category: "Wine", search: grape })}
+																className="text-maroon/70 hover:text-gold transition-colors"
+															>
+																{grape}
+															</Link>
+														</li>
+													))}
+												</ul>
+											</div>
 										</div>
 									</div>
 								</motion.div>
@@ -446,6 +368,13 @@ export function DynamicNavbar() {
 							Spirits
 							<ChevronDown size={12} className={cn("transition-transform", hoveredMenu === "spirits" && "rotate-180")} />
 						</Link>
+						{hoveredMenu === "spirits" && (
+							<div
+								className="absolute top-full left-0 h-2 w-[720px]"
+								onMouseEnter={() => handleMouseEnter("spirits")}
+								onMouseLeave={handleMouseLeave}
+							/>
+						)}
 						<AnimatePresence>
 							{hoveredMenu === "spirits" && (
 								<motion.div
@@ -453,90 +382,83 @@ export function DynamicNavbar() {
 									animate={{ opacity: 1, y: 0 }}
 									exit={{ opacity: 0, y: -10 }}
 									transition={{ duration: 0.2 }}
-									className="absolute top-full left-0 mt-2 w-[900px] rounded-md border border-maroon/10 bg-white shadow-xl p-6 z-50"
+									className="absolute top-full left-0 mt-1 w-[720px] rounded-md border border-maroon/10 bg-white shadow-xl p-6 z-50"
 									onMouseEnter={() => handleMouseEnter("spirits")}
 									onMouseLeave={handleMouseLeave}
 								>
-									<div className="grid grid-cols-5 gap-6">
+									<div className="grid grid-cols-3 gap-6">
 										<div>
 											<h3 className="font-semibold text-maroon mb-3">Whiskey</h3>
 											<ul className="space-y-2 text-sm">
-												{menuData.spiritTypes.filter(t => t === 'Whiskey').length > 0 && (
-													<>
-														<li>
-															<Link href={buildShopUrl({ category: 'Spirit', spiritType: 'Whiskey', country: 'Ireland' })} className="text-maroon/70 hover:text-gold transition-colors">
-																Irish Whiskey
-															</Link>
-														</li>
-														<li>
-															<Link href={buildShopUrl({ category: 'Spirit', spiritType: 'Whiskey' })} className="text-maroon/70 hover:text-gold transition-colors">
-																All Whiskey
-															</Link>
-														</li>
-													</>
-												)}
-											</ul>
-										</div>
-										<div>
-											<h3 className="font-semibold text-maroon mb-3">Brandy</h3>
-											<ul className="space-y-2 text-sm">
 												<li>
-													<Link href={buildShopUrl({ category: 'Spirit', country: 'France' })} className="text-maroon/70 hover:text-gold transition-colors">
-														Cognac
-													</Link>
-												</li>
-												<li>
-													<Link href={buildShopUrl({ category: 'Spirit' })} className="text-maroon/70 hover:text-gold transition-colors">
-														Brandy
-													</Link>
-												</li>
-											</ul>
-										</div>
-										<div>
-											<h3 className="font-semibold text-maroon mb-3">Other</h3>
-											<ul className="space-y-2 text-sm">
-												{menuData.spiritTypes.map(type => (
-													<li key={type}>
-														<Link href={buildShopUrl({ category: 'Spirit', spiritType: type })} className="text-maroon/70 hover:text-gold transition-colors">
-															{type}
-														</Link>
-													</li>
-												))}
-											</ul>
-										</div>
-										<div>
-											<h3 className="font-semibold text-maroon mb-3">Whiskey Brands</h3>
-											<ul className="space-y-2 text-sm">
-												<li>
-													<Link href={buildShopUrl({ category: 'Spirit', spiritType: 'Whiskey' })} className="text-maroon/70 hover:text-gold transition-colors">
+													<Link
+														href={buildShopUrl({ category: "Spirit", spiritType: "Whiskey", country: "Ireland" })}
+														className="text-maroon/70 hover:text-gold transition-colors"
+													>
 														Irish Whiskey
 													</Link>
 												</li>
 												<li>
-													<Link href={buildShopUrl({ category: 'Spirit', spiritType: 'Whiskey' })} className="text-maroon/70 hover:text-gold transition-colors">
+													<Link
+														href={buildShopUrl({ category: "Spirit", spiritType: "Whiskey", country: "Scotland" })}
+														className="text-maroon/70 hover:text-gold transition-colors"
+													>
+														Scotch Whisky
+													</Link>
+												</li>
+												<li>
+													<Link
+														href={buildShopUrl({ category: "Spirit", spiritType: "Whiskey", country: "USA" })}
+														className="text-maroon/70 hover:text-gold transition-colors"
+													>
+														Bourbon & American
+													</Link>
+												</li>
+												<li>
+													<Link
+														href={buildShopUrl({ category: "Spirit", spiritType: "Whiskey", country: "Japan" })}
+														className="text-maroon/70 hover:text-gold transition-colors"
+													>
+														Japanese & World Whiskey
+													</Link>
+												</li>
+												<li>
+													<Link
+														href={buildShopUrl({ category: "Spirit", spiritType: "Whiskey" })}
+														className="text-maroon/70 hover:text-gold transition-colors"
+													>
 														All Whiskey
 													</Link>
 												</li>
 											</ul>
 										</div>
 										<div>
-											<h3 className="font-semibold text-maroon mb-3">RTDs</h3>
+											<h3 className="font-semibold text-maroon mb-3">Brandy</h3>
 											<ul className="space-y-2 text-sm">
 												<li>
-													<Link href={buildShopUrl({ category: 'Beer' })} className="text-maroon/70 hover:text-gold transition-colors">
-														Miniatures
+													<Link href={buildShopUrl({ category: 'Spirit', country: 'France', search: 'Cognac' })} className="text-maroon/70 hover:text-gold transition-colors">
+														Cognac
 													</Link>
 												</li>
 												<li>
-													<Link href={buildShopUrl({ category: 'Beer' })} className="text-maroon/70 hover:text-gold transition-colors">
-														Cocktails
+													<Link href={buildShopUrl({ category: 'Spirit', search: 'Brandy' })} className="text-maroon/70 hover:text-gold transition-colors">
+														Brandy
 													</Link>
 												</li>
-												<li>
-													<Link href={buildShopUrl({ category: 'Beer' })} className="text-maroon/70 hover:text-gold transition-colors">
-														Spritz
-													</Link>
-												</li>
+											</ul>
+										</div>
+										<div>
+											<h3 className="font-semibold text-maroon mb-3">Other Spirits</h3>
+											<ul className="space-y-2 text-sm">
+												{menuData.spiritTypes
+													.filter(type => type !== 'Whiskey')
+													.map(type => (
+														<li key={type}>
+															<Link href={buildShopUrl({ category: 'Spirit', spiritType: type })} className="text-maroon/70 hover:text-gold transition-colors">
+																{type}
+															</Link>
+														</li>
+													))}
 											</ul>
 										</div>
 									</div>
@@ -564,6 +486,13 @@ export function DynamicNavbar() {
 							</span>
 							<ChevronDown size={12} className={cn("transition-transform", hoveredMenu === "champagne" && "rotate-180")} />
 						</Link>
+						{hoveredMenu === "champagne" && (
+							<div
+								className="absolute top-full right-0 h-2 w-[640px]"
+								onMouseEnter={() => handleMouseEnter("champagne")}
+								onMouseLeave={handleMouseLeave}
+							/>
+						)}
 						<AnimatePresence>
 							{hoveredMenu === "champagne" && (
 								<motion.div
@@ -571,11 +500,11 @@ export function DynamicNavbar() {
 									animate={{ opacity: 1, y: 0 }}
 									exit={{ opacity: 0, y: -10 }}
 									transition={{ duration: 0.2 }}
-									className="absolute top-full left-0 mt-2 w-[800px] rounded-md border border-maroon/10 bg-white shadow-xl p-6 z-50"
+									className="absolute top-full right-0 mt-1 w-[640px] rounded-md border border-maroon/10 bg-white shadow-xl p-6 z-50"
 									onMouseEnter={() => handleMouseEnter("champagne")}
 									onMouseLeave={handleMouseLeave}
 								>
-									<div className="grid grid-cols-4 gap-6">
+									<div className="grid grid-cols-3 gap-6">
 										<div>
 											<h3 className="font-semibold text-maroon mb-3">Champagne</h3>
 											<ul className="space-y-2 text-sm">
@@ -591,7 +520,7 @@ export function DynamicNavbar() {
 												</li>
 												<li>
 													<Link href={buildShopUrl({ category: 'Wine', wineType: 'Sparkling' })} className="text-maroon/70 hover:text-gold transition-colors">
-														Dom Pérignon
+														Krug
 													</Link>
 												</li>
 												<li>
@@ -641,16 +570,7 @@ export function DynamicNavbar() {
 												</li>
 											</ul>
 										</div>
-										<div>
-											<h3 className="font-semibold text-maroon mb-3">Cava</h3>
-											<ul className="space-y-2 text-sm">
-												<li>
-													<Link href={buildShopUrl({ category: 'Wine', wineType: 'Sparkling', country: 'Spain' })} className="text-maroon/70 hover:text-gold transition-colors">
-														All Cava
-													</Link>
-												</li>
-											</ul>
-										</div>
+										{/* Cava section removed per request */}
 									</div>
 								</motion.div>
 							)}
@@ -664,7 +584,9 @@ export function DynamicNavbar() {
 					<Link className="px-3 py-2 hover:text-gold transition-colors text-sm" href="/visit-us">
 						Visit Us
 					</Link>
-					<Link className="px-3 py-2 hover:text-gold transition-colors text-sm" href="/contact">Contact</Link>
+					
+					{/* Search Bar */}
+					<SearchBar />
 					
 					{/* Click & Collect Button */}
 					<Link
@@ -679,6 +601,7 @@ export function DynamicNavbar() {
 					</Link>
 				</nav>
 				<div className="lg:hidden flex items-center gap-2">
+					<SearchBar />
 					<CartTray />
 					<button className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-maroon/20 text-maroon hover:bg-soft-gray" aria-label="Open menu">
 						<Menu size={18} />

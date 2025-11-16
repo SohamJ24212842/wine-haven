@@ -7,7 +7,6 @@ import { useCart } from "@/contexts/CartContext";
 import { ShoppingCart, Eye } from "lucide-react";
 import { useState } from "react";
 import { QuickViewModal } from "./QuickViewModal";
-import { CountryFlag } from "@/components/ui/CountryFlag";
 
 type ProductCardProps = {
 	product: Product;
@@ -64,7 +63,7 @@ export function ProductCard({ product }: ProductCardProps) {
 						y: -4
 					}}
 				>
-					<div className="relative aspect-[4/5] overflow-hidden bg-soft-gray">
+					<div className="relative aspect-[4/5] overflow-hidden bg-soft-gray flex items-center justify-center">
 						{/* Premium floating shadow effect */}
 						<div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/5 pointer-events-none" />
 						
@@ -107,8 +106,8 @@ export function ProductCard({ product }: ProductCardProps) {
 						{/* Enhanced image with zoom effect */}
 						<motion.div
 							animate={{ 
-								scale: isHovered ? 1.15 : 1,
-								transition: { duration: 0.5, ease: "easeOut" }
+								scale: isHovered ? 1.05 : 1,
+								transition: { duration: 0.4, ease: "easeOut" }
 							}}
 							className="h-full w-full relative"
 						>
@@ -116,7 +115,7 @@ export function ProductCard({ product }: ProductCardProps) {
 								src={product.image}
 								alt={product.name}
 								fill
-								className="object-cover"
+								className="object-contain p-4"
 								sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
 							/>
 							{/* Subtle overlay on hover */}
@@ -161,9 +160,8 @@ export function ProductCard({ product }: ProductCardProps) {
 							<p className="text-[10px] uppercase tracking-wide text-maroon/60 font-medium">{product.category}</p>
 						</div>
 						<h3 className="mt-1.5 text-sm font-semibold text-maroon line-clamp-2">{product.name}</h3>
-						<p className="mt-1 text-xs text-maroon/70 line-clamp-1 flex items-center gap-1.5">
-							<CountryFlag country={product.country} className="text-lg" />
-							<span>{formatBadge(product)}</span>
+						<p className="mt-1 text-xs text-maroon/70 line-clamp-1">
+							{formatBadge(product)}
 						</p>
 						<div className="mt-3 flex items-center gap-2">
 							{product.onSale && product.salePrice ? (

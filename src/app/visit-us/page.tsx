@@ -1,5 +1,6 @@
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/typography/SectionHeading";
+import { ContactForm } from "@/components/contact/ContactForm";
 import { MapPin, Phone, Clock, Mail } from "lucide-react";
 
 export default function VisitUsPage() {
@@ -76,6 +77,25 @@ export default function VisitUsPage() {
 							</div>
 						</div>
 					</div>
+
+					{/* Personal Large Orders */}
+					<div id="personal-orders" className="rounded-lg border border-maroon/10 bg-white p-6">
+						<h3 className="text-lg font-semibold mb-2">Personal Large Orders</h3>
+						<p className="text-maroon/80 leading-relaxed">
+							Planning a wedding, big celebration, or corporate event? We&apos;re happy to help with
+							curated selections and quantity planning. The easiest way to arrange this is to call us or
+							email with your date, budget, and number of guests, and we&apos;ll come back with suggestions.
+						</p>
+					</div>
+
+					{/* Store Vouchers */}
+					<div id="vouchers" className="rounded-lg border border-maroon/10 bg-white p-6">
+						<h3 className="text-lg font-semibold mb-2">Store Vouchers</h3>
+						<p className="text-maroon/80 leading-relaxed">
+							Store vouchers are available to buy in-store only. If you&apos;d like to arrange a voucher
+							in advance, give us a call or send us an email and we&apos;ll have it ready for collection.
+						</p>
+					</div>
 				</div>
 
 				{/* Map */}
@@ -88,6 +108,21 @@ export default function VisitUsPage() {
 						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2382.4733412562445!2d-6.1313088!3d53.2901592!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x486707001ecfc2ab%3A0x3a4db1ad01379619!2sWine%20Haven!5e0!3m2!1sen!2sie!4v1700000000000!5m2!1sen!2sie"
 						allowFullScreen
 					/>
+				</div>
+			</div>
+
+			{/* Get in Touch Section */}
+			<div className="mt-16">
+				<SectionHeading subtitle="Have a question or need a recommendation?">
+					Get in Touch
+				</SectionHeading>
+				<div className="mt-8 flex justify-center">
+					<div className="w-full max-w-2xl rounded-lg border border-maroon/10 bg-white p-6">
+						<ContactForm />
+						<p className="mt-6 text-sm text-maroon/70 text-center border-t border-maroon/10 pt-4">
+							We usually reply within one working day.
+						</p>
+					</div>
 				</div>
 			</div>
 		</Container>

@@ -74,11 +74,6 @@ export function Footer() {
 								Visit Us
 							</Link>
 						</li>
-						<li>
-							<Link className="text-cream/90 hover:text-gold transition-colors" href="/contact">
-								Contact
-							</Link>
-						</li>
 					</ul>
 				</div>
 			</Container>

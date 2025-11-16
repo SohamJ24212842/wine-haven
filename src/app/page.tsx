@@ -1,6 +1,7 @@
 import { Hero } from "@/components/home/Hero";
 import { HorizontalScrollSection } from "@/components/home/HorizontalScrollSection";
 import { ShopByOccasion } from "@/components/home/ShopByOccasion";
+import { PromotionalMedia } from "@/components/home/PromotionalMedia";
 import { SectionDivider } from "@/components/ui/SectionDivider";
 import { getAllProducts } from "@/lib/db/products";
 
@@ -50,13 +51,17 @@ export default async function Home() {
         </>
       )}
       {featuredSpirits.length > 0 && (
-        <HorizontalScrollSection
-          title="Featured Spirits"
-          subtitle="Premium selection of gins, vodkas, and more"
-          products={featuredSpirits}
-          filterUrl="category=Spirit"
-        />
+        <>
+          <HorizontalScrollSection
+            title="Featured Spirits"
+            subtitle="Premium selection of gins, vodkas, and more"
+            products={featuredSpirits}
+            filterUrl="category=Spirit"
+          />
+          <SectionDivider variant="subtle" />
+        </>
       )}
+      <PromotionalMedia />
     </div>
   );
 }
