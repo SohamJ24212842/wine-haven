@@ -47,7 +47,7 @@ export function DynamicNavbar() {
 	const handleMouseLeave = () => {
 		timeoutRef.current = setTimeout(() => {
 			setHoveredMenu(null);
-		}, 500);
+		}, 700);
 	};
 
 	const buildShopUrl = (params: Record<string, string | boolean | undefined>) => {
