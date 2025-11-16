@@ -20,6 +20,7 @@ export function ProductDetailClient({ product, discountPercentage }: ProductDeta
 			? [product.image, ...product.images.filter((u) => u !== product.image)]
 			: [product.image];
 	const [zoom, setZoom] = useState(false);
+	const [zoomOrigin, setZoomOrigin] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
 
 	return (
 		<Container className="py-12">
@@ -67,8 +68,25 @@ export function ProductDetailClient({ product, discountPercentage }: ProductDeta
 									src={images[selectedImage]}
 									alt={product.name}
 									fill
-									className={`object-contain p-6 transition-transform duration-200 ${zoom ? "scale-125 cursor-zoom-out" : "cursor-zoom-in"}`}
+									className={`object-contain p-6 transition-transform duration-200 ${
+										zoom ? "cursor-zoom-out" : "cursor-zoom-in"
+									}`}
+									style={
+										zoom
+											? {
+													transform: "scale(1.8)",
+													transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%`,
+											  }
+											: undefined
+									}
 									onClick={() => setZoom((z) => !z)}
+									onMouseMove={(e: React.MouseEvent<HTMLImageElement>) => {
+										if (!zoom) return;
+										const rect = e.currentTarget.getBoundingClientRect();
+										const x = ((e.clientX - rect.left) / rect.width) * 100;
+										const y = ((e.clientY - rect.top) / rect.height) * 100;
+										setZoomOrigin({ x, y });
+									}}
 									sizes="(max-width: 768px) 100vw, 50vw"
 									priority
 								/>

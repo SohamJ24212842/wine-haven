@@ -167,6 +167,8 @@ function ShopPageContent() {
 
 	// Debounced URL update to prevent excessive re-renders
 	useEffect(() => {
+		// Don't overwrite incoming URL filters until we've hydrated from them once
+		if (!hydratedRef.current) return;
 		const timeoutId = setTimeout(() => {
 			const params = new URLSearchParams();
 			if (query) params.set("q", query);
