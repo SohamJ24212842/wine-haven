@@ -1,5 +1,4 @@
 "use client";
-import { motion } from "framer-motion";
 import { Product } from "@/types/product";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { SectionHeading } from "@/components/typography/SectionHeading";
@@ -19,7 +18,6 @@ export function HorizontalScrollSection({ title, subtitle, products, filterUrl }
 	const scrollRef = useRef<HTMLDivElement>(null);
 	const [canScrollLeft, setCanScrollLeft] = useState(false);
 	const [canScrollRight, setCanScrollRight] = useState(true);
-	const [isAutoScrolling, setIsAutoScrolling] = useState(false);
 
 	// Build shop URL based on section type
 	const getShopUrl = () => {
@@ -50,45 +48,23 @@ export function HorizontalScrollSection({ title, subtitle, products, filterUrl }
 		scrollRef.current.scrollTo({ left: newScrollLeft, behavior: "smooth" });
 	};
 
-	// Auto-scroll on mount (subtle)
-	useEffect(() => {
-		if (products.length <= 3) return; // Don't auto-scroll if few items
-		
-		const interval = setInterval(() => {
-			if (!scrollRef.current || isAutoScrolling) return;
-			const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-			
-			if (scrollLeft >= scrollWidth - clientWidth - 10) {
-				// Reset to start
-				scrollRef.current.scrollTo({ left: 0, behavior: "smooth" });
-			} else {
-				// Scroll right
-				scrollRef.current.scrollBy({ left: 320, behavior: "smooth" });
-			}
-		}, 5000); // Auto-scroll every 5 seconds
-
-		return () => clearInterval(interval);
-	}, [products.length, isAutoScrolling]);
+	// Removed auto-scroll for better performance
 
 	useEffect(() => {
 		checkScroll();
 		const scrollElement = scrollRef.current;
 		if (scrollElement) {
 			scrollElement.addEventListener("scroll", checkScroll);
-			scrollElement.addEventListener("mouseenter", () => setIsAutoScrolling(true));
-			scrollElement.addEventListener("mouseleave", () => setIsAutoScrolling(false));
 		}
 		return () => {
 			if (scrollElement) {
 				scrollElement.removeEventListener("scroll", checkScroll);
-				scrollElement.removeEventListener("mouseenter", () => setIsAutoScrolling(true));
-				scrollElement.removeEventListener("mouseleave", () => setIsAutoScrolling(false));
 			}
 		};
 	}, []);
 
 	return (
-		<section className="py-16 bg-cream relative">
+		<section className="py-8 sm:py-12 md:py-16 bg-cream relative">
 			<Container>
 				<div className="flex items-end justify-between mb-4">
 					<SectionHeading subtitle={subtitle}>{title}</SectionHeading>
@@ -100,7 +76,7 @@ export function HorizontalScrollSection({ title, subtitle, products, filterUrl }
 						<ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
 					</Link>
 				</div>
-				<div className="mt-10 relative">
+				<div className="mt-6 sm:mt-8 md:mt-10 relative">
 					{/* Scroll buttons */}
 					{canScrollLeft && (
 						<button
@@ -123,20 +99,16 @@ export function HorizontalScrollSection({ title, subtitle, products, filterUrl }
 					
 					<div 
 						ref={scrollRef}
-						className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide scroll-smooth"
+						className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide scroll-smooth"
 						style={{ scrollBehavior: "smooth" }}
 					>
-						{products.map((product, index) => (
-							<motion.div
+						{products.map((product) => (
+							<div
 								key={product.slug}
-								initial={{ opacity: 0, x: 20 }}
-								whileInView={{ opacity: 1, x: 0 }}
-								viewport={{ once: true, amount: 0.2 }}
-								transition={{ duration: 0.5, delay: index * 0.1 }}
-								className="flex-shrink-0 w-[280px] sm:w-[300px]"
+								className="flex-shrink-0 w-[240px] sm:w-[280px] md:w-[300px]"
 							>
 								<ProductCard product={product} />
-							</motion.div>
+							</div>
 						))}
 					</div>
 					

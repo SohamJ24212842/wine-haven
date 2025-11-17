@@ -91,10 +91,10 @@ export function PromotionalMedia() {
 	const currentMedia = media[activeIndex];
 
 	return (
-		<section className="py-16 bg-gradient-to-b from-cream to-soft-gray">
+		<section className="py-8 sm:py-12 md:py-16 bg-gradient-to-b from-cream to-soft-gray">
 			<Container>
 				<SectionHeading>Visit Our Store</SectionHeading>
-				<p className="text-center text-maroon/70 mb-12 max-w-3xl mx-auto">
+				<p className="text-center text-maroon/70 mb-8 sm:mb-10 md:mb-12 max-w-3xl mx-auto text-sm sm:text-base">
 					Experience Wine Haven in person. Browse our curated selection and discover your next favorite bottle.
 				</p>
 
@@ -110,8 +110,8 @@ export function PromotionalMedia() {
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
 								exit={{ opacity: 0 }}
-								transition={{ duration: 0.15, ease: "easeOut" }}
-								className="relative h-[260px] sm:h-[360px] lg:h-[420px] rounded-[32px] overflow-hidden shadow-2xl"
+								transition={{ duration: 0.1 }}
+								className="relative h-[200px] sm:h-[300px] md:h-[360px] lg:h-[420px] rounded-2xl sm:rounded-[32px] overflow-hidden shadow-xl sm:shadow-2xl"
 							>
 								<div className="absolute inset-0 bg-soft-gray">
 									<Image
