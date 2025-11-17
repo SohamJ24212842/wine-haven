@@ -290,13 +290,13 @@ export function Hero() {
 							className="mt-10 flex flex-col sm:flex-row gap-4 items-center justify-center"
 						>
 							<Link
-								href="/shop"
+								href="/shop?category=Wine"
 								className="inline-flex items-center justify-center rounded-lg bg-gold px-8 py-4 text-base font-semibold text-maroon shadow-2xl transition-all hover:brightness-110 hover:shadow-gold/50 hover:scale-105 active:scale-95"
 							>
 								Shop Wines
 							</Link>
 							<Link
-								href="/shop?christmasGift=true"
+								href="/shop?category=Wine&christmasGift=true"
 								className="inline-flex items-center justify-center rounded-lg border-2 border-gold bg-transparent px-8 py-4 text-base font-semibold text-gold shadow-lg transition-all hover:bg-gold/10 hover:shadow-gold/30 hover:scale-105 active:scale-95"
 							>
 								Shop Christmas Gifts
