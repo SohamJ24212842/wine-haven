@@ -115,28 +115,15 @@ export function PromotionalMedia() {
 							>
 								<div className="absolute inset-0">
 									{currentMedia.type === "video" ? (
-										currentMedia.thumbnail ? (
-											<Image
-												src={currentMedia.thumbnail}
-												alt={currentMedia.title || "Promotional video"}
-												fill
-												className="object-cover"
-												sizes="(min-width: 1024px) 1024px, 100vw"
-												loading="lazy"
-												quality={85}
-											/>
-										) : (
-											<video
-												ref={videoRef}
-												src={currentMedia.url}
-												className="w-full h-full object-cover"
-												preload="auto"
-												muted
-												loop
-												autoPlay
-												playsInline
-											/>
-										)
+										<Image
+											src={currentMedia.thumbnail || currentMedia.url}
+											alt={currentMedia.title || "Promotional video"}
+											fill
+											className="object-cover"
+											sizes="(min-width: 1024px) 1024px, 100vw"
+											loading="lazy"
+											quality={85}
+										/>
 									) : (
 										<Image
 											src={currentMedia.url}
