@@ -206,8 +206,10 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
 
 // Get product by slug
 export async function getProductBySlug(slugParam: string): Promise<Product | null> {
-	// Normalize the slug parameter for comparison
-	const normalizedSlug = slugParam.toLowerCase();
+	// Normalize the slug parameter for comparison - remove diacritics
+	const { normalizeText } = await import('@/lib/utils/text');
+	const normalizedSlug = normalizeText(slugParam);
+	
   // Try Supabase if configured
   if (USE_SUPABASE) {
     const supabase = createServerClient();
@@ -217,19 +219,26 @@ export async function getProductBySlug(slugParam: string): Promise<Product | nul
         let { data, error } = await supabase
           .from('products')
           .select('*')
-          .eq('slug', normalizedSlug)
+          .eq('slug', slugParam)
           .single();
 
-        // If not found, try case-insensitive match
+        // If not found, try normalized match
         if (error || !data) {
-          const result = await supabase
+          // Get all products and filter client-side for normalized matching
+          const { data: allProducts } = await supabase
             .from('products')
-            .select('*')
-            .ilike('slug', normalizedSlug);
+            .select('*');
           
-          if (result.data && result.data.length > 0) {
-            data = result.data[0];
-            error = null;
+          if (allProducts) {
+            const matched = allProducts.find(p => {
+              const productSlugNormalized = normalizeText(p.slug || '');
+              return productSlugNormalized === normalizedSlug;
+            });
+            
+            if (matched) {
+              data = matched;
+              error = null;
+            }
           }
         }
 
@@ -242,9 +251,9 @@ export async function getProductBySlug(slugParam: string): Promise<Product | nul
     }
   }
 
-  // Fallback to local data - case-insensitive comparison
+  // Fallback to local data - normalized comparison
   const { products } = await import('@/data/products');
-  return products.find(p => p.slug.toLowerCase() === normalizedSlug) || null;
+  return products.find(p => normalizeText(p.slug) === normalizedSlug) || null;
 }
 
 // Create product (admin only)

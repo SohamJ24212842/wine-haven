@@ -606,9 +606,19 @@ export function DynamicNavbar() {
 					<SearchBar />
 					<CartTray />
 					<button 
-						onClick={() => setMobileMenuOpen(true)}
-						className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-maroon/10 border-2 border-maroon text-maroon hover:bg-maroon/20 active:scale-95 transition-all shadow-sm" 
+						onClick={(e) => {
+							e.preventDefault();
+							e.stopPropagation();
+							setMobileMenuOpen(true);
+						}}
+						onTouchStart={(e) => {
+							e.preventDefault();
+							e.stopPropagation();
+							setMobileMenuOpen(true);
+						}}
+						className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-maroon/10 border-2 border-maroon text-maroon hover:bg-maroon/20 active:scale-95 transition-all shadow-sm z-50" 
 						aria-label="Open menu"
+						type="button"
 					>
 						<Menu size={22} strokeWidth={3} />
 					</button>
@@ -624,8 +634,17 @@ export function DynamicNavbar() {
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
-							onClick={() => setMobileMenuOpen(false)}
-							className="fixed inset-0 z-50 bg-black/50 lg:hidden"
+							onClick={(e) => {
+								e.preventDefault();
+								e.stopPropagation();
+								setMobileMenuOpen(false);
+							}}
+							onTouchStart={(e) => {
+								e.preventDefault();
+								e.stopPropagation();
+								setMobileMenuOpen(false);
+							}}
+							className="fixed inset-0 z-[100] bg-black/50 lg:hidden"
 						/>
 						{/* Drawer */}
 						<motion.div
@@ -633,7 +652,8 @@ export function DynamicNavbar() {
 							animate={{ x: 0 }}
 							exit={{ x: "100%" }}
 							transition={{ type: "spring", damping: 25, stiffness: 200 }}
-							className="fixed right-0 top-0 bottom-0 w-[85%] max-w-sm bg-cream z-50 lg:hidden overflow-y-auto shadow-2xl"
+							className="fixed right-0 top-0 bottom-0 w-[85%] max-w-sm bg-cream z-[101] lg:hidden overflow-y-auto shadow-2xl"
+							onClick={(e) => e.stopPropagation()}
 						>
 							<div className="p-4 border-b border-maroon/20 flex items-center justify-between">
 								<Link 

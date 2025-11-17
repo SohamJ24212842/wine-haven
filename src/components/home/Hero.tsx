@@ -30,12 +30,9 @@ export function Hero() {
 		return () => window.removeEventListener("resize", checkMobile);
 	}, []);
 	
-	// Defer video loading slightly to prioritize initial page render
+	// Load video immediately for better performance
 	useEffect(() => {
-		const timer = setTimeout(() => {
-			setShouldLoadVideo(true);
-		}, 100); // Small delay to let initial content render
-		return () => clearTimeout(timer);
+		setShouldLoadVideo(true);
 	}, []);
 	
 	// Track scroll relative to the hero section for video control
@@ -129,6 +126,7 @@ export function Hero() {
 						muted
 						playsInline
 						preload="auto"
+						loading="eager"
 						className="absolute inset-0 w-full h-full object-cover"
 						style={{ 
 							objectPosition: "center",

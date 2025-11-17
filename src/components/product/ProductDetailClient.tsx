@@ -4,7 +4,7 @@ import { Product } from "@/types/product";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/typography/SectionHeading";
 import { AddToCartButton } from "@/components/shop/AddToCartButton";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Wine, UtensilsCrossed, Sparkles } from "lucide-react";
 
@@ -21,6 +21,7 @@ export function ProductDetailClient({ product, discountPercentage }: ProductDeta
 			: [product.image];
 	const [zoom, setZoom] = useState(false);
 	const [zoomOrigin, setZoomOrigin] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
+	const lastUpdateRef = useRef<number>(0);
 
 	// Prevent page scroll when zoomed
 	useEffect(() => {
@@ -33,6 +34,14 @@ export function ProductDetailClient({ product, discountPercentage }: ProductDeta
 			document.body.style.overflow = 'auto';
 		};
 	}, [zoom]);
+
+	// Throttled zoom origin update to prevent INP issues
+	const updateZoomOrigin = useCallback((x: number, y: number) => {
+		const now = Date.now();
+		if (now - lastUpdateRef.current < 16) return; // ~60fps throttling
+		lastUpdateRef.current = now;
+		setZoomOrigin({ x, y });
+	}, []);
 
 	return (
 		<Container className="py-12">
@@ -94,18 +103,22 @@ export function ProductDetailClient({ product, discountPercentage }: ProductDeta
 									onClick={() => setZoom((z) => !z)}
 									onMouseMove={(e: React.MouseEvent<HTMLImageElement>) => {
 										if (!zoom) return;
+										e.preventDefault();
+										e.stopPropagation();
 										const rect = e.currentTarget.getBoundingClientRect();
 										const x = ((e.clientX - rect.left) / rect.width) * 100;
 										const y = ((e.clientY - rect.top) / rect.height) * 100;
-										setZoomOrigin({ x, y });
+										updateZoomOrigin(x, y);
 									}}
 									onTouchMove={(e: React.TouchEvent<HTMLImageElement>) => {
 										if (!zoom || e.touches.length === 0) return;
+										e.preventDefault();
+										e.stopPropagation();
 										const touch = e.touches[0];
 										const rect = e.currentTarget.getBoundingClientRect();
 										const x = ((touch.clientX - rect.left) / rect.width) * 100;
 										const y = ((touch.clientY - rect.top) / rect.height) * 100;
-										setZoomOrigin({ x, y });
+										updateZoomOrigin(x, y);
 									}}
 									sizes="(max-width: 768px) 100vw, 50vw"
 									priority

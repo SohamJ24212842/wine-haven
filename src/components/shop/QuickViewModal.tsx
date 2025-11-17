@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Product } from "@/types/product";
 import { useCart } from "@/contexts/CartContext";
 import { X, ShoppingCart, Wine, UtensilsCrossed, Sparkles } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 
 type QuickViewModalProps = {
@@ -23,6 +23,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 	const [selectedImage, setSelectedImage] = useState(0);
 	const [zoom, setZoom] = useState(false);
 	const [zoomOrigin, setZoomOrigin] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
+	const lastUpdateRef = useRef<number>(0);
 
 	// Prevent page scroll when zoomed
 	useEffect(() => {
@@ -35,6 +36,14 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 			document.body.style.overflow = 'auto';
 		};
 	}, [zoom]);
+
+	// Throttled zoom origin update to prevent INP issues
+	const updateZoomOrigin = useCallback((x: number, y: number) => {
+		const now = Date.now();
+		if (now - lastUpdateRef.current < 16) return; // ~60fps throttling
+		lastUpdateRef.current = now;
+		setZoomOrigin({ x, y });
+	}, []);
 
 	if (!product) return null;
 
@@ -104,18 +113,22 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 										className="absolute inset-0"
 										onMouseMove={(e) => {
 											if (!zoom) return;
+											e.preventDefault();
+											e.stopPropagation();
 											const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
 											const x = ((e.clientX - rect.left) / rect.width) * 100;
 											const y = ((e.clientY - rect.top) / rect.height) * 100;
-											setZoomOrigin({ x, y });
+											updateZoomOrigin(x, y);
 										}}
 										onTouchMove={(e) => {
 											if (!zoom || e.touches.length === 0) return;
+											e.preventDefault();
+											e.stopPropagation();
 											const touch = e.touches[0];
 											const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
 											const x = ((touch.clientX - rect.left) / rect.width) * 100;
 											const y = ((touch.clientY - rect.top) / rect.height) * 100;
-											setZoomOrigin({ x, y });
+											updateZoomOrigin(x, y);
 										}}
 									>
 										<Image
