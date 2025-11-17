@@ -108,22 +108,7 @@ export function HorizontalScrollSection({ title, subtitle, products, filterUrl }
 					
 					<div 
 						ref={scrollRef}
-						className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 scrollbar-hide"
-						style={{ overscrollBehaviorX: 'contain' }}
-						onWheel={(e) => {
-							// Only allow horizontal scrolling if user is explicitly scrolling horizontally
-							// Otherwise, let vertical scroll pass through to page
-							const isScrollingHorizontally = Math.abs(e.deltaX) > Math.abs(e.deltaY);
-							if (!isScrollingHorizontally) {
-								// User is scrolling vertically - don't prevent default, let page scroll
-								return;
-							}
-							// User is scrolling horizontally - allow it but prevent page scroll
-							e.preventDefault();
-							if (scrollRef.current) {
-								scrollRef.current.scrollLeft += e.deltaX;
-							}
-						}}
+						className="flex gap-3 sm:gap-4 overflow-x-auto pb-3 scrollbar-hide"
 					>
 						{products.map((product) => (
 							<div
