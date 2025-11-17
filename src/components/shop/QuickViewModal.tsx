@@ -141,7 +141,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 													setZoom((z) => !z);
 												}
 											}}
-											onMouseMove={!isMobileOrTablet ? (e) => {
+											onMouseMove={!isMobileOrTablet ? (e: React.MouseEvent<HTMLImageElement>) => {
 												if (!zoom) return;
 												e.preventDefault();
 												e.stopPropagation();
