@@ -604,6 +604,7 @@ export function DynamicNavbar() {
 					<SearchBar />
 					<CartTray />
 				</div>
+			</Container>
 		</header>
 	);
 }
