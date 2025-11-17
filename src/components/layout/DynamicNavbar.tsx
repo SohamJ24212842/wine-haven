@@ -606,55 +606,32 @@ export function DynamicNavbar() {
 					<SearchBar />
 					<CartTray />
 					<button 
-						onClick={(e) => {
-							e.preventDefault();
-							e.stopPropagation();
-							setMobileMenuOpen(true);
+						onClick={() => {
+							setMobileMenuOpen(prev => !prev);
 						}}
-						onTouchStart={(e) => {
-							e.preventDefault();
-							e.stopPropagation();
-							setMobileMenuOpen(true);
-						}}
-						className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-maroon/10 border-2 border-maroon text-maroon hover:bg-maroon/20 active:scale-95 transition-all shadow-sm z-50" 
+						className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-maroon/10 border-2 border-maroon text-maroon hover:bg-maroon/20 active:scale-95 transition-all shadow-sm relative z-[999]" 
 						aria-label="Open menu"
 						type="button"
+						aria-expanded={mobileMenuOpen}
 					>
-						<Menu size={22} strokeWidth={3} />
+						<Menu size={22} strokeWidth={2.5} />
 					</button>
 				</div>
 			</Container>
 
 			{/* Mobile Menu Drawer */}
-			<AnimatePresence>
-				{mobileMenuOpen && (
-					<>
-						{/* Backdrop */}
-						<motion.div
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							exit={{ opacity: 0 }}
-							onClick={(e) => {
-								e.preventDefault();
-								e.stopPropagation();
-								setMobileMenuOpen(false);
-							}}
-							onTouchStart={(e) => {
-								e.preventDefault();
-								e.stopPropagation();
-								setMobileMenuOpen(false);
-							}}
-							className="fixed inset-0 z-[100] bg-black/50 lg:hidden"
-						/>
-						{/* Drawer */}
-						<motion.div
-							initial={{ x: "100%" }}
-							animate={{ x: 0 }}
-							exit={{ x: "100%" }}
-							transition={{ type: "spring", damping: 25, stiffness: 200 }}
-							className="fixed right-0 top-0 bottom-0 w-[85%] max-w-sm bg-cream z-[101] lg:hidden overflow-y-auto shadow-2xl"
-							onClick={(e) => e.stopPropagation()}
-						>
+			{mobileMenuOpen && (
+				<>
+					{/* Backdrop */}
+					<div
+						onClick={() => setMobileMenuOpen(false)}
+						className="fixed inset-0 z-[998] bg-black/50 lg:hidden"
+					/>
+					{/* Drawer */}
+					<div
+						className="fixed right-0 top-0 bottom-0 w-[85%] max-w-sm bg-cream z-[999] lg:hidden overflow-y-auto shadow-2xl animate-in slide-in-from-right duration-300"
+						onClick={(e) => e.stopPropagation()}
+					>
 							<div className="p-4 border-b border-maroon/20 flex items-center justify-between">
 								<Link 
 									href="/" 
@@ -664,21 +641,12 @@ export function DynamicNavbar() {
 									Wine Haven
 								</Link>
 								<button 
-									onClick={(e) => {
-										e.preventDefault();
-										e.stopPropagation();
-										setMobileMenuOpen(false);
-									}}
-									onTouchStart={(e) => {
-										e.preventDefault();
-										e.stopPropagation();
-										setMobileMenuOpen(false);
-									}}
+									onClick={() => setMobileMenuOpen(false)}
 									className="text-maroon hover:text-gold transition-colors p-1 -mr-1"
 									aria-label="Close menu"
 									type="button"
 								>
-									<X size={24} strokeWidth={2} />
+									<X size={24} strokeWidth={1.5} />
 								</button>
 							</div>
 
@@ -830,10 +798,9 @@ export function DynamicNavbar() {
 									Click & Collect
 								</Link>
 							</nav>
-						</motion.div>
-					</>
-				)}
-			</AnimatePresence>
+					</div>
+				</>
+			)}
 		</header>
 	);
 }

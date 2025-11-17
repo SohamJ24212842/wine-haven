@@ -21,7 +21,7 @@ export function ProductDetailClient({ product, discountPercentage }: ProductDeta
 			: [product.image];
 	const [zoom, setZoom] = useState(false);
 	const [zoomOrigin, setZoomOrigin] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
-	const lastUpdateRef = useRef<number>(0);
+	const lastUpdateRef = useRef<number | null>(null);
 
 	// Prevent page scroll when zoomed
 	useEffect(() => {
@@ -35,12 +35,14 @@ export function ProductDetailClient({ product, discountPercentage }: ProductDeta
 		};
 	}, [zoom]);
 
-	// Throttled zoom origin update to prevent INP issues
+	// Optimized zoom origin update using requestAnimationFrame for smooth performance
 	const updateZoomOrigin = useCallback((x: number, y: number) => {
-		const now = Date.now();
-		if (now - lastUpdateRef.current < 16) return; // ~60fps throttling
-		lastUpdateRef.current = now;
-		setZoomOrigin({ x, y });
+		if (lastUpdateRef.current) {
+			cancelAnimationFrame(lastUpdateRef.current);
+		}
+		lastUpdateRef.current = requestAnimationFrame(() => {
+			setZoomOrigin({ x, y });
+		});
 	}, []);
 
 	return (
