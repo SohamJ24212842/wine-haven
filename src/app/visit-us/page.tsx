@@ -26,7 +26,7 @@ export default function VisitUsPage() {
 							<div>
 								<h3 className="text-lg font-semibold mb-2">Address</h3>
 								<p className="text-maroon/80 leading-relaxed">
-									George's Street Upper<br />
+									47, George's Street Upper<br />
 									Dún Laoghaire, Dublin<br />
 									A96 K2H2
 								</p>

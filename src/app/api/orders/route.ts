@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
                 type: 'collection',
                 collection_date,
                 collection_time,
-                address: "George's Street Upper, Dún Laoghaire, Dublin, A96 K2H2",
+                address: "47, George's Street Upper, Dún Laoghaire, Dublin, A96 K2H2",
               },
               status: 'pending',
               subtotal,

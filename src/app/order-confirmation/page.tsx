@@ -66,7 +66,7 @@ function OrderConfirmationContent() {
 						<div className="flex items-start gap-3">
 							<MapPin className="text-gold mt-1" size={18} />
 							<div className="text-left">
-								<p>George's Street Upper</p>
+								<p>47, George's Street Upper</p>
 								<p>Dún Laoghaire, Dublin</p>
 								<p>A96 K2H2</p>
 							</div>

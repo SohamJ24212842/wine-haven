@@ -192,7 +192,7 @@ export default function CheckoutPage() {
 								<div className="text-sm text-maroon/80">
 									<p className="font-medium mb-1">Collection Address</p>
 									<p>
-										George's Street Upper<br />
+										47, George's Street Upper<br />
 										Dún Laoghaire, Dublin<br />
 										A96 K2H2
 									</p>

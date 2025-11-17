@@ -35,7 +35,7 @@ export function Footer() {
 				<div>
 					<h4 className="text-base font-[var(--font-display)] font-semibold text-gold mb-3">Visit Us</h4>
 					<p className="text-sm text-cream/90">
-						George's Street Upper<br />
+						47, George's Street Upper<br />
 						Dún Laoghaire, Dublin<br />
 						A96 K2H2
 					</p>
