@@ -89,3 +89,5 @@ When asking an AI to format your data, use this prompt:
 - **Grapes** should be an array of strings
 - **Boolean fields** (featured, new, onSale, etc.) should be true/false, not strings
 
+
+

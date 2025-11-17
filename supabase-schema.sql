@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS products (
   grapes TEXT[],
   wine_type TEXT CHECK (wine_type IN ('Red', 'White', 'Rosé', 'Sparkling')),
   spirit_type TEXT CHECK (spirit_type IN ('Gin', 'Vodka', 'Rum', 'Tequila', 'Liqueur', 'Whiskey')),
-  beer_style TEXT CHECK (beer_style IN ('Lager', 'IPA', 'Pale Ale', 'Stout', 'Porter', 'Pilsner', 'Sour')),
+  beer_style TEXT CHECK (beer_style IN ('Lager', 'IPA', 'Pale Ale', 'Stout', 'Porter', 'Pilsner', 'Sour', 'Wheat Beer', 'Ginger Beer')),
   abv DECIMAL(4, 2),
   volume_ml INTEGER,
   featured BOOLEAN DEFAULT false,

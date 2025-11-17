@@ -8,7 +8,6 @@ import { Plus, Edit, Trash2, Eye, EyeOff, Tag, Star, Sparkles, LayoutDashboard, 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { SearchableSelect } from "@/components/admin/SearchableSelect";
-import { slugify } from "@/lib/utils/text";
 
 const ADMIN_PASSWORD = "winehaven2024"; // Change this in production!
 
@@ -39,8 +38,6 @@ function AdminPageContent() {
 	const [promotionalMedia, setPromotionalMedia] = useState<any[]>([]);
 	const [showPromoForm, setShowPromoForm] = useState(false);
 	const [editingPromo, setEditingPromo] = useState<any | null>(null);
-	const [showBulkImport, setShowBulkImport] = useState(false);
-	const [bulkImportJson, setBulkImportJson] = useState("");
 
 	// Bulk actions for selected products
 	const handleBulkAction = async (action: string) => {
@@ -68,9 +65,6 @@ function AdminPageContent() {
 			case "sale-off":
 				actionLabel = "remove on sale";
 				break;
-			case "sale-10-percent":
-				actionLabel = "apply 10% discount";
-				break;
 			default:
 				return;
 		}
@@ -91,16 +85,6 @@ function AdminPageContent() {
 				if (action === "gift-off") updates = { christmasGift: false };
 				if (action === "sale-on") updates = { onSale: true };
 				if (action === "sale-off") updates = { onSale: false };
-				if (action === "sale-10-percent") {
-					// Only apply to Wine and Spirit categories
-					if (product.category === "Wine" || product.category === "Spirit") {
-						const salePrice = Math.round((product.price * 0.9) * 100) / 100; // 10% off, rounded to 2 decimals
-						updates = { onSale: true, salePrice: salePrice };
-					} else {
-						// Skip non-wine/spirit products
-						return null;
-					}
-				}
 
 				const response = await fetch(`/api/products/${slug}`, {
 					method: "PUT",
@@ -116,22 +100,11 @@ function AdminPageContent() {
 				return response.json();
 			});
 
-			const results = await Promise.all(promises);
+			await Promise.all(promises);
 			const selectedCount = count;
-			const updatedCount = results.filter(r => r !== null).length;
 			setSelectedProducts(new Set());
 			fetchProducts();
-			
-			if (action === "sale-10-percent") {
-				const skippedCount = selectedCount - updatedCount;
-				if (skippedCount > 0) {
-					alert(`Successfully applied 10% discount to ${updatedCount} wine/spirit product(s).\n\n${skippedCount} product(s) skipped (not Wine or Spirit).`);
-				} else {
-					alert(`Successfully applied 10% discount to ${updatedCount} product(s).`);
-				}
-			} else {
-				alert(`Successfully applied "${actionLabel}" to ${selectedCount} product(s).`);
-			}
+			alert(`Successfully applied "${actionLabel}" to ${selectedCount} product(s).`);
 		} catch (error: any) {
 			alert(`Failed to update products: ${error.message}`);
 			console.error(error);
@@ -726,7 +699,6 @@ function AdminPageContent() {
 									<option value="gift-off">Unmark Christmas Gift</option>
 									<option value="sale-on">Mark as On Sale</option>
 									<option value="sale-off">Unmark On Sale</option>
-									<option value="sale-10-percent">Apply 10% Discount (Wines & Spirits Only)</option>
 								</select>
 							</div>
 						</>
@@ -767,14 +739,6 @@ function AdminPageContent() {
 					>
 						<Package size={16} />
 						Import Products
-					</button>
-					<button
-						onClick={() => setShowBulkImport(true)}
-						className="flex items-center gap-2 rounded-md border border-maroon/20 bg-white px-4 py-2 text-sm text-maroon hover:bg-soft-gray transition-colors"
-						title="Bulk import products from JSON"
-					>
-						<Upload size={16} />
-						Bulk Import JSON
 					</button>
 					<button
 						onClick={() => {
@@ -964,98 +928,6 @@ function AdminPageContent() {
 				})()
 			)}
 
-			{/* Bulk Import Modal */}
-			{showBulkImport && (
-				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-					<div className="w-full max-w-3xl max-h-[90vh] bg-cream rounded-lg border border-maroon/20 flex flex-col">
-						<div className="flex items-center justify-between p-6 border-b border-maroon/20 flex-shrink-0">
-							<h2 className="text-xl font-semibold text-maroon">Bulk Import Products</h2>
-							<button
-								onClick={() => {
-									setShowBulkImport(false);
-									setBulkImportJson("");
-								}}
-								className="text-maroon/70 hover:text-maroon transition-colors text-2xl leading-none"
-							>
-								×
-							</button>
-						</div>
-						<div className="flex-1 overflow-y-auto p-6 space-y-4">
-							<div>
-								<label className="block text-sm font-medium text-maroon mb-2">
-									Paste JSON Array of Products
-								</label>
-								<textarea
-									value={bulkImportJson}
-									onChange={(e) => setBulkImportJson(e.target.value)}
-									placeholder='[{"name": "Product Name", "category": "Wine", "price": 45.99, "country": "France", ...}, ...]'
-									className="w-full h-96 rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm font-mono outline-none focus:border-gold"
-								/>
-								<p className="text-xs text-maroon/60 mt-2">
-									Required fields: name, category, price, country. See BULK_IMPORT_FORMAT.md for full format.
-									Images can use placeholder URLs and be updated later.
-								</p>
-							</div>
-						</div>
-						<div className="flex gap-3 p-6 border-t border-maroon/20 flex-shrink-0">
-							<button
-								onClick={async () => {
-									if (!USE_SUPABASE) {
-										alert("Bulk import is disabled in local JSON mode. Enable Supabase to use this feature.");
-										return;
-									}
-									if (!bulkImportJson.trim()) {
-										alert("Please paste JSON data");
-										return;
-									}
-									try {
-										const products = JSON.parse(bulkImportJson);
-										if (!Array.isArray(products)) {
-											alert("JSON must be an array of products");
-											return;
-										}
-										if (confirm(`Import ${products.length} product(s)? This will skip products that already exist.`)) {
-											const response = await fetch("/api/products/bulk-import", {
-												method: "POST",
-												headers: { "Content-Type": "application/json" },
-												body: JSON.stringify({ products }),
-											});
-											const result = await response.json();
-											if (response.ok) {
-												let message = `Bulk import complete!\n✅ Success: ${result.summary.success}\n⏭️ Skipped: ${result.summary.skipped}\n❌ Errors: ${result.summary.errors}`;
-												if (result.errorPreview && result.errorPreview.length > 0) {
-													message += `\n\nFirst errors:\n${result.errorPreview.map((e: any) => `- ${e.product}: ${e.error}`).join('\n')}`;
-												}
-												alert(message);
-												setShowBulkImport(false);
-												setBulkImportJson("");
-												fetchProducts();
-											} else {
-												alert(`Import failed: ${result.error}\n\n${result.details || ""}`);
-											}
-										}
-									} catch (error: any) {
-										alert(`Invalid JSON: ${error.message}`);
-									}
-								}}
-								className="flex-1 rounded-md bg-gold px-4 py-2 text-sm font-semibold text-maroon hover:brightness-95 transition-colors"
-							>
-								Import Products
-							</button>
-							<button
-								onClick={() => {
-									setShowBulkImport(false);
-									setBulkImportJson("");
-								}}
-								className="flex-1 rounded-md border border-maroon/20 bg-white px-4 py-2 text-sm text-maroon hover:bg-soft-gray transition-colors"
-							>
-								Cancel
-							</button>
-						</div>
-					</div>
-				</div>
-			)}
-
 			{/* Add/Edit Form Modal */}
 			{(showAddForm || editingProduct) && (
 				<ProductForm
@@ -1166,11 +1038,8 @@ function ProductForm({
 	// Update form data and image preview when product changes
 	useEffect(() => {
 		if (product) {
-			// Normalize slug if it contains accents (shouldn't happen, but safety check)
-			const normalizedSlug = slugify(product.slug || product.name);
-			
 			setFormData({
-				slug: normalizedSlug, // Always use normalized slug
+				slug: product.slug,
 				category: product.category,
 				name: product.name,
 				price: product.price,
@@ -1183,9 +1052,6 @@ function ProductForm({
 				beerStyle: product.beerStyle,
 				abv: product.abv,
 				volumeMl: product.volumeMl,
-				producer: product.producer || "",
-				tasteProfile: product.tasteProfile || "",
-				foodPairing: product.foodPairing || "",
 				// Note: we keep grapes as a comma-separated string in form state
 				// and convert to string[] only right before saving.
 				grapes: product.grapes ? (product.grapes.join(", ") as any) : undefined,
@@ -1283,7 +1149,6 @@ function ProductForm({
 		const asProduct = formData as Product & { grapes?: string; images?: string[] };
 		const prepared: Product = {
 			...asProduct,
-			slug: slugify(asProduct.slug || asProduct.name), // Always normalize slug before saving
 			grapes: asProduct.grapes
 				? asProduct.grapes
 						.split(",")
@@ -1339,18 +1204,17 @@ function ProductForm({
 								onFocus={() => {
 									// Auto-generate from Name the first time user clicks into the field,
 									// but only if it's currently empty.
-									// Normalize diacritics and create URL-friendly slug
 									if (!formData.slug && formData.name) {
 										setFormData({
 											...formData,
-											slug: slugify(formData.name),
+											slug: formData.name.toLowerCase().replace(/\s+/g, "-"),
 										});
 									}
 								}}
 								onChange={(e) =>
 									setFormData({
 										...formData,
-										slug: slugify(e.target.value),
+										slug: e.target.value.toLowerCase().replace(/\s+/g, "-"),
 									})
 								}
 								className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"
@@ -1488,6 +1352,8 @@ function ProductForm({
 									<option value="Porter">Porter</option>
 									<option value="Pilsner">Pilsner</option>
 									<option value="Sour">Sour</option>
+									<option value="Wheat Beer">Wheat Beer</option>
+									<option value="Ginger Beer">Ginger Beer</option>
 								</select>
 							</div>
 						)}

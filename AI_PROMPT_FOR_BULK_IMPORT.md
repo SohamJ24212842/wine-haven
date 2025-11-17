@@ -36,7 +36,7 @@
 - `grapes`: Array of grape varieties (array of strings, e.g., ["Nebbiolo", "Barbera"])
 - `wineType`: For wines only - "Red", "White", "Rosé", "Sparkling", or "Prosecco" (string)
 - `spiritType`: For spirits only - "Gin", "Vodka", "Rum", "Tequila", "Liqueur", or "Whiskey" (string)
-- `beerStyle`: For beers only - "Lager", "IPA", "Pale Ale", "Stout", "Porter", "Pilsner", or "Sour" (string)
+- `beerStyle`: For beers only - "Lager", "IPA", "Pale Ale", "Stout", "Porter", "Pilsner", "Sour", "Wheat Beer", or "Ginger Beer" (string)
 - `abv`: Alcohol by volume percentage as a number (e.g., 13.5)
 - `volumeMl`: Bottle size in milliliters as a number (e.g., 750)
 - `stock`: Stock quantity as a number (e.g., 10)

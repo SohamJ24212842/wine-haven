@@ -27,3 +27,5 @@ export function slugify(text: string): string {
 		.replace(/-+$/, ''); // Remove trailing hyphens
 }
 
+
+

@@ -2,7 +2,7 @@ export type ProductCategory = "Wine" | "Beer" | "Spirit";
 
 export type WineType = "Red" | "White" | "Rosé" | "Sparkling" | "Prosecco";
 export type SpiritType = "Gin" | "Vodka" | "Rum" | "Tequila" | "Liqueur" | "Whiskey";
-export type BeerStyle = "Lager" | "IPA" | "Pale Ale" | "Stout" | "Porter" | "Pilsner" | "Sour";
+export type BeerStyle = "Lager" | "IPA" | "Pale Ale" | "Stout" | "Porter" | "Pilsner" | "Sour" | "Wheat Beer" | "Ginger Beer";
 
 export interface Product {
 	slug: string;
