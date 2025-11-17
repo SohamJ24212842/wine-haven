@@ -67,7 +67,13 @@ export function Hero() {
 	}, [shouldLoadVideo]);
 	
 	// Optimized scroll-controlled video playback with throttling
+	// Only update when hero section is in view (scrollYProgress between 0 and 1)
 	useMotionValueEvent(scrollYProgress, "change", (latest) => {
+		// Stop processing if hero section is completely out of view
+		if (latest >= 1 || latest < 0) {
+			return;
+		}
+		
 		const now = performance.now();
 		// Throttle updates: only update every ~33ms (30fps) on mobile, ~16ms (60fps) on desktop
 		const throttleMs = isMobileRef.current ? 33 : 16;
