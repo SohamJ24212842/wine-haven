@@ -1156,6 +1156,7 @@ function ProductForm({
 		const asProduct = formData as Product & { grapes?: string; images?: string[] };
 		const prepared: Product = {
 			...asProduct,
+			slug: slugify(asProduct.slug || asProduct.name), // Always normalize slug before saving
 			grapes: asProduct.grapes
 				? asProduct.grapes
 						.split(",")
