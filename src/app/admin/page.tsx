@@ -724,6 +724,7 @@ function AdminPageContent() {
 									<option value="gift-off">Unmark Christmas Gift</option>
 									<option value="sale-on">Mark as On Sale</option>
 									<option value="sale-off">Unmark On Sale</option>
+									<option value="sale-10-percent">Apply 10% Discount (Wines & Spirits Only)</option>
 								</select>
 							</div>
 						</>
