@@ -17,7 +17,7 @@ const occasions: OccasionTile[] = [
 		title: "Christmas Gifts",
 		subtitle: "Perfect presents",
 		icon: <Gift className="w-8 h-8" />,
-		href: "/shop?category=Wine&christmasGift=true",
+		href: "/shop?christmasGift=true",
 		color: "text-red-600",
 		bgGradient: "from-red-50 to-red-100/50",
 	},

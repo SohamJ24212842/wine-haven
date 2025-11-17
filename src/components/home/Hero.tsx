@@ -296,7 +296,7 @@ export function Hero() {
 								Shop Wines
 							</Link>
 							<Link
-								href="/shop?category=Wine&christmasGift=true"
+								href="/shop?christmasGift=true"
 								className="inline-flex items-center justify-center rounded-lg border-2 border-gold bg-transparent px-8 py-4 text-base font-semibold text-gold shadow-lg transition-all hover:bg-gold/10 hover:shadow-gold/30 hover:scale-105 active:scale-95"
 							>
 								Shop Christmas Gifts

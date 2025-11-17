@@ -38,7 +38,7 @@ export function Navbar() {
 						onMouseLeave={handleMouseLeave}
 					>
 						<Link
-							href="/shop?category=Wine&christmasGift=true"
+							href="/shop?christmasGift=true"
 							className={cn(
 								"flex items-center gap-1 px-4 py-2 hover:text-gold transition-colors",
 								hoveredMenu === "gifts" && "text-gold"
@@ -78,22 +78,22 @@ export function Navbar() {
 											<h3 className="font-semibold text-maroon mb-3">Wine Gifts</h3>
 											<ul className="space-y-2 text-sm">
 												<li>
-													<Link href="/shop?category=Wine&christmasGift=true" className="text-maroon/70 hover:text-gold transition-colors">
+													<Link href="/shop?christmasGift=true" className="text-maroon/70 hover:text-gold transition-colors">
 														2 Bottle
 													</Link>
 												</li>
 												<li>
-													<Link href="/shop?category=Wine&christmasGift=true" className="text-maroon/70 hover:text-gold transition-colors">
+													<Link href="/shop?christmasGift=true" className="text-maroon/70 hover:text-gold transition-colors">
 														3 Bottle
 													</Link>
 												</li>
 												<li>
-													<Link href="/shop?category=Wine&christmasGift=true" className="text-maroon/70 hover:text-gold transition-colors">
+													<Link href="/shop?christmasGift=true" className="text-maroon/70 hover:text-gold transition-colors">
 														6 Bottle
 													</Link>
 												</li>
 												<li>
-													<Link href="/shop?category=Wine&christmasGift=true" className="text-maroon/70 hover:text-gold transition-colors">
+													<Link href="/shop?christmasGift=true" className="text-maroon/70 hover:text-gold transition-colors">
 														12 Bottle
 													</Link>
 												</li>
