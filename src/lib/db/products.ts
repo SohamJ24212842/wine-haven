@@ -108,8 +108,12 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
           
           // Client-side normalization filter as fallback for diacritics
           // This ensures "cotes" matches "Côtes" even if Supabase .ilike doesn't handle it
+          // For single-word queries, prioritize grapes and name matches to avoid false positives
           if (searchQuery && searchQuery.trim()) {
             const search = normalizeText(searchQuery.trim());
+            const searchWords = search.split(/\s+/).filter(Boolean);
+            const isSingleWord = searchWords.length === 1;
+            
             results = results.filter(p => {
               const name = normalizeText(p.name || '');
               const slug = normalizeText(p.slug || '');
@@ -121,15 +125,27 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
               const foodPairing = normalizeText(p.foodPairing || '');
               const grapes = normalizeText((p.grapes || []).join(', '));
               
-              return name.includes(search) ||
+              // Check if it matches in primary fields (name, grapes, region, producer, country)
+              const matchesPrimary = name.includes(search) ||
                 slug.includes(search) ||
                 region.includes(search) ||
                 country.includes(search) ||
                 producer.includes(search) ||
-                description.includes(search) ||
-                tasteProfile.includes(search) ||
-                foodPairing.includes(search) ||
                 grapes.includes(search);
+              
+              // Check if it matches in secondary fields (description, taste, food pairing)
+              const matchesSecondary = description.includes(search) ||
+                tasteProfile.includes(search) ||
+                foodPairing.includes(search);
+              
+              // For single-word queries, require a match in primary fields to avoid false positives
+              // Example: "malbec" shouldn't match Chardonnay just because description mentions Malbec
+              if (isSingleWord) {
+                return matchesPrimary; // Only return if it matches name, grapes, region, producer, country, or slug
+              }
+              
+              // For multi-word queries, allow matches in any field
+              return matchesPrimary || matchesSecondary;
             });
           }
           
@@ -145,9 +161,11 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
   const { products } = await import('@/data/products');
   
   // Filter local data if search query provided
-  // Match shop page behavior: search across all relevant fields
+  // For single-word queries, prioritize primary fields to avoid false positives
   if (searchQuery && searchQuery.trim()) {
     const search = normalizeText(searchQuery.trim());
+    const searchWords = search.split(/\s+/).filter(Boolean);
+    const isSingleWord = searchWords.length === 1;
     
     return products.filter(p => {
       const name = normalizeText(p.name || '');
@@ -160,16 +178,26 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
       const foodPairing = normalizeText(p.foodPairing || '');
       const grapes = normalizeText((p.grapes || []).join(', '));
       
-      // Simple includes check on full query string (matches shop page behavior)
-      return name.includes(search) ||
+      // Check if it matches in primary fields (name, grapes, region, producer, country, slug)
+      const matchesPrimary = name.includes(search) ||
         slug.includes(search) ||
         region.includes(search) ||
         country.includes(search) ||
         producer.includes(search) ||
-        description.includes(search) ||
-        tasteProfile.includes(search) ||
-        foodPairing.includes(search) ||
         grapes.includes(search);
+      
+      // Check if it matches in secondary fields (description, taste, food pairing)
+      const matchesSecondary = description.includes(search) ||
+        tasteProfile.includes(search) ||
+        foodPairing.includes(search);
+      
+      // For single-word queries, require a match in primary fields to avoid false positives
+      if (isSingleWord) {
+        return matchesPrimary;
+      }
+      
+      // For multi-word queries, allow matches in any field
+      return matchesPrimary || matchesSecondary;
     });
   }
   

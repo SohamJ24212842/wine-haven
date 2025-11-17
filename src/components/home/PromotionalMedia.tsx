@@ -118,9 +118,23 @@ export function PromotionalMedia() {
 		if (!video || !currentMedia) return;
 
 		if (isVisible && currentMedia.type === "video" && !currentMedia.thumbnail) {
-			video.play().catch(() => {
-				// Autoplay might be blocked, that's okay
-			});
+			// Ensure video is ready before playing
+			if (video.readyState >= 2) {
+				video.play().catch(() => {
+					// Autoplay might be blocked, that's okay
+				});
+			} else {
+				// Wait for video to be ready
+				const handleCanPlay = () => {
+					video.play().catch(() => {
+						// Autoplay might be blocked, that's okay
+					});
+				};
+				video.addEventListener('canplay', handleCanPlay, { once: true });
+				return () => {
+					video.removeEventListener('canplay', handleCanPlay);
+				};
+			}
 		} else {
 			video.pause();
 		}
@@ -172,10 +186,19 @@ export function PromotionalMedia() {
 												ref={videoRef}
 												src={currentMedia.url}
 												className="w-full h-full object-cover"
-												preload="metadata"
+												preload="auto"
 												muted
 												loop
+												autoPlay={isVisible}
 												playsInline
+												onLoadedData={() => {
+													// Ensure video plays when loaded and visible
+													if (isVisible && videoRef.current) {
+														videoRef.current.play().catch(() => {
+															// Autoplay might be blocked
+														});
+													}
+												}}
 											/>
 										)
 									) : (
