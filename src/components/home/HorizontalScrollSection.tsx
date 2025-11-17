@@ -108,7 +108,7 @@ export function HorizontalScrollSection({ title, subtitle, products, filterUrl }
 					
 					<div 
 						ref={scrollRef}
-						className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide"
+						className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 scrollbar-hide"
 						style={{ overscrollBehaviorX: 'contain' }}
 						onWheel={(e) => {
 							// Only allow horizontal scrolling if user is explicitly scrolling horizontally
