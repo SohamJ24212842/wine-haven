@@ -110,6 +110,7 @@ export function PromotionalMedia() {
 	}, [media.length, isHovered, isVisible, nextSlide]);
 
 	// Handle video play/pause based on visibility
+	// Note: autoPlay attribute handles most cases, this is just a fallback
 	useEffect(() => {
 		if (loading || media.length === 0) return;
 		
@@ -117,25 +118,15 @@ export function PromotionalMedia() {
 		const currentMedia = media[activeIndex];
 		if (!video || !currentMedia) return;
 
+		// Only manually control if autoPlay didn't work (e.g., autoplay blocked)
 		if (isVisible && currentMedia.type === "video" && !currentMedia.thumbnail) {
-			// Ensure video is ready before playing
-			if (video.readyState >= 2) {
+			// Check if video is paused (autoplay might have been blocked)
+			if (video.paused && video.readyState >= 2) {
 				video.play().catch(() => {
-					// Autoplay might be blocked, that's okay
+					// Autoplay blocked, that's okay - user can click play button
 				});
-			} else {
-				// Wait for video to be ready
-				const handleCanPlay = () => {
-					video.play().catch(() => {
-						// Autoplay might be blocked, that's okay
-					});
-				};
-				video.addEventListener('canplay', handleCanPlay, { once: true });
-				return () => {
-					video.removeEventListener('canplay', handleCanPlay);
-				};
 			}
-		} else {
+		} else if (!isVisible) {
 			video.pause();
 		}
 	}, [isVisible, activeIndex, media, loading]);
@@ -191,14 +182,6 @@ export function PromotionalMedia() {
 												loop
 												autoPlay={isVisible}
 												playsInline
-												onLoadedData={() => {
-													// Ensure video plays when loaded and visible
-													if (isVisible && videoRef.current) {
-														videoRef.current.play().catch(() => {
-															// Autoplay might be blocked
-														});
-													}
-												}}
 											/>
 										)
 									) : (

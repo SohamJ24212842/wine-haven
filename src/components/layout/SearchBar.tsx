@@ -34,12 +34,6 @@ export function SearchBar() {
 		};
 	}, [isOpen]);
 
-	// Helper to normalize for ranking (diacritics-insensitive)
-	const normalize = (s?: string) =>
-		(s || "")
-			.toLowerCase()
-			.normalize("NFD")
-			.replace(/\p{Diacritic}/gu, "");
 
 	// Debounced search
 	useEffect(() => {
@@ -56,79 +50,9 @@ export function SearchBar() {
 					const data = await response.json();
 					const productsArray: Product[] = Array.isArray(data) ? data : (data.products || []);
 
-					// Rank results so the most relevant matches appear first
-					// For single-word queries (like "malbec"), prioritize grapes and name matches
-					const qNorm = normalize(query.trim());
-					const qWords = qNorm.split(/\s+/).filter(Boolean);
-					const isSingleWord = qWords.length === 1;
-					
-					const scored = productsArray.map((p) => {
-						const name = normalize(p.name);
-						const slug = normalize(p.slug);
-						const country = normalize(p.country);
-						const region = normalize(p.region);
-						const producer = normalize(p.producer);
-						const grapes = normalize((p.grapes || []).join(', '));
-						const description = normalize(p.description);
-
-						let score = 0;
-						let hasGrapesMatch = false;
-						let hasNameMatch = false;
-						let hasDescriptionOnlyMatch = false;
-						
-						// Check each word in the query
-						for (const word of qWords) {
-							// Strong boost for name starting with word
-							if (name.startsWith(word)) {
-								score += 100;
-								hasNameMatch = true;
-							} else if (name.includes(word)) {
-								score += 70;
-								hasNameMatch = true;
-							}
-							
-							// Strong boost for grapes match (most important for wine type searches)
-							if (grapes.includes(word)) {
-								score += 90; // Higher than region for grape searches
-								hasGrapesMatch = true;
-							}
-							
-							// Strong boost for region match (Rioja, Bordeaux, Côtes du Rhône, etc.)
-							if (region.includes(word)) score += 80;
-							
-							// Boost for producer match
-							if (producer.includes(word)) score += 60;
-							
-							// Smaller boosts for other fields
-							if (slug.includes(word)) score += 20;
-							if (country.includes(word)) score += 15;
-							
-							// Description matches are lowest priority
-							if (description.includes(word)) {
-								score += 5; // Very low score for description-only matches
-								if (!hasGrapesMatch && !hasNameMatch && !region.includes(word) && !producer.includes(word)) {
-									hasDescriptionOnlyMatch = true;
-								}
-							}
-						}
-
-						return { product: p, score, hasGrapesMatch, hasNameMatch, hasDescriptionOnlyMatch };
-					});
-
-					scored.sort((a, b) => b.score - a.score);
-					
-					// For single-word queries, filter out description-only matches to avoid false positives
-					// Example: "malbec" shouldn't show Chardonnay just because it mentions Malbec in description
-					const filtered = isSingleWord
-						? scored.filter((s) => s.hasGrapesMatch || s.hasNameMatch || s.score >= 60)
-						: scored;
-					
-					// Show top 8 results
-					setResults(
-						filtered
-							.slice(0, 8)
-							.map((s) => s.product)
-					);
+					// API already filters results (matching shop page behavior)
+					// Just show top 8 results, no additional ranking needed
+					setResults(productsArray.slice(0, 8));
 				}
 			} catch (error) {
 				console.error("Search error:", error);
