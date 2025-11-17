@@ -14,7 +14,22 @@
 
 **Optional but recommended fields:**
 - `region`: Wine region (string, e.g., "Bordeaux", "Tuscany")
-- `description`: Full product description (string)
+- `description`: Full product description with structured sections (string) - Format as:
+  ```
+  [Title/Subtitle if applicable]
+  
+  Description
+  
+  [Main description paragraph about the wine/producer/history]
+  
+  Language of Wine
+  
+  [Detailed tasting notes: color, aromas, flavors, texture, finish]
+  
+  Food Pairing
+  
+  [Food pairing suggestions]
+  ```
 - `producer`: Producer/Distillery name (string)
 - `tasteProfile`: **SHORT** tasting notes (string) - Keep it concise: 5-8 key descriptors, comma-separated. Example: "Fruit-forward, spicy, ripe berries, herbal, smooth". This appears in Quick Look, so keep it brief!
 - `foodPairing`: **SHORT** food pairing suggestions (string) - Keep it concise: 3-5 items, comma-separated. Example: "BBQ ribs, ratatouille, grilled sausages". This appears in Quick Look, so keep it brief!
@@ -52,7 +67,7 @@
     "price": 45.99,
     "country": "France",
     "region": "Bordeaux",
-    "description": "The King of Italian Wines. This exceptional Barolo hails from the legendary Piedmont region...",
+    "description": "Cru Bourgeois Excellence\n\nDescription\n\nChâteau Lilian Ladouys holds the prestigious Cru Bourgeois Exceptional designation, representing the pinnacle of quality outside the 1855 Classification. With vineyards ideally positioned near Château Cos d'Estournel, this historic estate benefits from exceptional terroir and modern, sustainable viticulture. A wine that beautifully balances power with finesse.\n\nLanguage of Wine\n\nDeep ruby-purple with complex aromas of blackberry, cassis, and violet. Hints of graphite, sweet tobacco, and toasted oak. Concentrated dark fruit flavors meld with black pepper, cedar wood, and dark chocolate. Velvety tannins and vibrant acidity with a polished, sophisticated finish—built for aging yet approachable now.\n\nFood Pairing\n\nIdeal with grilled entrecôte, steak frites, or beef bourguignon. Pairs exceptionally well with roasted venison, duck breast with cherry sauce, or wild mushroom risotto. Also excellent with aged Cheddar or Époisses.",
     "producer": "Château Lilian Ladouys",
     "tasteProfile": "Fruit-forward, spicy, ripe berries, herbal, smooth",
     "foodPairing": "BBQ ribs, ratatouille, grilled sausages",
@@ -70,6 +85,46 @@
   }
 ]
 ```
+
+**IMPORTANT FORMATTING INSTRUCTIONS:**
+
+When formatting the `description` field, structure it exactly like this example with clear section headers:
+- Use `\n\n` (double newline) to separate sections
+- Include "Description" as a header
+- Include "Language of Wine" as a header  
+- Include "Food Pairing" as a header
+- Keep the text flowing naturally within each section
+- If there's a title/subtitle (like "Cru Bourgeois Excellence"), put it at the very top before "Description"
+
+The `tasteProfile` and `foodPairing` fields should contain **SHORT** versions extracted from their respective sections (without the headers). These appear in Quick Look, so keep them concise!
+
+**CRITICAL: Format descriptions with structured sections:**
+
+For the `description` field, format it with clear sections separated by double newlines (`\n\n`):
+1. **Title/Subtitle** (if applicable) at the top
+2. **"Description"** header followed by the main description paragraph
+3. **"Language of Wine"** header followed by detailed tasting notes
+4. **"Food Pairing"** header followed by food pairing suggestions
+
+Example structure:
+```
+Cru Bourgeois Excellence
+
+Description
+
+[Main description about the wine/producer]
+
+Language of Wine
+
+[Detailed tasting notes: color, aromas, flavors, texture, finish]
+
+Food Pairing
+
+[Food pairing suggestions]
+```
+
+Extract the "Language of Wine" content into the `tasteProfile` field as a **SHORT** version (5-8 descriptors, comma-separated, without the header).
+Extract the "Food Pairing" content into the `foodPairing` field as a **SHORT** version (3-5 items, comma-separated, without the header).
 
 **Now format my product data below into this JSON array format:**"
 
@@ -94,4 +149,10 @@ After importing products, you can add multiple images via URL:
    ```
 3. Save the product
 4. The images will appear in the product gallery
+
+## Field Usage Summary:
+
+- **`description`**: Full detailed version with all sections → Shown on **Product Detail Page**
+- **`tasteProfile`**: Short version (5-8 descriptors) → Shown in **Quick Look Modal**
+- **`foodPairing`**: Short version (3-5 items) → Shown in **Quick Look Modal**
 
