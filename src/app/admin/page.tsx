@@ -8,6 +8,7 @@ import { Plus, Edit, Trash2, Eye, EyeOff, Tag, Star, Sparkles, LayoutDashboard, 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { SearchableSelect } from "@/components/admin/SearchableSelect";
+import { slugify } from "@/lib/utils/text";
 
 const ADMIN_PASSWORD = "winehaven2024"; // Change this in production!
 
@@ -1204,17 +1205,18 @@ function ProductForm({
 								onFocus={() => {
 									// Auto-generate from Name the first time user clicks into the field,
 									// but only if it's currently empty.
+									// Normalize diacritics and create URL-friendly slug
 									if (!formData.slug && formData.name) {
 										setFormData({
 											...formData,
-											slug: formData.name.toLowerCase().replace(/\s+/g, "-"),
+											slug: slugify(formData.name),
 										});
 									}
 								}}
 								onChange={(e) =>
 									setFormData({
 										...formData,
-										slug: e.target.value.toLowerCase().replace(/\s+/g, "-"),
+										slug: slugify(e.target.value),
 									})
 								}
 								className="w-full rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm outline-none focus:border-gold"

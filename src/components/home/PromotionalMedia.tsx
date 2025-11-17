@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
@@ -24,7 +24,33 @@ export function PromotionalMedia() {
 	const [activeIndex, setActiveIndex] = useState(0);
 	const [selectedMedia, setSelectedMedia] = useState<PromotionalMedia | null>(null);
 	const [isHovered, setIsHovered] = useState(false);
+	const [isVisible, setIsVisible] = useState(false);
 	const autoRotateRef = useRef<ReturnType<typeof setInterval> | null>(null);
+	const sectionRef = useRef<HTMLDivElement>(null);
+	const videoRef = useRef<HTMLVideoElement>(null);
+
+	// Intersection Observer to only animate when visible
+	useEffect(() => {
+		const element = sectionRef.current;
+		if (!element) return;
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						setIsVisible(true);
+					}
+				});
+			},
+			{ threshold: 0.1 }
+		);
+
+		observer.observe(element);
+
+		return () => {
+			observer.unobserve(element);
+		};
+	}, []);
 
 	// Fetch media once
 	useEffect(() => {
@@ -61,9 +87,9 @@ export function PromotionalMedia() {
 		});
 	}, [media.length]);
 
-	// Auto play rotation
+	// Auto play rotation - only when visible
 	useEffect(() => {
-		if (media.length <= 1 || isHovered) {
+		if (media.length <= 1 || isHovered || !isVisible) {
 			if (autoRotateRef.current) {
 				clearInterval(autoRotateRef.current);
 				autoRotateRef.current = null;
@@ -81,7 +107,24 @@ export function PromotionalMedia() {
 				autoRotateRef.current = null;
 			}
 		};
-	}, [media.length, isHovered, nextSlide]);
+	}, [media.length, isHovered, isVisible, nextSlide]);
+
+	// Handle video play/pause based on visibility
+	useEffect(() => {
+		if (loading || media.length === 0) return;
+		
+		const video = videoRef.current;
+		const currentMedia = media[activeIndex];
+		if (!video || !currentMedia) return;
+
+		if (isVisible && currentMedia.type === "video" && !currentMedia.thumbnail) {
+			video.play().catch(() => {
+				// Autoplay might be blocked, that's okay
+			});
+		} else {
+			video.pause();
+		}
+	}, [isVisible, activeIndex, media, loading]);
 
 	if (loading || media.length === 0) {
 		return null;
@@ -90,7 +133,7 @@ export function PromotionalMedia() {
 	const currentMedia = media[activeIndex];
 
 	return (
-		<section className="py-16 bg-gradient-to-b from-cream to-soft-gray">
+		<section ref={sectionRef} className="py-16 bg-gradient-to-b from-cream to-soft-gray">
 			<Container>
 				<SectionHeading>Visit Our Store</SectionHeading>
 				<p className="text-center text-maroon/70 mb-12 max-w-3xl mx-auto">
@@ -109,7 +152,7 @@ export function PromotionalMedia() {
 								initial={{ opacity: 0, scale: 0.98, y: 20 }}
 								animate={{ opacity: 1, scale: 1, y: 0 }}
 								exit={{ opacity: 0, scale: 1.02, y: -10 }}
-								transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+								transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
 								className="relative h-[260px] sm:h-[360px] lg:h-[420px] rounded-[32px] overflow-hidden shadow-2xl"
 							>
 								<div className="absolute inset-0">
@@ -121,15 +164,17 @@ export function PromotionalMedia() {
 												fill
 												className="object-cover"
 												sizes="(min-width: 1024px) 1024px, 100vw"
+												loading="lazy"
+												quality={85}
 											/>
 										) : (
 											<video
+												ref={videoRef}
 												src={currentMedia.url}
 												className="w-full h-full object-cover"
 												preload="metadata"
 												muted
 												loop
-												autoPlay
 												playsInline
 											/>
 										)
@@ -140,6 +185,8 @@ export function PromotionalMedia() {
 											fill
 											className="object-cover"
 											sizes="(min-width: 1024px) 1024px, 100vw"
+											loading="lazy"
+											quality={85}
 										/>
 									)}
 								</div>
@@ -159,7 +206,7 @@ export function PromotionalMedia() {
 										</div>
 										<button
 											onClick={() => setSelectedMedia(currentMedia)}
-											className="inline-flex items-center gap-3 px-5 py-3 rounded-full bg-white/10 hover:bg.white/20 transition-colors backdrop-blur border border-white/30 text-sm font-semibold w-fit"
+											className="inline-flex items-center gap-3 px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 transition-colors backdrop-blur border border-white/30 text-sm font-semibold w-fit"
 										>
 											<Play size={16} />
 											{currentMedia.type === "video" ? "Play Video" : "View Photo"}
@@ -223,7 +270,13 @@ export function PromotionalMedia() {
 							>
 								Close
 							</button>
-							<video src={selectedMedia.url} controls autoPlay className="w-full h-full rounded-lg" />
+							<video 
+								src={selectedMedia.url} 
+								controls 
+								autoPlay 
+								className="w-full h-full rounded-lg"
+								preload="auto"
+							/>
 						</div>
 					</motion.div>
 				)}
@@ -252,6 +305,7 @@ export function PromotionalMedia() {
 									alt={selectedMedia.title || "Promotional image"}
 									fill
 									className="object-contain"
+									quality={90}
 								/>
 							</div>
 							{selectedMedia.title && (

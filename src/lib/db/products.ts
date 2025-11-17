@@ -2,6 +2,7 @@
 // Uses Supabase with fallback to local data
 import { createServerClient, createAdminClient } from '@/lib/supabase';
 import { Product } from '@/types/product';
+import { normalizeText } from '@/lib/utils/text';
 
 // Check if Supabase is configured AND explicitly enabled.
 // This lets us point local development at the JSON data only
@@ -88,25 +89,51 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
           .select('*');
 
         // Add search filter if provided
+        // Search across multiple fields to match shop page behavior
         if (searchQuery && searchQuery.trim()) {
           const search = searchQuery.trim();
-          const searchWords = search.split(/\s+/).filter(Boolean);
           
-          // For short queries (1-2 words), ONLY search name and region for accuracy
-          // For longer queries, also include country and producer
-          if (searchWords.length <= 2) {
-            query = query.or(`name.ilike.%${search}%,region.ilike.%${search}%`);
-          } else {
-            query = query.or(
-              `name.ilike.%${search}%,region.ilike.%${search}%,country.ilike.%${search}%,producer.ilike.%${search}%`
-            );
-          }
+          // Search across name, region, country, producer, description, taste_profile, food_pairing
+          // Use OR to match any field containing the search term
+          // Note: We'll do client-side normalization filtering as fallback for diacritics
+          query = query.or(
+            `name.ilike.%${search}%,region.ilike.%${search}%,country.ilike.%${search}%,producer.ilike.%${search}%,description.ilike.%${search}%,taste_profile.ilike.%${search}%,food_pairing.ilike.%${search}%`
+          );
         }
 
         const { data, error } = await query.order('created_at', { ascending: false });
 
         if (!error && data) {
-          return data.map(mapRowToProduct);
+          let results = data.map(mapRowToProduct);
+          
+          // Client-side normalization filter as fallback for diacritics
+          // This ensures "cotes" matches "Côtes" even if Supabase .ilike doesn't handle it
+          if (searchQuery && searchQuery.trim()) {
+            const search = normalizeText(searchQuery.trim());
+            results = results.filter(p => {
+              const name = normalizeText(p.name || '');
+              const slug = normalizeText(p.slug || '');
+              const region = normalizeText(p.region || '');
+              const country = normalizeText(p.country || '');
+              const producer = normalizeText(p.producer || '');
+              const description = normalizeText(p.description || '');
+              const tasteProfile = normalizeText(p.tasteProfile || '');
+              const foodPairing = normalizeText(p.foodPairing || '');
+              const grapes = normalizeText((p.grapes || []).join(', '));
+              
+              return name.includes(search) ||
+                slug.includes(search) ||
+                region.includes(search) ||
+                country.includes(search) ||
+                producer.includes(search) ||
+                description.includes(search) ||
+                tasteProfile.includes(search) ||
+                foodPairing.includes(search) ||
+                grapes.includes(search);
+            });
+          }
+          
+          return results;
         }
       } catch (error) {
         console.error('Error fetching from Supabase, falling back to local data:', error);
@@ -117,39 +144,32 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
   // Fallback to local data
   const { products } = await import('@/data/products');
   
-  // Helper to normalize diacritics for forgiving search (e.g. Côtes -> cotes)
-  const normalize = (s?: string) =>
-    (s || '')
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/\p{Diacritic}/gu, '');
-  
   // Filter local data if search query provided
+  // Match shop page behavior: search across all relevant fields
   if (searchQuery && searchQuery.trim()) {
-    const search = normalize(searchQuery.trim());
-    const searchWords = search.split(/\s+/).filter(Boolean);
+    const search = normalizeText(searchQuery.trim());
     
     return products.filter(p => {
-      const name = normalize(p.name);
-      const region = normalize(p.region);
-      const country = normalize(p.country);
-      const producer = normalize(p.producer);
+      const name = normalizeText(p.name || '');
+      const slug = normalizeText(p.slug || '');
+      const region = normalizeText(p.region || '');
+      const country = normalizeText(p.country || '');
+      const producer = normalizeText(p.producer || '');
+      const description = normalizeText(p.description || '');
+      const tasteProfile = normalizeText(p.tasteProfile || '');
+      const foodPairing = normalizeText(p.foodPairing || '');
+      const grapes = normalizeText((p.grapes || []).join(', '));
       
-      // For short queries (1-2 words), ONLY match name and region for accuracy
-      // This prevents false positives like "cotes" matching "Champagne" or "Chianti"
-      if (searchWords.length <= 2) {
-        return searchWords.some(word => 
-          name.includes(word) || region.includes(word)
-        );
-      }
-      
-      // For longer queries, also allow country and producer matches
-      return searchWords.some(word =>
-        name.includes(word) ||
-        region.includes(word) ||
-        country.includes(word) ||
-        producer.includes(word)
-      );
+      // Simple includes check on full query string (matches shop page behavior)
+      return name.includes(search) ||
+        slug.includes(search) ||
+        region.includes(search) ||
+        country.includes(search) ||
+        producer.includes(search) ||
+        description.includes(search) ||
+        tasteProfile.includes(search) ||
+        foodPairing.includes(search) ||
+        grapes.includes(search);
     });
   }
   

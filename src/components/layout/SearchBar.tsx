@@ -56,7 +56,8 @@ export function SearchBar() {
 					const data = await response.json();
 					const productsArray: Product[] = Array.isArray(data) ? data : (data.products || []);
 
-					// Rank results so the most relevant (name/region matches) appear first
+					// Rank results so the most relevant matches appear first
+					// API already filters, so we just rank and limit results
 					const qNorm = normalize(query.trim());
 					const qWords = qNorm.split(/\s+/).filter(Boolean);
 					
@@ -65,7 +66,9 @@ export function SearchBar() {
 						const slug = normalize(p.slug);
 						const country = normalize(p.country);
 						const region = normalize(p.region);
+						const producer = normalize(p.producer);
 						const grapes = normalize((p.grapes || []).join(', '));
+						const description = normalize(p.description);
 
 						let score = 0;
 						
@@ -75,15 +78,19 @@ export function SearchBar() {
 							if (name.startsWith(word)) score += 100;
 							else if (name.includes(word)) score += 70;
 							
-							// Strong boost for region match (Rioja, Bordeaux, etc.)
+							// Strong boost for region match (Rioja, Bordeaux, Côtes du Rhône, etc.)
 							if (region.includes(word)) score += 80;
 							
+							// Boost for producer match
+							if (producer.includes(word)) score += 60;
+							
 							// Boost for grapes match
-							if (grapes.includes(word)) score += 60;
+							if (grapes.includes(word)) score += 50;
 							
 							// Smaller boosts for other fields
 							if (slug.includes(word)) score += 20;
-							if (country.includes(word)) score += 10;
+							if (country.includes(word)) score += 15;
+							if (description.includes(word)) score += 10;
 						}
 
 						return { product: p, score };
@@ -91,13 +98,9 @@ export function SearchBar() {
 
 					scored.sort((a, b) => b.score - a.score);
 					
-					// For short queries (1-2 words), require a strong match (name or region)
-					// This ensures "cotes" only shows wines with "cotes" in name or region
-					const minScore = qWords.length <= 2 ? 60 : 20;
-					
+					// Show top 8 results (API already filtered, so we trust the results)
 					setResults(
 						scored
-							.filter((s) => s.score >= minScore) // filter out weak matches aggressively
 							.slice(0, 8)
 							.map((s) => s.product)
 					);
