@@ -112,7 +112,7 @@ function ShopPageContent() {
 	const hydratedRef = useRef(false);
 	useEffect(() => {
 		if (hydratedRef.current) return;
-		if (products.length === 0 || minAvailable === 0 || maxAvailable === 0) return; // Wait for products to load
+		if (products.length === 0) return; // Wait for products to load
 		const params = parseUrlParams();
 		setQuery(params.query);
 		setSelectedWineTypes(params.wineTypes);
