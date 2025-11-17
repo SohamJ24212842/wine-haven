@@ -38,6 +38,8 @@ function AdminPageContent() {
 	const [promotionalMedia, setPromotionalMedia] = useState<any[]>([]);
 	const [showPromoForm, setShowPromoForm] = useState(false);
 	const [editingPromo, setEditingPromo] = useState<any | null>(null);
+	const [showBulkImport, setShowBulkImport] = useState(false);
+	const [bulkImportJson, setBulkImportJson] = useState("");
 
 	// Bulk actions for selected products
 	const handleBulkAction = async (action: string) => {
@@ -741,6 +743,14 @@ function AdminPageContent() {
 						Import Products
 					</button>
 					<button
+						onClick={() => setShowBulkImport(true)}
+						className="flex items-center gap-2 rounded-md border border-maroon/20 bg-white px-4 py-2 text-sm text-maroon hover:bg-soft-gray transition-colors"
+						title="Bulk import products from JSON"
+					>
+						<Upload size={16} />
+						Bulk Import JSON
+					</button>
+					<button
 						onClick={() => {
 							setShowAddForm(true);
 							setEditingProduct(null);
@@ -752,6 +762,98 @@ function AdminPageContent() {
 					</button>
 				</div>
 			</div>
+			)}
+
+			{/* Bulk Import Modal */}
+			{showBulkImport && (
+				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+					<div className="w-full max-w-3xl max-h-[90vh] bg-cream rounded-lg border border-maroon/20 flex flex-col">
+						<div className="flex items-center justify-between p-6 border-b border-maroon/20 flex-shrink-0">
+							<h2 className="text-xl font-semibold text-maroon">Bulk Import Products</h2>
+							<button
+								onClick={() => {
+									setShowBulkImport(false);
+									setBulkImportJson("");
+								}}
+								className="text-maroon/70 hover:text-maroon transition-colors text-2xl leading-none"
+							>
+								×
+							</button>
+						</div>
+						<div className="flex-1 overflow-y-auto p-6 space-y-4">
+							<div>
+								<label className="block text-sm font-medium text-maroon mb-2">
+									Paste JSON Array of Products
+								</label>
+								<textarea
+									value={bulkImportJson}
+									onChange={(e) => setBulkImportJson(e.target.value)}
+									placeholder='[{"name": "Product Name", "category": "Wine", "price": 45.99, "country": "France", ...}, ...]'
+									className="w-full h-96 rounded-md border border-maroon/20 bg-white px-3 py-2 text-sm font-mono outline-none focus:border-gold"
+								/>
+								<p className="text-xs text-maroon/60 mt-2">
+									Required fields: name, category, price, country. See BULK_IMPORT_FORMAT.md for full format.
+									Images can use placeholder URLs and be updated later.
+								</p>
+							</div>
+						</div>
+						<div className="flex gap-3 p-6 border-t border-maroon/20 flex-shrink-0">
+							<button
+								onClick={async () => {
+									if (!USE_SUPABASE) {
+										alert("Bulk import is disabled in local JSON mode. Enable Supabase to use this feature.");
+										return;
+									}
+									if (!bulkImportJson.trim()) {
+										alert("Please paste JSON data");
+										return;
+									}
+									try {
+										const products = JSON.parse(bulkImportJson);
+										if (!Array.isArray(products)) {
+											alert("JSON must be an array of products");
+											return;
+										}
+										if (confirm(`Import ${products.length} product(s)? This will skip products that already exist.`)) {
+											const response = await fetch("/api/products/bulk-import", {
+												method: "POST",
+												headers: { "Content-Type": "application/json" },
+												body: JSON.stringify({ products }),
+											});
+											const result = await response.json();
+											if (response.ok) {
+												let message = `Bulk import complete!\n✅ Success: ${result.summary.success}\n⏭️ Skipped: ${result.summary.skipped}\n❌ Errors: ${result.summary.errors}`;
+												if (result.errorPreview && result.errorPreview.length > 0) {
+													message += `\n\nFirst errors:\n${result.errorPreview.map((e: any) => `- ${e.product}: ${e.error}`).join('\n')}`;
+												}
+												alert(message);
+												setShowBulkImport(false);
+												setBulkImportJson("");
+												fetchProducts();
+											} else {
+												alert(`Import failed: ${result.error}\n\n${result.details || ""}`);
+											}
+										}
+									} catch (error: any) {
+										alert(`Invalid JSON: ${error.message}`);
+									}
+								}}
+								className="flex-1 rounded-md bg-gold px-4 py-2 text-sm font-semibold text-maroon hover:brightness-95 transition-colors"
+							>
+								Import Products
+							</button>
+							<button
+								onClick={() => {
+									setShowBulkImport(false);
+									setBulkImportJson("");
+								}}
+								className="flex-1 rounded-md border border-maroon/20 bg-white px-4 py-2 text-sm text-maroon hover:bg-soft-gray transition-colors"
+							>
+								Cancel
+							</button>
+						</div>
+					</div>
+				</div>
 			)}
 
 			{/* Product List */}
