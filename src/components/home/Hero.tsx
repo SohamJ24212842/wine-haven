@@ -97,6 +97,11 @@ export function Hero() {
 	useMotionValueEvent(scrollYProgress, "change", (latest) => {
 		// Stop processing if hero section is completely out of view
 		if (!isInView || latest >= 1 || latest < 0) {
+			// Cancel any pending RAF when out of view
+			if (rafRef.current !== null) {
+				cancelAnimationFrame(rafRef.current);
+				rafRef.current = null;
+			}
 			return;
 		}
 		
@@ -119,6 +124,11 @@ export function Hero() {
 			const video = videoRef.current;
 			if (!video || !videoDuration || videoDuration <= 0) return;
 			
+			// Double-check isInView state in RAF callback (state might have changed)
+			if (!isInView) {
+				return;
+			}
+			
 			// Ensure video is ready
 			if (video.readyState >= 2) {
 				const targetTime = latest * videoDuration;
@@ -134,6 +144,14 @@ export function Hero() {
 			}
 		});
 	});
+	
+	// Cleanup RAF when going out of view
+	useEffect(() => {
+		if (!isInView && rafRef.current !== null) {
+			cancelAnimationFrame(rafRef.current);
+			rafRef.current = null;
+		}
+	}, [isInView]);
 	
 	// Cleanup RAF on unmount
 	useEffect(() => {
