@@ -141,14 +141,6 @@ export function DynamicNavbar() {
 												</li>
 												<li>
 													<Link
-														href={buildShopUrl({ category: "Beer", beerStyle: "Pale Ale", christmasGift: true })}
-														className="text-maroon/70 hover:text-gold transition-colors"
-													>
-														Pale Ale Gift Sets
-													</Link>
-												</li>
-												<li>
-													<Link
 														href={buildShopUrl({ category: "Wine", wineType: "Sparkling", christmasGift: true })}
 														className="text-maroon/70 hover:text-gold transition-colors"
 													>

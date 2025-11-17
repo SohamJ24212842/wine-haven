@@ -45,7 +45,7 @@ export default async function Home() {
             title="Featured Wines"
             subtitle="Hand-picked favourites from our shelves"
             products={featuredWines}
-            filterUrl="category=Wine"
+            filterUrl="category=Wine&featured=true"
           />
           <SectionDivider variant="subtle" />
         </>

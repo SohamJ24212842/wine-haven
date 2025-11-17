@@ -87,6 +87,7 @@ function ShopPageContent() {
 			christmasGift: searchParams.get("christmasGift") === "true",
 			onSale: searchParams.get("onSale") === "true",
 			new: searchParams.get("new") === "true",
+			featured: searchParams.get("featured") === "true",
 		};
 	};
 
@@ -105,6 +106,7 @@ function ShopPageContent() {
 	const [christmasGift, setChristmasGift] = useState<boolean>(false);
 	const [onSale, setOnSale] = useState<boolean>(false);
 	const [newOnly, setNewOnly] = useState<boolean>(false);
+	const [featuredOnly, setFeaturedOnly] = useState<boolean>(false);
 
 	// Hydrate state from URL params ONCE (initial load)
 	const hydratedRef = useRef(false);
@@ -126,6 +128,7 @@ function ShopPageContent() {
 		setChristmasGift(params.christmasGift);
 		setOnSale(params.onSale);
 		setNewOnly(params.new);
+		setFeaturedOnly(params.featured);
 		hydratedRef.current = true;
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchParams, products.length, minAvailable, maxAvailable]);
@@ -148,6 +151,7 @@ function ShopPageContent() {
 		setChristmasGift(params.christmasGift);
 		setOnSale(params.onSale);
 		setNewOnly(params.new);
+		setFeaturedOnly(params.featured);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchParams, isTyping, minAvailable, maxAvailable]);
 
@@ -184,13 +188,14 @@ function ShopPageContent() {
 			if (christmasGift) params.set("christmasGift", "true");
 			if (onSale) params.set("onSale", "true");
 			if (newOnly) params.set("new", "true");
+			if (featuredOnly) params.set("featured", "true");
 
 			const newUrl = params.toString() ? `?${params.toString()}` : "/shop";
 			router.replace(newUrl, { scroll: false });
 		}, 300); // 300ms debounce
 
 		return () => clearTimeout(timeoutId);
-	}, [query, selectedWineTypes, selectedSpiritTypes, selectedBeerStyles, selectedRegions, selectedCountries, minPrice, maxPrice, sortBy, activeCategoryTab, christmasGift, onSale, newOnly, router, minAvailable, maxAvailable]);
+	}, [query, selectedWineTypes, selectedSpiritTypes, selectedBeerStyles, selectedRegions, selectedCountries, minPrice, maxPrice, sortBy, activeCategoryTab, christmasGift, onSale, newOnly, featuredOnly, router, minAvailable, maxAvailable]);
 
 	// Get category counts
 	const categoryCounts = useMemo(() => {
@@ -220,6 +225,9 @@ function ShopPageContent() {
 
 			// New filter
 			if (newOnly && !p.new) return false;
+
+			// Featured filter
+			if (featuredOnly && !p.featured) return false;
 
 			// Country filter
 			if (selectedCountries.length > 0 && !selectedCountries.includes(p.country)) return false;
@@ -280,7 +288,7 @@ function ShopPageContent() {
 			default:
 				return filtered;
 		}
-	}, [query, selectedWineTypes, selectedSpiritTypes, selectedBeerStyles, selectedRegions, selectedCountries, minPrice, maxPrice, sortBy, activeCategoryTab, christmasGift, onSale, newOnly, products]);
+	}, [query, selectedWineTypes, selectedSpiritTypes, selectedBeerStyles, selectedRegions, selectedCountries, minPrice, maxPrice, sortBy, activeCategoryTab, christmasGift, onSale, newOnly, featuredOnly, products]);
 
 	const clearAll = () => {
 		setQuery("");
@@ -296,6 +304,7 @@ function ShopPageContent() {
 		setChristmasGift(false);
 		setOnSale(false);
 		setNewOnly(false);
+		setFeaturedOnly(false);
 	};
 
 	const hasActiveFilters =
@@ -310,7 +319,8 @@ function ShopPageContent() {
 		activeCategoryTab !== "All" ||
 		christmasGift ||
 		onSale ||
-		newOnly;
+		newOnly ||
+		featuredOnly;
 
 	if (loading) {
 		return (
