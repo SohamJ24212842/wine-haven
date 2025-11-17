@@ -97,6 +97,14 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 											const y = ((e.clientY - rect.top) / rect.height) * 100;
 											setZoomOrigin({ x, y });
 										}}
+										onTouchMove={(e) => {
+											if (!zoom || e.touches.length === 0) return;
+											const touch = e.touches[0];
+											const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+											const x = ((touch.clientX - rect.left) / rect.width) * 100;
+											const y = ((touch.clientY - rect.top) / rect.height) * 100;
+											setZoomOrigin({ x, y });
+										}}
 									>
 										<Image
 											src={images[selectedImage]}

@@ -113,17 +113,22 @@ export function PromotionalMedia() {
 								transition={{ duration: 0.3 }}
 								className="relative h-[260px] sm:h-[360px] lg:h-[420px] rounded-[32px] overflow-hidden shadow-2xl"
 							>
-								<div className="absolute inset-0">
+								<div className="absolute inset-0 bg-soft-gray">
 									{currentMedia.type === "video" ? (
-										<Image
-											src={currentMedia.thumbnail || currentMedia.url}
-											alt={currentMedia.title || "Promotional video"}
-											fill
-											className="object-cover"
-											sizes="(min-width: 1024px) 1024px, 100vw"
-											loading="lazy"
-											quality={85}
-										/>
+										<>
+											{(currentMedia.thumbnail || currentMedia.url) && (
+												<Image
+													src={currentMedia.thumbnail || currentMedia.url}
+													alt={currentMedia.title || "Promotional video"}
+													fill
+													className="object-cover"
+													sizes="(min-width: 1024px) 1024px, 100vw"
+													loading="lazy"
+													quality={85}
+													unoptimized={currentMedia.url.includes('.mp4')}
+												/>
+											)}
+										</>
 									) : (
 										<Image
 											src={currentMedia.url}

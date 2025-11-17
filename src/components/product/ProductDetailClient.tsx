@@ -87,6 +87,14 @@ export function ProductDetailClient({ product, discountPercentage }: ProductDeta
 										const y = ((e.clientY - rect.top) / rect.height) * 100;
 										setZoomOrigin({ x, y });
 									}}
+									onTouchMove={(e: React.TouchEvent<HTMLImageElement>) => {
+										if (!zoom || e.touches.length === 0) return;
+										const touch = e.touches[0];
+										const rect = e.currentTarget.getBoundingClientRect();
+										const x = ((touch.clientX - rect.left) / rect.width) * 100;
+										const y = ((touch.clientY - rect.top) / rect.height) * 100;
+										setZoomOrigin({ x, y });
+									}}
 									sizes="(max-width: 768px) 100vw, 50vw"
 									priority
 								/>

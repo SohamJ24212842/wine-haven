@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Product } from "@/types/product";
 import { useCart } from "@/contexts/CartContext";
 import { ShoppingCart, Eye } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { QuickViewModal } from "./QuickViewModal";
 
 type ProductCardProps = {
@@ -27,18 +27,24 @@ export function ProductCard({ product }: ProductCardProps) {
 	const { addItem } = useCart();
 	const [isHovered, setIsHovered] = useState(false);
 	const [showQuickView, setShowQuickView] = useState(false);
+	const [isTouchDevice, setIsTouchDevice] = useState(false);
 
 	const discountPercentage = product.onSale && product.salePrice 
 		? calculateDiscountPercentage(product.price, product.salePrice)
 		: null;
 
-	const handleAddToCart = (e: React.MouseEvent) => {
+	// Detect touch device
+	useEffect(() => {
+		setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+	}, []);
+
+	const handleAddToCart = (e: React.MouseEvent | React.TouchEvent) => {
 		e.preventDefault();
 		e.stopPropagation();
 		addItem(product);
 	};
 
-	const handleQuickView = (e: React.MouseEvent) => {
+	const handleQuickView = (e: React.MouseEvent | React.TouchEvent) => {
 		e.preventDefault();
 		e.stopPropagation();
 		setShowQuickView(true);
@@ -124,17 +130,19 @@ export function ProductCard({ product }: ProductCardProps) {
 							}`} />
 						</motion.div>
 						
-						{/* Enhanced Quick View and Add to Cart Buttons Overlay */}
-						<motion.div
-							initial={{ opacity: 0 }}
-							animate={{ 
-								opacity: isHovered ? 1 : 0,
-								transition: { duration: 0.2 }
-							}}
-							className={`absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/30 backdrop-blur-sm transition-all duration-300 ${
-								isHovered ? "pointer-events-auto" : "pointer-events-none"
-							}`}
-						>
+					{/* Enhanced Quick View and Add to Cart Buttons Overlay */}
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ 
+							opacity: (isHovered || isTouchDevice) ? 1 : 0,
+							transition: { duration: 0.2 }
+						}}
+						className={`absolute inset-0 flex flex-col items-center justify-center gap-3 ${
+							isTouchDevice ? "bg-black/20" : "bg-black/30"
+						} backdrop-blur-sm transition-all duration-300 ${
+							(isHovered || isTouchDevice) ? "pointer-events-auto" : "pointer-events-none"
+						}`}
+					>
 							<motion.button
 								onClick={handleQuickView}
 								whileHover={{ scale: 1.05 }}
