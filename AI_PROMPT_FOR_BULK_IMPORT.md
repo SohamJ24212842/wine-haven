@@ -16,8 +16,8 @@
 - `region`: Wine region (string, e.g., "Bordeaux", "Tuscany")
 - `description`: Full product description (string)
 - `producer`: Producer/Distillery name (string)
-- `tasteProfile`: Tasting notes (string, e.g., "Red cherry, dried rose, spice")
-- `foodPairing`: Food pairing suggestions (string, e.g., "Braised beef, truffle risotto")
+- `tasteProfile`: **SHORT** tasting notes (string) - Keep it concise: 5-8 key descriptors, comma-separated. Example: "Fruit-forward, spicy, ripe berries, herbal, smooth". This appears in Quick Look, so keep it brief!
+- `foodPairing`: **SHORT** food pairing suggestions (string) - Keep it concise: 3-5 items, comma-separated. Example: "BBQ ribs, ratatouille, grilled sausages". This appears in Quick Look, so keep it brief!
 - `grapes`: Array of grape varieties (array of strings, e.g., ["Nebbiolo", "Barbera"])
 - `wineType`: For wines only - "Red", "White", "Rosé", "Sparkling", or "Prosecco" (string)
 - `spiritType`: For spirits only - "Gin", "Vodka", "Rum", "Tequila", "Liqueur", or "Whiskey" (string)
