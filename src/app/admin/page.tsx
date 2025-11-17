@@ -1039,8 +1039,11 @@ function ProductForm({
 	// Update form data and image preview when product changes
 	useEffect(() => {
 		if (product) {
+			// Normalize slug if it contains accents (shouldn't happen, but safety check)
+			const normalizedSlug = slugify(product.slug || product.name);
+			
 			setFormData({
-				slug: product.slug,
+				slug: normalizedSlug, // Always use normalized slug
 				category: product.category,
 				name: product.name,
 				price: product.price,
@@ -1053,6 +1056,9 @@ function ProductForm({
 				beerStyle: product.beerStyle,
 				abv: product.abv,
 				volumeMl: product.volumeMl,
+				producer: product.producer || "",
+				tasteProfile: product.tasteProfile || "",
+				foodPairing: product.foodPairing || "",
 				// Note: we keep grapes as a comma-separated string in form state
 				// and convert to string[] only right before saving.
 				grapes: product.grapes ? (product.grapes.join(", ") as any) : undefined,

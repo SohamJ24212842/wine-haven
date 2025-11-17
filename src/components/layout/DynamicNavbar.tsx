@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
-import { Menu, ChevronDown, ShoppingBag, X } from "lucide-react";
+import { ChevronDown, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CartTray } from "@/components/cart/CartTray";
 import { SearchBar } from "@/components/layout/SearchBar";
@@ -27,8 +27,6 @@ type MenuData = {
 export function DynamicNavbar() {
 	const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
 	const [menuData, setMenuData] = useState<MenuData | null>(null);
-	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-	const [mobileAccordion, setMobileAccordion] = useState<string | null>(null);
 	const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
 	// Fetch menu data on mount
@@ -605,202 +603,7 @@ export function DynamicNavbar() {
 				<div className="flex lg:hidden items-center gap-2 flex-shrink-0">
 					<SearchBar />
 					<CartTray />
-					<button 
-						onClick={() => {
-							setMobileMenuOpen(prev => !prev);
-						}}
-						className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-maroon/10 border-2 border-maroon text-maroon hover:bg-maroon/20 active:scale-95 transition-all shadow-sm relative z-[999]" 
-						aria-label="Open menu"
-						type="button"
-						aria-expanded={mobileMenuOpen}
-					>
-						<Menu size={22} strokeWidth={2.5} />
-					</button>
 				</div>
-			</Container>
-
-			{/* Mobile Menu Drawer */}
-			{mobileMenuOpen && (
-				<>
-					{/* Backdrop */}
-					<div
-						onClick={() => setMobileMenuOpen(false)}
-						className="fixed inset-0 z-[998] bg-black/50 lg:hidden"
-					/>
-					{/* Drawer */}
-					<div
-						className="fixed right-0 top-0 bottom-0 w-[85%] max-w-sm bg-cream z-[999] lg:hidden overflow-y-auto shadow-2xl animate-in slide-in-from-right duration-300"
-						onClick={(e) => e.stopPropagation()}
-					>
-							<div className="p-4 border-b border-maroon/20 flex items-center justify-between">
-								<Link 
-									href="/" 
-									onClick={() => setMobileMenuOpen(false)}
-									className="text-lg font-semibold text-maroon"
-								>
-									Wine Haven
-								</Link>
-								<button 
-									onClick={() => setMobileMenuOpen(false)}
-									className="text-maroon hover:text-gold transition-colors p-1 -mr-1"
-									aria-label="Close menu"
-									type="button"
-								>
-									<X size={24} strokeWidth={1.5} />
-								</button>
-							</div>
-
-							<nav className="p-4 space-y-2">
-								{/* Gifts */}
-								<div className="border-b border-maroon/10 pb-2">
-									<button
-										onClick={() => setMobileAccordion(mobileAccordion === "gifts" ? null : "gifts")}
-										className="flex items-center justify-between w-full py-2 text-maroon font-medium"
-									>
-										Gifts
-										<ChevronDown size={16} className={cn("transition-transform", mobileAccordion === "gifts" && "rotate-180")} />
-									</button>
-									{mobileAccordion === "gifts" && (
-										<div className="pl-4 pt-2 space-y-2 text-sm">
-											<Link href={buildShopUrl({ christmasGift: true })} onClick={() => setMobileMenuOpen(false)} className="block py-1 text-maroon/70">
-												All Christmas Gifts
-											</Link>
-											<Link href={buildShopUrl({ category: "Wine", christmasGift: true })} onClick={() => setMobileMenuOpen(false)} className="block py-1 text-maroon/70">
-												Wine Gifts
-											</Link>
-											<Link href={buildShopUrl({ category: "Spirit", christmasGift: true })} onClick={() => setMobileMenuOpen(false)} className="block py-1 text-maroon/70">
-												Spirit Gifts
-											</Link>
-										</div>
-									)}
-								</div>
-
-								{/* Wine */}
-								<div className="border-b border-maroon/10 pb-2">
-									<button
-										onClick={() => setMobileAccordion(mobileAccordion === "wine" ? null : "wine")}
-										className="flex items-center justify-between w-full py-2 text-maroon font-medium"
-									>
-										Wine
-										<ChevronDown size={16} className={cn("transition-transform", mobileAccordion === "wine" && "rotate-180")} />
-									</button>
-									{mobileAccordion === "wine" && (
-										<div className="pl-4 pt-2 space-y-2 text-sm">
-											<Link href={buildShopUrl({ category: "Wine" })} onClick={() => setMobileMenuOpen(false)} className="block py-1 text-maroon/70">
-												All Wines
-											</Link>
-											<Link href={buildShopUrl({ category: "Wine", wineType: "Red" })} onClick={() => setMobileMenuOpen(false)} className="block py-1 text-maroon/70">
-												Red Wine
-											</Link>
-											<Link href={buildShopUrl({ category: "Wine", wineType: "White" })} onClick={() => setMobileMenuOpen(false)} className="block py-1 text-maroon/70">
-												White Wine
-											</Link>
-											<Link href={buildShopUrl({ category: "Wine", wineType: "Rosé" })} onClick={() => setMobileMenuOpen(false)} className="block py-1 text-maroon/70">
-												Rosé Wine
-											</Link>
-											<Link href={buildShopUrl({ category: "Wine", wineType: "Sparkling" })} onClick={() => setMobileMenuOpen(false)} className="block py-1 text-maroon/70">
-												Sparkling Wine
-											</Link>
-										</div>
-									)}
-								</div>
-
-								{/* Spirits */}
-								<div className="border-b border-maroon/10 pb-2">
-									<button
-										onClick={() => setMobileAccordion(mobileAccordion === "spirits" ? null : "spirits")}
-										className="flex items-center justify-between w-full py-2 text-maroon font-medium"
-									>
-										Spirits
-										<ChevronDown size={16} className={cn("transition-transform", mobileAccordion === "spirits" && "rotate-180")} />
-									</button>
-									{mobileAccordion === "spirits" && (
-										<div className="pl-4 pt-2 space-y-2 text-sm">
-											<Link href={buildShopUrl({ category: "Spirit" })} onClick={() => setMobileMenuOpen(false)} className="block py-1 text-maroon/70">
-												All Spirits
-											</Link>
-											<Link href={buildShopUrl({ category: "Spirit", spiritType: "Whiskey" })} onClick={() => setMobileMenuOpen(false)} className="block py-1 text-maroon/70">
-												Whiskey
-											</Link>
-											<Link href={buildShopUrl({ category: "Spirit", spiritType: "Gin" })} onClick={() => setMobileMenuOpen(false)} className="block py-1 text-maroon/70">
-												Gin
-											</Link>
-											<Link href={buildShopUrl({ category: "Spirit", spiritType: "Vodka" })} onClick={() => setMobileMenuOpen(false)} className="block py-1 text-maroon/70">
-												Vodka
-											</Link>
-											<Link href={buildShopUrl({ category: "Spirit", spiritType: "Rum" })} onClick={() => setMobileMenuOpen(false)} className="block py-1 text-maroon/70">
-												Rum
-											</Link>
-										</div>
-									)}
-								</div>
-
-								{/* Beer */}
-								<div className="border-b border-maroon/10 pb-2">
-									<button
-										onClick={() => setMobileAccordion(mobileAccordion === "beer" ? null : "beer")}
-										className="flex items-center justify-between w-full py-2 text-maroon font-medium"
-									>
-										Beer
-										<ChevronDown size={16} className={cn("transition-transform", mobileAccordion === "beer" && "rotate-180")} />
-									</button>
-									{mobileAccordion === "beer" && (
-										<div className="pl-4 pt-2 space-y-2 text-sm">
-											<Link href={buildShopUrl({ category: "Beer" })} onClick={() => setMobileMenuOpen(false)} className="block py-1 text-maroon/70">
-												All Beers
-											</Link>
-											<Link href={buildShopUrl({ category: "Beer", beerStyle: "Lager" })} onClick={() => setMobileMenuOpen(false)} className="block py-1 text-maroon/70">
-												Lager
-											</Link>
-											<Link href={buildShopUrl({ category: "Beer", beerStyle: "IPA" })} onClick={() => setMobileMenuOpen(false)} className="block py-1 text-maroon/70">
-												IPA
-											</Link>
-											<Link href={buildShopUrl({ category: "Beer", beerStyle: "Stout" })} onClick={() => setMobileMenuOpen(false)} className="block py-1 text-maroon/70">
-												Stout
-											</Link>
-										</div>
-									)}
-								</div>
-
-								{/* Champagne & Sparkling */}
-								<Link 
-									href={buildShopUrl({ category: "Wine", wineType: "Sparkling" })} 
-									onClick={() => setMobileMenuOpen(false)}
-									className="block py-2 text-maroon font-medium border-b border-maroon/10"
-								>
-									Champagne & Sparkling
-								</Link>
-
-								{/* About Us */}
-								<Link 
-									href="/about" 
-									onClick={() => setMobileMenuOpen(false)}
-									className="block py-2 text-maroon font-medium border-b border-maroon/10"
-								>
-									About Us
-								</Link>
-
-								{/* Visit Us */}
-								<Link 
-									href="/visit-us" 
-									onClick={() => setMobileMenuOpen(false)}
-									className="block py-2 text-maroon font-medium border-b border-maroon/10"
-								>
-									Visit Us
-								</Link>
-
-								{/* Click & Collect */}
-								<Link 
-									href="/checkout" 
-									onClick={() => setMobileMenuOpen(false)}
-									className="block py-2 text-gold font-medium"
-								>
-									Click & Collect
-								</Link>
-							</nav>
-					</div>
-				</>
-			)}
 		</header>
 	);
 }
