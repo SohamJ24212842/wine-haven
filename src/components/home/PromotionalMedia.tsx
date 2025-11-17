@@ -107,10 +107,10 @@ export function PromotionalMedia() {
 						{currentMedia && (
 							<motion.div
 								key={`${currentMedia.id}-${activeIndex}`}
-								initial={{ opacity: 1 }}
-								animate={{ opacity: 1 }}
-								exit={{ opacity: 0 }}
-								transition={{ duration: 0.3 }}
+								initial={{ opacity: 0, scale: 0.98 }}
+								animate={{ opacity: 1, scale: 1 }}
+								exit={{ opacity: 0, scale: 0.98 }}
+								transition={{ duration: 0.4, ease: "easeOut" }}
 								className="relative h-[260px] sm:h-[360px] lg:h-[420px] rounded-[32px] overflow-hidden shadow-2xl"
 							>
 								<div className="absolute inset-0 bg-soft-gray">

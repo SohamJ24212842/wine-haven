@@ -607,10 +607,10 @@ export function DynamicNavbar() {
 					<CartTray />
 					<button 
 						onClick={() => setMobileMenuOpen(true)}
-						className="inline-flex h-10 w-10 items-center justify-center rounded-md border-2 border-maroon/30 text-maroon hover:bg-soft-gray active:bg-maroon/10 transition-colors" 
+						className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-maroon/10 border-2 border-maroon text-maroon hover:bg-maroon/20 active:scale-95 transition-all shadow-sm" 
 						aria-label="Open menu"
 					>
-						<Menu size={20} strokeWidth={2.5} />
+						<Menu size={22} strokeWidth={3} />
 					</button>
 				</div>
 			</Container>

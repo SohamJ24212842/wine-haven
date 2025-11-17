@@ -117,8 +117,8 @@ export function Hero() {
 
 	return (
 		<div ref={containerRef} className="relative">
-			{/* Scroll-controlled wine pouring video - Desktop only */}
-			{!isMobile && shouldLoadVideo && (
+			{/* Scroll-controlled wine pouring video - All devices */}
+			{shouldLoadVideo && (
 				<div className="absolute inset-0 z-0 overflow-hidden" style={{ 
 					willChange: "transform",
 					transform: "translateZ(0)",
@@ -160,8 +160,8 @@ export function Hero() {
 				</div>
 			)}
 			
-			{/* Fallback background image - Shows on mobile, during loading, or on error */}
-			{(isMobile || !shouldLoadVideo || videoError) && (
+			{/* Fallback background image - Shows during loading or on error */}
+			{(!shouldLoadVideo || videoError) && (
 				<motion.div 
 					style={{ y, opacity }}
 					className="absolute inset-0 z-[1] pointer-events-none"

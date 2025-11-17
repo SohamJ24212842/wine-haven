@@ -205,17 +205,33 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
 }
 
 // Get product by slug
-export async function getProductBySlug(slug: string): Promise<Product | null> {
+export async function getProductBySlug(slugParam: string): Promise<Product | null> {
+	// Normalize the slug parameter for comparison
+	const normalizedSlug = slugParam.toLowerCase();
   // Try Supabase if configured
   if (USE_SUPABASE) {
     const supabase = createServerClient();
     if (supabase) {
       try {
-        const { data, error } = await supabase
+        // First try exact match
+        let { data, error } = await supabase
           .from('products')
           .select('*')
-          .eq('slug', slug)
+          .eq('slug', normalizedSlug)
           .single();
+
+        // If not found, try case-insensitive match
+        if (error || !data) {
+          const result = await supabase
+            .from('products')
+            .select('*')
+            .ilike('slug', normalizedSlug);
+          
+          if (result.data && result.data.length > 0) {
+            data = result.data[0];
+            error = null;
+          }
+        }
 
         if (!error && data) {
           return mapRowToProduct(data);
@@ -226,9 +242,9 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     }
   }
 
-  // Fallback to local data
+  // Fallback to local data - case-insensitive comparison
   const { products } = await import('@/data/products');
-  return products.find(p => p.slug === slug) || null;
+  return products.find(p => p.slug.toLowerCase() === normalizedSlug) || null;
 }
 
 // Create product (admin only)
