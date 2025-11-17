@@ -30,9 +30,13 @@ export function Hero() {
 		return () => window.removeEventListener("resize", checkMobile);
 	}, []);
 	
-	// Load video immediately for better performance
+	// Load video immediately for better performance - ensure it loads on mobile too
 	useEffect(() => {
-		setShouldLoadVideo(true);
+		// Small delay to ensure DOM is ready, especially on mobile
+		const timer = setTimeout(() => {
+			setShouldLoadVideo(true);
+		}, 50);
+		return () => clearTimeout(timer);
 	}, []);
 	
 	// Track scroll relative to the hero section for video control
@@ -125,6 +129,8 @@ export function Hero() {
 						src="/7102288-hd_1920_1080_30fps.mp4"
 						muted
 						playsInline
+						autoPlay
+						loop
 						preload="auto"
 						className="absolute inset-0 w-full h-full object-cover"
 						style={{ 
@@ -139,6 +145,10 @@ export function Hero() {
 							if (video.duration && video.duration !== Infinity) {
 								setVideoDuration(video.duration);
 							}
+							// Force play on mobile
+							video.play().catch(() => {
+								// Autoplay may fail, but video will still load
+							});
 						}}
 						onLoadedData={(e) => {
 							const video = e.currentTarget;

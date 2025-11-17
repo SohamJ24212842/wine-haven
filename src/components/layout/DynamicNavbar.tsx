@@ -664,11 +664,21 @@ export function DynamicNavbar() {
 									Wine Haven
 								</Link>
 								<button 
-									onClick={() => setMobileMenuOpen(false)}
-									className="text-maroon hover:text-gold"
+									onClick={(e) => {
+										e.preventDefault();
+										e.stopPropagation();
+										setMobileMenuOpen(false);
+									}}
+									onTouchStart={(e) => {
+										e.preventDefault();
+										e.stopPropagation();
+										setMobileMenuOpen(false);
+									}}
+									className="text-maroon hover:text-gold transition-colors p-1 -mr-1"
 									aria-label="Close menu"
+									type="button"
 								>
-									<X size={24} />
+									<X size={24} strokeWidth={2} />
 								</button>
 							</div>
 

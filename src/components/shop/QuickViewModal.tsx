@@ -24,6 +24,17 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 	const [zoom, setZoom] = useState(false);
 	const [zoomOrigin, setZoomOrigin] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
 	const lastUpdateRef = useRef<number>(0);
+	const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
+
+	// Detect mobile/tablet
+	useEffect(() => {
+		const checkDevice = () => {
+			setIsMobileOrTablet(window.innerWidth < 1024); // lg breakpoint
+		};
+		checkDevice();
+		window.addEventListener("resize", checkDevice);
+		return () => window.removeEventListener("resize", checkDevice);
+	}, []);
 
 	// Prevent page scroll when zoomed
 	useEffect(() => {
@@ -109,44 +120,36 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 											</span>
 										)}
 									</div>
-									<div
-										className="absolute inset-0"
-										onMouseMove={(e) => {
-											if (!zoom) return;
-											e.preventDefault();
-											e.stopPropagation();
-											const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
-											const x = ((e.clientX - rect.left) / rect.width) * 100;
-											const y = ((e.clientY - rect.top) / rect.height) * 100;
-											updateZoomOrigin(x, y);
-										}}
-										onTouchMove={(e) => {
-											if (!zoom || e.touches.length === 0) return;
-											e.preventDefault();
-											e.stopPropagation();
-											const touch = e.touches[0];
-											const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
-											const x = ((touch.clientX - rect.left) / rect.width) * 100;
-											const y = ((touch.clientY - rect.top) / rect.height) * 100;
-											updateZoomOrigin(x, y);
-										}}
-									>
+									<div className="absolute inset-0">
 										<Image
 											src={images[selectedImage]}
 											alt={product.name}
 											fill
 											className={`object-contain p-4 transition-transform duration-200 ${
-												zoom ? "cursor-zoom-out" : "cursor-zoom-in"
+												!isMobileOrTablet && zoom ? "cursor-zoom-out" : !isMobileOrTablet ? "cursor-zoom-in" : ""
 											}`}
 											style={
-												zoom
+												!isMobileOrTablet && zoom
 													? {
 															transform: "scale(1.8)",
 															transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%`,
 													  }
 													: undefined
 											}
-											onClick={() => setZoom((z) => !z)}
+											onClick={() => {
+												if (!isMobileOrTablet) {
+													setZoom((z) => !z);
+												}
+											}}
+											onMouseMove={!isMobileOrTablet ? (e) => {
+												if (!zoom) return;
+												e.preventDefault();
+												e.stopPropagation();
+												const rect = (e.currentTarget as HTMLImageElement).getBoundingClientRect();
+												const x = ((e.clientX - rect.left) / rect.width) * 100;
+												const y = ((e.clientY - rect.top) / rect.height) * 100;
+												updateZoomOrigin(x, y);
+											} : undefined}
 											sizes="(max-width: 768px) 100vw, 50vw"
 											priority
 										/>
