@@ -24,33 +24,8 @@ export function PromotionalMedia() {
 	const [activeIndex, setActiveIndex] = useState(0);
 	const [selectedMedia, setSelectedMedia] = useState<PromotionalMedia | null>(null);
 	const [isHovered, setIsHovered] = useState(false);
-	const [isVisible, setIsVisible] = useState(false);
 	const autoRotateRef = useRef<ReturnType<typeof setInterval> | null>(null);
-	const sectionRef = useRef<HTMLDivElement>(null);
 	const videoRef = useRef<HTMLVideoElement>(null);
-
-	// Intersection Observer to only animate when visible
-	useEffect(() => {
-		const element = sectionRef.current;
-		if (!element) return;
-
-		const observer = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						setIsVisible(true);
-					}
-				});
-			},
-			{ threshold: 0.1 }
-		);
-
-		observer.observe(element);
-
-		return () => {
-			observer.unobserve(element);
-		};
-	}, []);
 
 	// Fetch media once
 	useEffect(() => {
@@ -87,9 +62,9 @@ export function PromotionalMedia() {
 		});
 	}, [media.length]);
 
-	// Auto play rotation - only when visible
+	// Auto play rotation
 	useEffect(() => {
-		if (media.length <= 1 || isHovered || !isVisible) {
+		if (media.length <= 1 || isHovered) {
 			if (autoRotateRef.current) {
 				clearInterval(autoRotateRef.current);
 				autoRotateRef.current = null;
@@ -107,29 +82,7 @@ export function PromotionalMedia() {
 				autoRotateRef.current = null;
 			}
 		};
-	}, [media.length, isHovered, isVisible, nextSlide]);
-
-	// Handle video play/pause based on visibility
-	// Note: autoPlay attribute handles most cases, this is just a fallback
-	useEffect(() => {
-		if (loading || media.length === 0) return;
-		
-		const video = videoRef.current;
-		const currentMedia = media[activeIndex];
-		if (!video || !currentMedia) return;
-
-		// Only manually control if autoPlay didn't work (e.g., autoplay blocked)
-		if (isVisible && currentMedia.type === "video" && !currentMedia.thumbnail) {
-			// Check if video is paused (autoplay might have been blocked)
-			if (video.paused && video.readyState >= 2) {
-				video.play().catch(() => {
-					// Autoplay blocked, that's okay - user can click play button
-				});
-			}
-		} else if (!isVisible) {
-			video.pause();
-		}
-	}, [isVisible, activeIndex, media, loading]);
+	}, [media.length, isHovered, nextSlide]);
 
 	if (loading || media.length === 0) {
 		return null;
@@ -138,7 +91,7 @@ export function PromotionalMedia() {
 	const currentMedia = media[activeIndex];
 
 	return (
-		<section ref={sectionRef} className="py-16 bg-gradient-to-b from-cream to-soft-gray">
+		<section className="py-16 bg-gradient-to-b from-cream to-soft-gray">
 			<Container>
 				<SectionHeading>Visit Our Store</SectionHeading>
 				<p className="text-center text-maroon/70 mb-12 max-w-3xl mx-auto">
@@ -154,10 +107,10 @@ export function PromotionalMedia() {
 						{currentMedia && (
 							<motion.div
 								key={`${currentMedia.id}-${activeIndex}`}
-								initial={{ opacity: 0, scale: 0.98, y: 20 }}
-								animate={{ opacity: 1, scale: 1, y: 0 }}
-								exit={{ opacity: 0, scale: 1.02, y: -10 }}
-								transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+								initial={{ opacity: 1 }}
+								animate={{ opacity: 1 }}
+								exit={{ opacity: 0 }}
+								transition={{ duration: 0.3 }}
 								className="relative h-[260px] sm:h-[360px] lg:h-[420px] rounded-[32px] overflow-hidden shadow-2xl"
 							>
 								<div className="absolute inset-0">
@@ -180,7 +133,7 @@ export function PromotionalMedia() {
 												preload="auto"
 												muted
 												loop
-												autoPlay={isVisible}
+												autoPlay
 												playsInline
 											/>
 										)

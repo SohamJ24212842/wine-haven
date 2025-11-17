@@ -35,7 +35,14 @@ export function SearchBar() {
 	}, [isOpen]);
 
 
-	// Debounced search
+	// Helper to normalize text (remove diacritics) - same as shop page
+	const normalize = (s?: string) =>
+		(s || "")
+			.toLowerCase()
+			.normalize("NFD")
+			.replace(/\p{Diacritic}/gu, "");
+
+	// Debounced search - filter locally exactly like shop page
 	useEffect(() => {
 		if (!query.trim()) {
 			setResults([]);
@@ -45,14 +52,29 @@ export function SearchBar() {
 		const timeoutId = setTimeout(async () => {
 			setIsSearching(true);
 			try {
-				const response = await fetch(`/api/products?search=${encodeURIComponent(query)}`);
+				// Fetch all products and filter locally (same as shop page)
+				const response = await fetch('/api/products');
 				if (response.ok) {
 					const data = await response.json();
 					const productsArray: Product[] = Array.isArray(data) ? data : (data.products || []);
 
-					// API already filters results (matching shop page behavior)
-					// Just show top 8 results, no additional ranking needed
-					setResults(productsArray.slice(0, 8));
+					// Filter locally with normalization (exactly like shop page)
+					const q = normalize(query.trim());
+					const filtered = productsArray.filter((p) => {
+						return (
+							normalize(p.name).includes(q) ||
+							normalize(p.slug).includes(q) ||
+							normalize(p.country).includes(q) ||
+							normalize(p.region).includes(q) ||
+							normalize(p.description).includes(q) ||
+							normalize(p.producer).includes(q) ||
+							normalize(p.tasteProfile).includes(q) ||
+							normalize(p.foodPairing).includes(q) ||
+							normalize((p.grapes || []).join(", ")).includes(q)
+						);
+					});
+
+					setResults(filtered.slice(0, 8));
 				}
 			} catch (error) {
 				console.error("Search error:", error);
