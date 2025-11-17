@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Product } from "@/types/product";
 import { useCart } from "@/contexts/CartContext";
 import { ShoppingCart, Eye } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { QuickViewModal } from "./QuickViewModal";
 
 type ProductCardProps = {
@@ -27,16 +27,10 @@ export function ProductCard({ product }: ProductCardProps) {
 	const { addItem } = useCart();
 	const [isHovered, setIsHovered] = useState(false);
 	const [showQuickView, setShowQuickView] = useState(false);
-	const [isTouchDevice, setIsTouchDevice] = useState(false);
 
 	const discountPercentage = product.onSale && product.salePrice 
 		? calculateDiscountPercentage(product.price, product.salePrice)
 		: null;
-
-	// Detect touch device
-	useEffect(() => {
-		setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
-	}, []);
 
 	const handleAddToCart = (e: React.MouseEvent | React.TouchEvent) => {
 		e.preventDefault();
@@ -50,11 +44,23 @@ export function ProductCard({ product }: ProductCardProps) {
 		setShowQuickView(true);
 	};
 
+	const handleCardTap = () => {
+		// On touch devices, first tap shows buttons, second tap navigates
+		if ('ontouchstart' in window) {
+			if (!isHovered) {
+				setIsHovered(true);
+				// Auto-hide after 3 seconds of no interaction
+				setTimeout(() => setIsHovered(false), 3000);
+			}
+		}
+	};
+
 	return (
 		<motion.div
 			className="group relative"
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
+			onTouchStart={handleCardTap}
 			initial={{ opacity: 0, y: 20 }}
 			whileInView={{ opacity: 1, y: 0 }}
 			viewport={{ once: true, amount: 0.2 }}
@@ -134,13 +140,11 @@ export function ProductCard({ product }: ProductCardProps) {
 					<motion.div
 						initial={{ opacity: 0 }}
 						animate={{ 
-							opacity: (isHovered || isTouchDevice) ? 1 : 0,
+							opacity: isHovered ? 1 : 0,
 							transition: { duration: 0.2 }
 						}}
-						className={`absolute inset-0 flex flex-col items-center justify-center gap-3 ${
-							isTouchDevice ? "bg-black/20" : "bg-black/30"
-						} backdrop-blur-sm transition-all duration-300 ${
-							(isHovered || isTouchDevice) ? "pointer-events-auto" : "pointer-events-none"
+						className={`absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/30 backdrop-blur-sm transition-all duration-300 ${
+							isHovered ? "pointer-events-auto" : "pointer-events-none"
 						}`}
 					>
 							<motion.button

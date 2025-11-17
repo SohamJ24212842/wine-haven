@@ -80,8 +80,8 @@ export function DynamicNavbar() {
 
 	return (
 		<header className="sticky top-0 z-40 border-b border-maroon/20 backdrop-blur-md bg-cream/95 shadow-sm">
-			<Container className="flex h-16 items-center justify-between">
-				<Link href="/" className={cn("text-xl font-semibold", "text-maroon", "tracking-wide")}>
+			<Container className="flex h-16 items-center justify-between gap-4">
+				<Link href="/" className={cn("text-xl font-semibold", "text-maroon", "tracking-wide", "flex-shrink-0")}>
 					Wine Haven
 				</Link>
 				<nav className="hidden lg:flex items-center gap-4">

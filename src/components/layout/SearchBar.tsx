@@ -112,7 +112,7 @@ export function SearchBar() {
 						animate={{ opacity: 1, y: 0, scale: 1 }}
 						exit={{ opacity: 0, y: -10, scale: 0.95 }}
 						transition={{ duration: 0.2 }}
-						className="absolute right-0 top-full mt-2 w-[90vw] sm:w-[400px] max-w-[400px] rounded-lg border border-maroon/20 bg-white shadow-xl z-50"
+						className="fixed sm:absolute left-2 right-2 sm:left-auto sm:right-0 top-[72px] sm:top-full mt-2 w-auto sm:w-[400px] sm:max-w-[400px] rounded-lg border border-maroon/20 bg-white shadow-xl z-50"
 					>
 						<form onSubmit={handleSubmit} className="p-4 border-b border-maroon/10">
 							<div className="relative">
