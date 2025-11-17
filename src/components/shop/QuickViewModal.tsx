@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Product } from "@/types/product";
 import { useCart } from "@/contexts/CartContext";
 import { X, ShoppingCart, Wine, UtensilsCrossed, Sparkles } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 type QuickViewModalProps = {
@@ -23,6 +23,18 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 	const [selectedImage, setSelectedImage] = useState(0);
 	const [zoom, setZoom] = useState(false);
 	const [zoomOrigin, setZoomOrigin] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
+
+	// Prevent page scroll when zoomed
+	useEffect(() => {
+		if (zoom) {
+			document.body.style.overflow = 'hidden';
+		} else {
+			document.body.style.overflow = 'auto';
+		}
+		return () => {
+			document.body.style.overflow = 'auto';
+		};
+	}, [zoom]);
 
 	if (!product) return null;
 

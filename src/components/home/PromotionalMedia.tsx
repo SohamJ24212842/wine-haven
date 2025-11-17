@@ -114,32 +114,16 @@ export function PromotionalMedia() {
 								className="relative h-[260px] sm:h-[360px] lg:h-[420px] rounded-[32px] overflow-hidden shadow-2xl"
 							>
 								<div className="absolute inset-0 bg-soft-gray">
-									{currentMedia.type === "video" ? (
-										<>
-											{(currentMedia.thumbnail || currentMedia.url) && (
-												<Image
-													src={currentMedia.thumbnail || currentMedia.url}
-													alt={currentMedia.title || "Promotional video"}
-													fill
-													className="object-cover"
-													sizes="(min-width: 1024px) 1024px, 100vw"
-													loading="lazy"
-													quality={85}
-													unoptimized={currentMedia.url.includes('.mp4')}
-												/>
-											)}
-										</>
-									) : (
-										<Image
-											src={currentMedia.url}
-											alt={currentMedia.title || "Store image"}
-											fill
-											className="object-cover"
-											sizes="(min-width: 1024px) 1024px, 100vw"
-											loading="lazy"
-											quality={85}
-										/>
-									)}
+									<Image
+										src={currentMedia.type === "video" && currentMedia.thumbnail ? currentMedia.thumbnail : currentMedia.url}
+										alt={currentMedia.title || (currentMedia.type === "video" ? "Promotional video" : "Store image")}
+										fill
+										className="object-cover"
+										sizes="(min-width: 1024px) 1024px, 100vw"
+										loading="eager"
+										quality={90}
+										priority
+									/>
 								</div>
 
 								<div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent">

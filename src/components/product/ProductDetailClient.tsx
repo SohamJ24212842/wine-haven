@@ -4,7 +4,7 @@ import { Product } from "@/types/product";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/typography/SectionHeading";
 import { AddToCartButton } from "@/components/shop/AddToCartButton";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Wine, UtensilsCrossed, Sparkles } from "lucide-react";
 
@@ -21,6 +21,18 @@ export function ProductDetailClient({ product, discountPercentage }: ProductDeta
 			: [product.image];
 	const [zoom, setZoom] = useState(false);
 	const [zoomOrigin, setZoomOrigin] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
+
+	// Prevent page scroll when zoomed
+	useEffect(() => {
+		if (zoom) {
+			document.body.style.overflow = 'hidden';
+		} else {
+			document.body.style.overflow = 'auto';
+		}
+		return () => {
+			document.body.style.overflow = 'auto';
+		};
+	}, [zoom]);
 
 	return (
 		<Container className="py-12">

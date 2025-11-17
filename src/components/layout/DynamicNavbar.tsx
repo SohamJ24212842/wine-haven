@@ -602,15 +602,15 @@ export function DynamicNavbar() {
 						</span>
 					</Link>
 				</nav>
-				<div className="lg:hidden flex items-center gap-2">
+				<div className="flex lg:hidden items-center gap-2 flex-shrink-0">
 					<SearchBar />
 					<CartTray />
 					<button 
 						onClick={() => setMobileMenuOpen(true)}
-						className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-maroon/20 text-maroon hover:bg-soft-gray" 
+						className="inline-flex h-10 w-10 items-center justify-center rounded-md border-2 border-maroon/30 text-maroon hover:bg-soft-gray active:bg-maroon/10 transition-colors" 
 						aria-label="Open menu"
 					>
-						<Menu size={18} />
+						<Menu size={20} strokeWidth={2.5} />
 					</button>
 				</div>
 			</Container>

@@ -117,8 +117,8 @@ export function Hero() {
 
 	return (
 		<div ref={containerRef} className="relative">
-			{/* Scroll-controlled wine pouring video - Bottom layer */}
-			{shouldLoadVideo && (
+			{/* Scroll-controlled wine pouring video - Desktop only */}
+			{!isMobile && shouldLoadVideo && (
 				<div className="absolute inset-0 z-0 overflow-hidden" style={{ 
 					willChange: "transform",
 					transform: "translateZ(0)",
@@ -128,7 +128,7 @@ export function Hero() {
 						src="/7102288-hd_1920_1080_30fps.mp4"
 						muted
 						playsInline
-						preload={isMobile ? "none" : "auto"} // Lazy load on mobile
+						preload="auto"
 						className="absolute inset-0 w-full h-full object-cover"
 						style={{ 
 							objectPosition: "center",
@@ -160,8 +160,8 @@ export function Hero() {
 				</div>
 			)}
 			
-			{/* Fallback background image - Shows during loading or on error */}
-			{(!shouldLoadVideo || videoError) && (
+			{/* Fallback background image - Shows on mobile, during loading, or on error */}
+			{(isMobile || !shouldLoadVideo || videoError) && (
 				<motion.div 
 					style={{ y, opacity }}
 					className="absolute inset-0 z-[1] pointer-events-none"
@@ -172,7 +172,7 @@ export function Hero() {
 						fill
 						className="object-cover brightness-[0.7]"
 						priority
-						quality={isMobile ? 75 : 90} // Lower quality on mobile
+						quality={isMobile ? 75 : 90}
 						sizes="100vw"
 					/>
 				</motion.div>
