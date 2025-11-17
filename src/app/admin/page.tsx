@@ -66,6 +66,9 @@ function AdminPageContent() {
 			case "sale-off":
 				actionLabel = "remove on sale";
 				break;
+			case "sale-10-percent":
+				actionLabel = "apply 10% discount";
+				break;
 			default:
 				return;
 		}
@@ -86,6 +89,16 @@ function AdminPageContent() {
 				if (action === "gift-off") updates = { christmasGift: false };
 				if (action === "sale-on") updates = { onSale: true };
 				if (action === "sale-off") updates = { onSale: false };
+				if (action === "sale-10-percent") {
+					// Only apply to Wine and Spirit categories
+					if (product.category === "Wine" || product.category === "Spirit") {
+						const salePrice = Math.round((product.price * 0.9) * 100) / 100; // 10% off, rounded to 2 decimals
+						updates = { onSale: true, salePrice: salePrice };
+					} else {
+						// Skip non-wine/spirit products
+						return null;
+					}
+				}
 
 				const response = await fetch(`/api/products/${slug}`, {
 					method: "PUT",
@@ -101,11 +114,22 @@ function AdminPageContent() {
 				return response.json();
 			});
 
-			await Promise.all(promises);
+			const results = await Promise.all(promises);
 			const selectedCount = count;
+			const updatedCount = results.filter(r => r !== null).length;
 			setSelectedProducts(new Set());
 			fetchProducts();
-			alert(`Successfully applied "${actionLabel}" to ${selectedCount} product(s).`);
+			
+			if (action === "sale-10-percent") {
+				const skippedCount = selectedCount - updatedCount;
+				if (skippedCount > 0) {
+					alert(`Successfully applied 10% discount to ${updatedCount} wine/spirit product(s).\n\n${skippedCount} product(s) skipped (not Wine or Spirit).`);
+				} else {
+					alert(`Successfully applied 10% discount to ${updatedCount} product(s).`);
+				}
+			} else {
+				alert(`Successfully applied "${actionLabel}" to ${selectedCount} product(s).`);
+			}
 		} catch (error: any) {
 			alert(`Failed to update products: ${error.message}`);
 			console.error(error);
