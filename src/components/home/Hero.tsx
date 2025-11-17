@@ -17,6 +17,7 @@ export function Hero() {
 	const [videoError, setVideoError] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
 	const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+	const [isInView, setIsInView] = useState(true);
 	
 	// Detect mobile on mount
 	useEffect(() => {
@@ -44,6 +45,31 @@ export function Hero() {
 		target: containerRef,
 		offset: ["start start", "end start"],
 	});
+
+	// Use Intersection Observer to detect when hero is out of view
+	useEffect(() => {
+		if (!containerRef.current) return;
+		
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					setIsInView(entry.isIntersecting);
+				});
+			},
+			{
+				threshold: 0,
+				rootMargin: "-10% 0px -10% 0px", // Consider out of view when 10% scrolled past
+			}
+		);
+
+		observer.observe(containerRef.current);
+
+		return () => {
+			if (containerRef.current) {
+				observer.unobserve(containerRef.current);
+			}
+		};
+	}, []);
 	
 	// Get video duration when loaded
 	useEffect(() => {
@@ -67,10 +93,10 @@ export function Hero() {
 	}, [shouldLoadVideo]);
 	
 	// Optimized scroll-controlled video playback with throttling
-	// Only update when hero section is in view (scrollYProgress between 0 and 1)
+	// Only update when hero section is in view
 	useMotionValueEvent(scrollYProgress, "change", (latest) => {
 		// Stop processing if hero section is completely out of view
-		if (latest >= 1 || latest < 0) {
+		if (!isInView || latest >= 1 || latest < 0) {
 			return;
 		}
 		

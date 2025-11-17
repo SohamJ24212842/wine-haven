@@ -18,6 +18,7 @@ export function HorizontalScrollSection({ title, subtitle, products, filterUrl }
 	const scrollRef = useRef<HTMLDivElement>(null);
 	const [canScrollLeft, setCanScrollLeft] = useState(false);
 	const [canScrollRight, setCanScrollRight] = useState(true);
+	const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 	// Build shop URL based on section type
 	const getShopUrl = () => {
@@ -32,12 +33,17 @@ export function HorizontalScrollSection({ title, subtitle, products, filterUrl }
 		return "/shop";
 	};
 
-	// Check scroll position
+	// Check scroll position - throttled for performance
 	const checkScroll = () => {
-		if (!scrollRef.current) return;
-		const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-		setCanScrollLeft(scrollLeft > 0);
-		setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+		if (scrollTimeoutRef.current) {
+			clearTimeout(scrollTimeoutRef.current);
+		}
+		scrollTimeoutRef.current = setTimeout(() => {
+			if (!scrollRef.current) return;
+			const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+			setCanScrollLeft(scrollLeft > 0);
+			setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+		}, 100); // Throttle to every 100ms
 	};
 
 	// Scroll functions
@@ -45,7 +51,7 @@ export function HorizontalScrollSection({ title, subtitle, products, filterUrl }
 		if (!scrollRef.current) return;
 		const scrollAmount = 320; // Width of card + gap
 		const newScrollLeft = scrollRef.current.scrollLeft + (direction === "right" ? scrollAmount : -scrollAmount);
-		scrollRef.current.scrollTo({ left: newScrollLeft, behavior: "smooth" });
+		scrollRef.current.scrollTo({ left: newScrollLeft, behavior: "auto" });
 	};
 
 	// Removed auto-scroll for better performance
@@ -54,11 +60,14 @@ export function HorizontalScrollSection({ title, subtitle, products, filterUrl }
 		checkScroll();
 		const scrollElement = scrollRef.current;
 		if (scrollElement) {
-			scrollElement.addEventListener("scroll", checkScroll);
+			scrollElement.addEventListener("scroll", checkScroll, { passive: true });
 		}
 		return () => {
 			if (scrollElement) {
 				scrollElement.removeEventListener("scroll", checkScroll);
+			}
+			if (scrollTimeoutRef.current) {
+				clearTimeout(scrollTimeoutRef.current);
 			}
 		};
 	}, []);
@@ -70,10 +79,10 @@ export function HorizontalScrollSection({ title, subtitle, products, filterUrl }
 					<SectionHeading subtitle={subtitle}>{title}</SectionHeading>
 					<Link
 						href={getShopUrl()}
-						className="flex items-center gap-2 text-sm font-medium text-maroon hover:text-gold transition-colors group"
+						className="flex items-center gap-2 text-sm font-medium text-maroon hover:text-gold transition-colors"
 					>
 						View All
-						<ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+						<ArrowRight size={16} />
 					</Link>
 				</div>
 				<div className="mt-6 sm:mt-8 md:mt-10 relative">
@@ -81,7 +90,7 @@ export function HorizontalScrollSection({ title, subtitle, products, filterUrl }
 					{canScrollLeft && (
 						<button
 							onClick={() => scroll("left")}
-							className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white border border-maroon/20 rounded-full p-2 shadow-lg transition-all hover:scale-110"
+							className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white border border-maroon/20 rounded-full p-2 shadow-lg transition-colors"
 							aria-label="Scroll left"
 						>
 							<ChevronLeft className="w-5 h-5 text-maroon" />
@@ -90,7 +99,7 @@ export function HorizontalScrollSection({ title, subtitle, products, filterUrl }
 					{canScrollRight && (
 						<button
 							onClick={() => scroll("right")}
-							className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white border border-maroon/20 rounded-full p-2 shadow-lg transition-all hover:scale-110"
+							className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white border border-maroon/20 rounded-full p-2 shadow-lg transition-colors"
 							aria-label="Scroll right"
 						>
 							<ChevronRight className="w-5 h-5 text-maroon" />
@@ -99,8 +108,7 @@ export function HorizontalScrollSection({ title, subtitle, products, filterUrl }
 					
 					<div 
 						ref={scrollRef}
-						className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide scroll-smooth"
-						style={{ scrollBehavior: "smooth" }}
+						className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide"
 					>
 						{products.map((product) => (
 							<div
