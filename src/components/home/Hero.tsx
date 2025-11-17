@@ -126,7 +126,6 @@ export function Hero() {
 						muted
 						playsInline
 						preload="auto"
-						loading="eager"
 						className="absolute inset-0 w-full h-full object-cover"
 						style={{ 
 							objectPosition: "center",
