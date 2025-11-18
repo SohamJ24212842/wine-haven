@@ -430,46 +430,6 @@
 		"image": "https://images.unsplash.com/photo-1527169402691-feff5539e52c?auto=format&fit=crop&w=1200&q=60"
 	},
 	{
-		"slug": "laturce-reserva-rioja-2020",
-		"name": "Laturce Reserva Rioja 2020",
-		"type": "Red",
-		"country": "Spain",
-		"region": "Rioja",
-		"price": 22.90,
-		"description": "Aged Reserva with cherry, vanilla, and spice. Well-balanced and elegant.",
-		"image": "https://images.unsplash.com/photo-1527169402691-feff5539e52c?auto=format&fit=crop&w=1200&q=60"
-	},
-	{
-		"slug": "valdubon-roble",
-		"name": "Valdubón Roble",
-		"type": "Red",
-		"country": "Spain",
-		"region": "Ribera del Duero",
-		"price": 24.95,
-		"description": "Young Tempranillo with fresh dark fruit and oak spice. Approachable and vibrant.",
-		"image": "https://images.unsplash.com/photo-1527169402691-feff5539e52c?auto=format&fit=crop&w=1200&q=60"
-	},
-	{
-		"slug": "finca-besaya-rioja-crianza-unoaked-2020",
-		"name": "Finca Besaya Rioja Crianza Unoaked 2020",
-		"type": "Red",
-		"country": "Spain",
-		"region": "Rioja",
-		"price": 19.95,
-		"description": "Unoaked Rioja with pure fruit expression. Fresh cherry and bright acidity.",
-		"image": "https://images.unsplash.com/photo-1527169402691-feff5539e52c?auto=format&fit=crop&w=1200&q=60"
-	},
-	{
-		"slug": "protos-roble-2023",
-		"name": "Protos Roble 2023",
-		"type": "Red",
-		"country": "Spain",
-		"region": "Ribera del Duero",
-		"price": 21.50,
-		"description": "Young Tempranillo with fresh fruit and subtle oak. Vibrant and approachable.",
-		"image": "https://images.unsplash.com/photo-1527169402691-feff5539e52c?auto=format&fit=crop&w=1200&q=60"
-	},
-	{
 		"slug": "protos-verdejo-2024",
 		"name": "Protos Verdejo 2024",
 		"type": "White",
@@ -478,16 +438,6 @@
 		"price": 21.50,
 		"description": "Crisp Verdejo with citrus, fennel, and mineral notes. Fresh and zippy.",
 		"image": "https://images.unsplash.com/photo-1566228015668-4b3755e86df5?auto=format&fit=crop&w=1200&q=60"
-	},
-	{
-		"slug": "lasso-tinto-2017",
-		"name": "Lasso Tinto 2017",
-		"type": "Red",
-		"country": "Spain",
-		"region": "La Mancha",
-		"price": 21.95,
-		"description": "Aged red with dark fruit, spice, and developed complexity. Rich and smooth.",
-		"image": "https://images.unsplash.com/photo-1527169402691-feff5539e52c?auto=format&fit=crop&w=1200&q=60"
 	},
 	{
 		"slug": "picpoul-de-pinet-domaine-de-la-madone-2023",
@@ -500,26 +450,6 @@
 		"image": "https://images.unsplash.com/photo-1551024709-8f23befc6cf7?auto=format&fit=crop&w=1200&q=60"
 	},
 	{
-		"slug": "domaine-de-la-vignoble-drouard-muscadet-sur-lie",
-		"name": "Domaine de la Vignoble Drouard Muscadet Sur Lie",
-		"type": "White",
-		"country": "France",
-		"region": "Loire",
-		"price": 19.99,
-		"description": "Classic Muscadet with citrus, mineral, and yeasty notes. Perfect with shellfish.",
-		"image": "https://images.unsplash.com/photo-1551024709-8f23befc6cf7?auto=format&fit=crop&w=1200&q=60"
-	},
-	{
-		"slug": "pear-tree-single-vineyard-sauvignon-blanc-2024",
-		"name": "Pear Tree Single Vineyard Sauvignon Blanc 2024",
-		"type": "White",
-		"country": "New Zealand",
-		"region": "Marlborough",
-		"price": 26.95,
-		"description": "Single-vineyard Sauvignon Blanc with intense citrus, passionfruit, and herbs. Vibrant and expressive.",
-		"image": "https://images.unsplash.com/photo-1551024709-8f23befc6cf7?auto=format&fit=crop&w=1200&q=60"
-	},
-	{
 		"slug": "viore-verdejo-sobre-lias-2022",
 		"name": "Viore Verdejo Sobre Lias 2022",
 		"type": "White",
@@ -528,16 +458,6 @@
 		"price": 19.99,
 		"description": "Lees-aged Verdejo with citrus, fennel, and creamy texture. Rich and balanced.",
 		"image": "https://images.unsplash.com/photo-1566228015668-4b3755e86df5?auto=format&fit=crop&w=1200&q=60"
-	},
-	{
-		"slug": "vionta-albarino",
-		"name": "Vionta Albariño",
-		"type": "White",
-		"country": "Spain",
-		"region": "Rías Baixas",
-		"price": 23.95,
-		"description": "Classic Albariño with peach, citrus, and sea-breeze minerality. Perfect with seafood.",
-		"image": "https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=1200&q=60"
 	},
 	{
 		"slug": "lagar-de-besada-albarino",
@@ -658,5 +578,125 @@
 		"price": 16.95,
 		"description": "Dry German Riesling with lime, slate, and crisp acidity. Fresh and food-friendly.",
 		"image": "https://images.unsplash.com/photo-1613797712383-1c1edbba7d7e?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "plaimont-colombelle-tannat-cabernet-sauvignon",
+		"name": "Plaimont Colombelle Tannat Cabernet Sauvignon",
+		"type": "Red",
+		"country": "France",
+		"region": "South West France",
+		"price": 18.95,
+		"description": "Unique blend of Tannat and Cabernet Sauvignon from South West France. Dark fruit, spice, and structured tannins. Distinctive and full-bodied.",
+		"image": "https://images.unsplash.com/photo-1510627498534-cf7e9002facc?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "bargemone-rose",
+		"name": "Bargemone Rosé",
+		"type": "Rosé",
+		"country": "France",
+		"region": "Provence",
+		"price": 24.95,
+		"description": "Quality Provence rosé with delicate strawberry, citrus, and mineral notes. Elegant and refined with a dry, crisp finish.",
+		"image": "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "boutinot-malbec-rose",
+		"name": "Boutinot Malbec Rosé",
+		"type": "Rosé",
+		"country": "France",
+		"region": "South West France",
+		"price": 19.95,
+		"description": "Unique Malbec rosé with vibrant red fruit, floral notes, and refreshing acidity. Distinctive and approachable.",
+		"image": "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "les-cerisiers-cotes-du-rhone-rose",
+		"name": "Les Cerisiers Côtes du Rhône Rosé",
+		"type": "Rosé",
+		"country": "France",
+		"region": "Rhône",
+		"price": 16.95,
+		"description": "Fresh Côtes du Rhône rosé with cherry, raspberry, and herbal notes. Juicy and food-friendly.",
+		"image": "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "corte-delle-calli-rose-spumante",
+		"name": "Corte delle Calli Rosé Spumante",
+		"type": "Sparkling",
+		"country": "Italy",
+		"region": "Veneto",
+		"price": 18.95,
+		"description": "Italian sparkling rosé with fine bubbles, red berry fruit, and crisp acidity. Elegant and festive.",
+		"image": "https://images.unsplash.com/photo-1521017432531-fbd92d1cf00b?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "integral-3-unfiltered",
+		"name": "Integral 3 Unfiltered",
+		"type": "Red",
+		"country": "Spain",
+		"region": "Priorat",
+		"price": 28.95,
+		"description": "Unfiltered wine with intense fruit expression and natural texture. Rich, complex, and distinctive. Natural winemaking approach.",
+		"image": "https://images.unsplash.com/photo-1510627498534-cf7e9002facc?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "lamarca-prosecco",
+		"name": "La Marca Prosecco",
+		"type": "Sparkling",
+		"country": "Italy",
+		"region": "Veneto",
+		"price": 19.95,
+		"description": "Popular Prosecco with fine bubbles, pear, and apple fruit. Fresh, crisp, and approachable. Great value.",
+		"image": "https://images.unsplash.com/photo-1521017432531-fbd92d1cf00b?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "valdo-bio-prosecco",
+		"name": "Valdo Bio Prosecco",
+		"type": "Sparkling",
+		"country": "Italy",
+		"region": "Veneto",
+		"price": 22.95,
+		"description": "Organic Prosecco with fresh citrus, white flowers, and fine bubbles. Clean, elegant, and environmentally conscious.",
+		"image": "https://images.unsplash.com/photo-1521017432531-fbd92d1cf00b?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "1928-prosecco-doc-frizzante-carvicchioli-e-figli",
+		"name": "1928 Prosecco DOC Frizzante Carvicchioli e Figli",
+		"type": "Sparkling",
+		"country": "Italy",
+		"region": "Veneto",
+		"price": 24.95,
+		"description": "Premium Prosecco with gentle frizzante bubbles, citrus, and stone fruit. Elegant and refined with heritage quality.",
+		"image": "https://images.unsplash.com/photo-1521017432531-fbd92d1cf00b?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "valdo-prosecco-rose-brut",
+		"name": "Valdo Prosecco Rosé Brut",
+		"type": "Sparkling",
+		"country": "Italy",
+		"region": "Veneto",
+		"price": 21.95,
+		"description": "Prosecco rosé with fine bubbles, red berry fruit, and crisp acidity. Fresh, elegant, and distinctive.",
+		"image": "https://images.unsplash.com/photo-1521017432531-fbd92d1cf00b?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "montegrande-prosecco",
+		"name": "Montegrande Prosecco",
+		"type": "Sparkling",
+		"country": "Italy",
+		"region": "Veneto",
+		"price": 18.95,
+		"description": "Quality Prosecco with fresh pear, apple, and floral notes. Crisp, refreshing, and well-balanced.",
+		"image": "https://images.unsplash.com/photo-1521017432531-fbd92d1cf00b?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "millage-prosecco-doc-treviso",
+		"name": "Millage Prosecco DOC Treviso",
+		"type": "Sparkling",
+		"country": "Italy",
+		"region": "Veneto",
+		"price": 17.95,
+		"description": "Prosecco DOC from Treviso with citrus, white peach, and fine bubbles. Fresh and approachable.",
+		"image": "https://images.unsplash.com/photo-1521017432531-fbd92d1cf00b?auto=format&fit=crop&w=1200&q=60"
 	}
 ]
