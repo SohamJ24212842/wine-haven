@@ -1,0 +1,662 @@
+[
+	{
+		"slug": "brunello-di-montalcino-banfi-2019",
+		"name": "Brunello di Montalcino Banfi 2019",
+		"type": "Red",
+		"country": "Italy",
+		"region": "Tuscany",
+		"price": 54.95,
+		"description": "Premium Brunello with complex notes of cherry, leather, and spice. Aged to perfection with firm tannins and a long, elegant finish.",
+		"image": "https://images.unsplash.com/photo-1514362545857-3bc16c4c76b8?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "sequoia-grove-cabernet-sauvignon-napa-valley-2020",
+		"name": "Sequoia Grove Cabernet Sauvignon Napa Valley 2020",
+		"type": "Red",
+		"country": "USA",
+		"region": "Napa Valley",
+		"price": 85.00,
+		"description": "Luxury Napa Cabernet with blackcurrant, cassis, and mocha. Rich, full-bodied with polished tannins and exceptional depth.",
+		"image": "https://images.unsplash.com/photo-1516934024742-b461fba47600?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "cloudy-bay-pinot-noir-2022",
+		"name": "Cloudy Bay Pinot Noir 2022",
+		"type": "Red",
+		"country": "New Zealand",
+		"region": "Marlborough",
+		"price": 55.00,
+		"description": "Elegant Pinot Noir with red cherry, wild strawberry, and subtle oak. Silky texture with vibrant acidity and a long finish.",
+		"image": "https://images.unsplash.com/photo-1515543237350-b3eea1ec8082?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "cloudy-bay-chardonnay-2022",
+		"name": "Cloudy Bay Chardonnay 2022",
+		"type": "White",
+		"country": "New Zealand",
+		"region": "Marlborough",
+		"price": 52.95,
+		"description": "Premium Chardonnay with stone fruit, citrus, and subtle oak. Rich and balanced with a creamy texture.",
+		"image": "https://images.unsplash.com/photo-1525130413817-d45c1d127c42?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "sequoia-grove-chardonnay-2021",
+		"name": "Sequoia Grove Chardonnay 2021",
+		"type": "White",
+		"country": "USA",
+		"region": "Napa Valley",
+		"price": 52.00,
+		"description": "Rich, opulent Chardonnay with baked apple, vanilla, and toasted oak. Full-bodied with a long, buttery finish.",
+		"image": "https://images.unsplash.com/photo-1525130413817-d45c1d127c42?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "margaux-de-brane-2019",
+		"name": "Margaux de Brane 2019",
+		"type": "Red",
+		"country": "France",
+		"region": "Bordeaux",
+		"price": 48.50,
+		"description": "Classic Margaux with cassis, violet, and fine-grained tannins. Elegant and refined with great aging potential.",
+		"image": "https://images.unsplash.com/photo-1510627498534-cf7e9002facc?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "frank-phelan-saint-estephe-2018",
+		"name": "Frank Phélan Saint-Estèphe 2018",
+		"type": "Red",
+		"country": "France",
+		"region": "Bordeaux",
+		"price": 49.50,
+		"description": "Powerful Saint-Estèphe with dark fruit, graphite, and structured tannins. On sale - exceptional value.",
+		"image": "https://images.unsplash.com/photo-1510627498534-cf7e9002facc?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "chateau-lilian-ladouys-saint-estephe-2019",
+		"name": "Château Lilian Ladouys Saint-Estèphe 2019",
+		"type": "Red",
+		"country": "France",
+		"region": "Bordeaux",
+		"price": 42.50,
+		"description": "Elegant Saint-Estèphe with blackcurrant, cedar, and supple tannins. On sale - outstanding quality.",
+		"image": "https://images.unsplash.com/photo-1510627498534-cf7e9002facc?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "labastide-dauzac-margaux-2021",
+		"name": "Labastide Dauzac Margaux 2021",
+		"type": "Red",
+		"country": "France",
+		"region": "Bordeaux",
+		"price": 43.90,
+		"description": "Refined Margaux with floral notes, red fruit, and silky tannins. Approachable yet complex.",
+		"image": "https://images.unsplash.com/photo-1510627498534-cf7e9002facc?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "cloudy-bay-sauvignon-blanc-2024",
+		"name": "Cloudy Bay Sauvignon Blanc 2024",
+		"type": "White",
+		"country": "New Zealand",
+		"region": "Marlborough",
+		"price": 42.00,
+		"description": "Iconic Sauvignon Blanc with passionfruit, citrus, and fresh herbs. Crisp, vibrant, and intensely aromatic.",
+		"image": "https://images.unsplash.com/photo-1551024709-8f23befc6cf7?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "barolo-docg-patres",
+		"name": "Barolo DOCG Patres",
+		"type": "Red",
+		"country": "Italy",
+		"region": "Piedmont",
+		"price": 36.95,
+		"description": "Classic Barolo with tar, roses, and firm tannins. Complex and age-worthy Nebbiolo expression.",
+		"image": "https://images.unsplash.com/photo-1514362545857-3bc16c4c76b8?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "chablis-la-sereine",
+		"name": "Chablis \"La Sereine\"",
+		"type": "White",
+		"country": "France",
+		"region": "Burgundy",
+		"price": 34.99,
+		"description": "Unoaked Chardonnay with green apple, lemon zest, and chalky minerality. Pure and precise.",
+		"image": "https://images.unsplash.com/photo-1613422046611-ff2cbaa799f2?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "piedra-negra-malbec-alta-coleccion-2024",
+		"name": "Piedra Negra Malbec Alta Colección 2024",
+		"type": "Red",
+		"country": "Argentina",
+		"region": "Mendoza",
+		"price": 39.00,
+		"description": "Premium Malbec with blackberry, plum, and spice. Rich and full-bodied with velvety tannins.",
+		"image": "https://images.unsplash.com/photo-1604908177068-8aa14d4510d3?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "rupert-rothschild-classique-2009",
+		"name": "Rupert & Rothschild Classique 2009",
+		"type": "Red",
+		"country": "South Africa",
+		"region": "Franschhoek",
+		"price": 35.00,
+		"description": "Aged Bordeaux-style blend with dark fruit, tobacco, and elegant structure. Well-developed complexity.",
+		"image": "https://images.unsplash.com/photo-1510627498534-cf7e9002facc?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "vale-d-maria-douro-superior-2022",
+		"name": "Vale D. Maria Douro Superior 2022",
+		"type": "Red",
+		"country": "Portugal",
+		"region": "Douro",
+		"price": 32.50,
+		"description": "Portuguese red blend with dark fruit, spice, and mineral notes. Rich and structured.",
+		"image": "https://images.unsplash.com/photo-1510627498534-cf7e9002facc?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "faustino-i-gran-reserva-2015",
+		"name": "Faustino I Gran Reserva 2015",
+		"type": "Red",
+		"country": "Spain",
+		"region": "Rioja",
+		"price": 32.50,
+		"description": "Aged Gran Reserva with leather, spice, and dried fruit. Complex and elegant with polished tannins.",
+		"image": "https://images.unsplash.com/photo-1527169402691-feff5539e52c?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "chateau-tour-de-perrigal-bordeaux-superieur-2021",
+		"name": "Château Tour de Perrigal Bordeaux Supérieur 2021",
+		"type": "Red",
+		"country": "France",
+		"region": "Bordeaux",
+		"price": 25.99,
+		"description": "Classic Bordeaux with cassis, plum, and gentle oak. Well-balanced and approachable.",
+		"image": "https://images.unsplash.com/photo-1510627498534-cf7e9002facc?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "conde-valdemar-rioja-crianza-reserva-2017",
+		"name": "Conde Valdemar Rioja Crianza Reserva 2017",
+		"type": "Red",
+		"country": "Spain",
+		"region": "Rioja",
+		"price": 27.95,
+		"description": "Award-winning Rioja with 91 points. Cherry, vanilla, and spice with silky tannins and great balance.",
+		"image": "https://images.unsplash.com/photo-1527169402691-feff5539e52c?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "rioja-vega-crianza-2021",
+		"name": "Rioja Vega Crianza 2021",
+		"type": "Red",
+		"country": "Spain",
+		"region": "Rioja",
+		"price": 19.99,
+		"description": "Irish Wine of the Year winner. Ripe cherry, vanilla, and sweet spice. Exceptional value.",
+		"image": "https://images.unsplash.com/photo-1527169402691-feff5539e52c?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "lolo-albarino",
+		"name": "Lolo Albariño",
+		"type": "White",
+		"country": "Spain",
+		"region": "Rías Baixas",
+		"price": 21.50,
+		"description": "Irish Wine of the Year winner. Sea-breeze minerality with peach and citrus. Perfect with seafood.",
+		"image": "https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "ebano-6-ribera-del-duero",
+		"name": "Ébano 6 Ribera del Duero",
+		"type": "Red",
+		"country": "Spain",
+		"region": "Ribera del Duero",
+		"price": 25.90,
+		"description": "Powerful Tempranillo with dark fruit, spice, and firm structure. Rich and concentrated.",
+		"image": "https://images.unsplash.com/photo-1527169402691-feff5539e52c?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "esporao-reserva-tinto-organic-2022",
+		"name": "Esporão Reserva Tinto Organic 2022",
+		"type": "Red",
+		"country": "Portugal",
+		"region": "Alentejo",
+		"price": 29.95,
+		"description": "Organic Portuguese blend with dark fruit, spice, and earthy notes. Rich and full-bodied.",
+		"image": "https://images.unsplash.com/photo-1510627498534-cf7e9002facc?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "terrazas-de-los-andes-malbec-2022",
+		"name": "Terrazas de los Andes Malbec 2022",
+		"type": "Red",
+		"country": "Argentina",
+		"region": "Mendoza",
+		"price": 24.00,
+		"description": "High-altitude Malbec with blackberry, plum, and spice. Smooth and approachable.",
+		"image": "https://images.unsplash.com/photo-1604908177068-8aa14d4510d3?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "terrazas-de-los-andes-chardonnay-2024",
+		"name": "Terrazas de los Andes Chardonnay 2024",
+		"type": "White",
+		"country": "Argentina",
+		"region": "Mendoza",
+		"price": 22.90,
+		"description": "Crisp Chardonnay with citrus, stone fruit, and mineral notes. Fresh and balanced.",
+		"image": "https://images.unsplash.com/photo-1525130413817-d45c1d127c42?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "portillo-malbec-2022",
+		"name": "Portillo Malbec 2022",
+		"type": "Red",
+		"country": "Argentina",
+		"region": "Mendoza",
+		"price": 22.50,
+		"description": "Juicy Malbec with blackberry, plum, and soft tannins. Great value and crowd-pleasing.",
+		"image": "https://images.unsplash.com/photo-1604908177068-8aa14d4510d3?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "fin-del-mundo-malbec-2022",
+		"name": "Fin del Mundo Malbec 2022",
+		"type": "Red",
+		"country": "Argentina",
+		"region": "Patagonia",
+		"price": 22.50,
+		"description": "Cool-climate Malbec with fresh black fruit and spice. Elegant and refined.",
+		"image": "https://images.unsplash.com/photo-1604908177068-8aa14d4510d3?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "whispering-angel-rose",
+		"name": "Whispering Angel Rosé",
+		"type": "Rosé",
+		"country": "France",
+		"region": "Provence",
+		"price": 27.99,
+		"description": "Iconic Provence rosé with strawberry, white peach, and a dry, crisp finish. Perfect summer wine.",
+		"image": "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "sancerre-2023",
+		"name": "Sancerre 2023",
+		"type": "White",
+		"country": "France",
+		"region": "Loire",
+		"price": 27.95,
+		"description": "Classic Sancerre with citrus, gooseberry, and flinty minerality. Crisp and refreshing.",
+		"image": "https://images.unsplash.com/photo-1564309264894-60b8ee5b62c7?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "louis-jadot-macon-lugny-2023",
+		"name": "Louis Jadot Mâcon-Lugny 2023",
+		"type": "White",
+		"country": "France",
+		"region": "Burgundy",
+		"price": 29.95,
+		"description": "Unoaked Chardonnay with apple, citrus, and mineral notes. Clean and elegant.",
+		"image": "https://images.unsplash.com/photo-1613422046611-ff2cbaa799f2?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "crozes-hermitage-delas-2022",
+		"name": "Crozes-Hermitage Delas 2022",
+		"type": "Red",
+		"country": "France",
+		"region": "Rhône",
+		"price": 27.95,
+		"description": "Northern Rhône Syrah with black pepper, dark fruit, and spice. Structured and elegant.",
+		"image": "https://images.unsplash.com/photo-1516594798947-e65505dbb29d?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "bertani-valpolicella-ripasso",
+		"name": "Bertani Valpolicella Ripasso",
+		"type": "Red",
+		"country": "Italy",
+		"region": "Veneto",
+		"price": 26.94,
+		"description": "Rich Ripasso with cherry, spice, and dried fruit notes. Full-bodied and warming.",
+		"image": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "castello-di-albola-chianti-classico",
+		"name": "Castello di Albola Chianti Classico",
+		"type": "Red",
+		"country": "Italy",
+		"region": "Tuscany",
+		"price": 24.95,
+		"description": "Classic Chianti with sour cherry, leather, and savoury notes. Food-friendly and elegant.",
+		"image": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "valmoissine-pinot-noir-louis-latour-2022",
+		"name": "Valmoissine Pinot Noir Louis Latour 2022",
+		"type": "Red",
+		"country": "France",
+		"region": "Provence",
+		"price": 24.95,
+		"description": "Elegant Pinot Noir with red fruit, florals, and silky texture. Approachable and refined.",
+		"image": "https://images.unsplash.com/photo-1515543237350-b3eea1ec8082?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "grand-veneur-cotes-du-rhone-2023",
+		"name": "Grand Veneur Côtes du Rhône 2023",
+		"type": "Red",
+		"country": "France",
+		"region": "Rhône",
+		"price": 18.99,
+		"description": "Juicy Grenache-led blend with raspberry, pepper, and soft tannins. Great value.",
+		"image": "https://images.unsplash.com/photo-1516594798947-e65505dbb29d?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "rupert-rothschild-baroness-nadine-chardonnay-2023",
+		"name": "Rupert & Rothschild Baroness Nadine Chardonnay 2023",
+		"type": "White",
+		"country": "South Africa",
+		"region": "Franschhoek",
+		"price": 40.00,
+		"description": "Premium Chardonnay with stone fruit, vanilla, and subtle oak. Rich and balanced.",
+		"image": "https://images.unsplash.com/photo-1525130413817-d45c1d127c42?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "domaine-gueneau-sancerre-la-guiberte-2024",
+		"name": "Domaine Gueneau Sancerre \"La Guiberte\" 2024",
+		"type": "White",
+		"country": "France",
+		"region": "Loire",
+		"price": 30.95,
+		"description": "Single-vineyard Sancerre with intense citrus, flint, and mineral notes. Precision and elegance.",
+		"image": "https://images.unsplash.com/photo-1564309264894-60b8ee5b62c7?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "assyrtiko-papagiannakos",
+		"name": "Assyrtiko Papagiannakos",
+		"type": "White",
+		"country": "Greece",
+		"region": "Attica",
+		"price": 25.00,
+		"description": "Greek white with citrus, mineral, and saline notes. Crisp and distinctive.",
+		"image": "https://images.unsplash.com/photo-1551024709-8f23befc6cf7?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "geyerhof-stockwerk-gruner-veltliner",
+		"name": "Geyerhof Stockwerk Grüner Veltliner",
+		"type": "White",
+		"country": "Austria",
+		"region": "Wachau",
+		"price": 25.00,
+		"description": "Austrian classic with white pepper, citrus, and stone fruit. Fresh and food-friendly.",
+		"image": "https://images.unsplash.com/photo-1551024709-8f23befc6cf7?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "geyerhof-stockwerk-zweigelt",
+		"name": "Geyerhof Stockwerk Zweigelt",
+		"type": "Red",
+		"country": "Austria",
+		"region": "Wachau",
+		"price": 24.99,
+		"description": "Juicy Austrian red with red berries and gentle spice. Versatile and approachable.",
+		"image": "https://images.unsplash.com/photo-1601962244554-89eac3c8d1d3?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "pasqua-zin-primitivo",
+		"name": "Pasqua ZIN Primitivo",
+		"type": "Red",
+		"country": "Italy",
+		"region": "Puglia",
+		"price": 16.95,
+		"description": "Bold Primitivo with dark fruit, spice, and full body. Great value and crowd-pleasing.",
+		"image": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "pasqua-morago-appassite",
+		"name": "Pasqua Morago Appassite",
+		"type": "Red",
+		"country": "Italy",
+		"region": "Veneto",
+		"price": 16.99,
+		"description": "Rich, concentrated red with dried fruit, spice, and sweet notes. Unique and interesting.",
+		"image": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "barahonda-organic-monastrell-merlot-2018",
+		"name": "Barahonda Organic Monastrell–Merlot 2018",
+		"type": "Red",
+		"country": "Spain",
+		"region": "Yecla",
+		"price": 23.99,
+		"description": "Organic blend with dark fruit, spice, and smooth tannins. Rich and approachable.",
+		"image": "https://images.unsplash.com/photo-1527169402691-feff5539e52c?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "corazon-de-lolita-premium-coupage",
+		"name": "Corazón de Lolita Premium Coupage",
+		"type": "Red",
+		"country": "Spain",
+		"region": "La Mancha",
+		"price": 19.95,
+		"description": "Gold Medal winner. Rich blend with dark fruit, spice, and smooth tannins. Great value.",
+		"image": "https://images.unsplash.com/photo-1527169402691-feff5539e52c?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "laturce-reserva-rioja-2020",
+		"name": "Laturce Reserva Rioja 2020",
+		"type": "Red",
+		"country": "Spain",
+		"region": "Rioja",
+		"price": 22.90,
+		"description": "Aged Reserva with cherry, vanilla, and spice. Well-balanced and elegant.",
+		"image": "https://images.unsplash.com/photo-1527169402691-feff5539e52c?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "valdubon-roble",
+		"name": "Valdubón Roble",
+		"type": "Red",
+		"country": "Spain",
+		"region": "Ribera del Duero",
+		"price": 24.95,
+		"description": "Young Tempranillo with fresh dark fruit and oak spice. Approachable and vibrant.",
+		"image": "https://images.unsplash.com/photo-1527169402691-feff5539e52c?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "finca-besaya-rioja-crianza-unoaked-2020",
+		"name": "Finca Besaya Rioja Crianza Unoaked 2020",
+		"type": "Red",
+		"country": "Spain",
+		"region": "Rioja",
+		"price": 19.95,
+		"description": "Unoaked Rioja with pure fruit expression. Fresh cherry and bright acidity.",
+		"image": "https://images.unsplash.com/photo-1527169402691-feff5539e52c?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "protos-roble-2023",
+		"name": "Protos Roble 2023",
+		"type": "Red",
+		"country": "Spain",
+		"region": "Ribera del Duero",
+		"price": 21.50,
+		"description": "Young Tempranillo with fresh fruit and subtle oak. Vibrant and approachable.",
+		"image": "https://images.unsplash.com/photo-1527169402691-feff5539e52c?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "protos-verdejo-2024",
+		"name": "Protos Verdejo 2024",
+		"type": "White",
+		"country": "Spain",
+		"region": "Rueda",
+		"price": 21.50,
+		"description": "Crisp Verdejo with citrus, fennel, and mineral notes. Fresh and zippy.",
+		"image": "https://images.unsplash.com/photo-1566228015668-4b3755e86df5?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "lasso-tinto-2017",
+		"name": "Lasso Tinto 2017",
+		"type": "Red",
+		"country": "Spain",
+		"region": "La Mancha",
+		"price": 21.95,
+		"description": "Aged red with dark fruit, spice, and developed complexity. Rich and smooth.",
+		"image": "https://images.unsplash.com/photo-1527169402691-feff5539e52c?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "picpoul-de-pinet-domaine-de-la-madone-2023",
+		"name": "Picpoul de Pinet Domaine de la Madone 2023",
+		"type": "White",
+		"country": "France",
+		"region": "Languedoc",
+		"price": 18.50,
+		"description": "Coastal white with citrus, sea salt, and mineral notes. Perfect with oysters.",
+		"image": "https://images.unsplash.com/photo-1551024709-8f23befc6cf7?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "domaine-de-la-vignoble-drouard-muscadet-sur-lie",
+		"name": "Domaine de la Vignoble Drouard Muscadet Sur Lie",
+		"type": "White",
+		"country": "France",
+		"region": "Loire",
+		"price": 19.99,
+		"description": "Classic Muscadet with citrus, mineral, and yeasty notes. Perfect with shellfish.",
+		"image": "https://images.unsplash.com/photo-1551024709-8f23befc6cf7?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "pear-tree-single-vineyard-sauvignon-blanc-2024",
+		"name": "Pear Tree Single Vineyard Sauvignon Blanc 2024",
+		"type": "White",
+		"country": "New Zealand",
+		"region": "Marlborough",
+		"price": 26.95,
+		"description": "Single-vineyard Sauvignon Blanc with intense citrus, passionfruit, and herbs. Vibrant and expressive.",
+		"image": "https://images.unsplash.com/photo-1551024709-8f23befc6cf7?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "viore-verdejo-sobre-lias-2022",
+		"name": "Viore Verdejo Sobre Lias 2022",
+		"type": "White",
+		"country": "Spain",
+		"region": "Rueda",
+		"price": 19.99,
+		"description": "Lees-aged Verdejo with citrus, fennel, and creamy texture. Rich and balanced.",
+		"image": "https://images.unsplash.com/photo-1566228015668-4b3755e86df5?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "vionta-albarino",
+		"name": "Vionta Albariño",
+		"type": "White",
+		"country": "Spain",
+		"region": "Rías Baixas",
+		"price": 23.95,
+		"description": "Classic Albariño with peach, citrus, and sea-breeze minerality. Perfect with seafood.",
+		"image": "https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "lagar-de-besada-albarino",
+		"name": "Lagar de Besada Albariño",
+		"type": "White",
+		"country": "Spain",
+		"region": "Rías Baixas",
+		"price": 19.95,
+		"description": "Fresh Albariño with peach, lime, and saline notes. Great value and approachable.",
+		"image": "https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "bread-butter-pinot-noir-2023",
+		"name": "Bread & Butter Pinot Noir 2023",
+		"type": "Red",
+		"country": "USA",
+		"region": "California",
+		"price": 26.95,
+		"description": "Smooth Pinot Noir with cherry, raspberry, and soft tannins. Approachable and versatile.",
+		"image": "https://images.unsplash.com/photo-1515543237350-b3eea1ec8082?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "bread-butter-chardonnay-2023",
+		"name": "Bread & Butter Chardonnay 2023",
+		"type": "White",
+		"country": "USA",
+		"region": "California",
+		"price": 26.95,
+		"description": "Rich Chardonnay with apple, vanilla, and subtle oak. Smooth and balanced.",
+		"image": "https://images.unsplash.com/photo-1525130413817-d45c1d127c42?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "3-wooly-sheep-sauvignon-blanc",
+		"name": "3 Wooly Sheep Sauvignon Blanc",
+		"type": "White",
+		"country": "New Zealand",
+		"region": "Marlborough",
+		"price": 20.99,
+		"description": "Fresh Sauvignon Blanc with citrus, passionfruit, and herbs. Crisp and vibrant.",
+		"image": "https://images.unsplash.com/photo-1551024709-8f23befc6cf7?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "faustino-vii-blanco",
+		"name": "Faustino VII Blanco",
+		"type": "White",
+		"country": "Spain",
+		"region": "Rioja",
+		"price": 12.95,
+		"description": "Fresh white Rioja with citrus and stone fruit. Light and approachable.",
+		"image": "https://images.unsplash.com/photo-1551024709-8f23befc6cf7?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "faustino-vii-tempranillo",
+		"name": "Faustino VII Tempranillo",
+		"type": "Red",
+		"country": "Spain",
+		"region": "Rioja",
+		"price": 12.95,
+		"description": "Young Tempranillo with fresh cherry fruit and soft tannins. Great everyday wine.",
+		"image": "https://images.unsplash.com/photo-1527169402691-feff5539e52c?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "faustino-v-reserva",
+		"name": "Faustino V Reserva",
+		"type": "Red",
+		"country": "Spain",
+		"region": "Rioja",
+		"price": 18.95,
+		"description": "Aged Reserva with cherry, vanilla, and spice. Well-balanced and elegant.",
+		"image": "https://images.unsplash.com/photo-1527169402691-feff5539e52c?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "lafage-miraflors-blanc",
+		"name": "Lafage Miraflors Blanc",
+		"type": "White",
+		"country": "France",
+		"region": "Roussillon",
+		"price": 14.95,
+		"description": "Fresh white blend with citrus and stone fruit. Crisp and approachable.",
+		"image": "https://images.unsplash.com/photo-1551024709-8f23befc6cf7?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "lafage-miraflors-rose",
+		"name": "Lafage Miraflors Rosé",
+		"type": "Rosé",
+		"country": "France",
+		"region": "Roussillon",
+		"price": 14.95,
+		"description": "Fresh rosé with strawberry and citrus notes. Dry and refreshing.",
+		"image": "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "lafage-miraflors-red",
+		"name": "Lafage Miraflors Red",
+		"type": "Red",
+		"country": "France",
+		"region": "Roussillon",
+		"price": 14.95,
+		"description": "Juicy red blend with dark fruit and spice. Approachable and versatile.",
+		"image": "https://images.unsplash.com/photo-1510627498534-cf7e9002facc?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "salisbury-1848-chardonnay-2024",
+		"name": "Salisbury 1848 Chardonnay 2024",
+		"type": "White",
+		"country": "Australia",
+		"region": "Victoria",
+		"price": 24.95,
+		"description": "Australian Chardonnay with stone fruit, citrus, and subtle oak. Balanced and elegant.",
+		"image": "https://images.unsplash.com/photo-1525130413817-d45c1d127c42?auto=format&fit=crop&w=1200&q=60"
+	},
+	{
+		"slug": "hans-baer-riesling-trocken",
+		"name": "Hans Baer Riesling Trocken",
+		"type": "White",
+		"country": "Germany",
+		"region": "Rheingau",
+		"price": 16.95,
+		"description": "Dry German Riesling with lime, slate, and crisp acidity. Fresh and food-friendly.",
+		"image": "https://images.unsplash.com/photo-1613797712383-1c1edbba7d7e?auto=format&fit=crop&w=1200&q=60"
+	}
+]
