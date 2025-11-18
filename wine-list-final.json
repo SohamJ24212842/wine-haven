@@ -585,7 +585,7 @@
 		"type": "Red",
 		"country": "France",
 		"region": "South West France",
-		"price": 18.95,
+		"price": 16.95,
 		"description": "Unique blend of Tannat and Cabernet Sauvignon from South West France. Dark fruit, spice, and structured tannins. Distinctive and full-bodied.",
 		"image": "https://images.unsplash.com/photo-1510627498534-cf7e9002facc?auto=format&fit=crop&w=1200&q=60"
 	},
@@ -595,17 +595,17 @@
 		"type": "Rosé",
 		"country": "France",
 		"region": "Provence",
-		"price": 24.95,
+		"price": 18.99,
 		"description": "Quality Provence rosé with delicate strawberry, citrus, and mineral notes. Elegant and refined with a dry, crisp finish.",
 		"image": "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=1200&q=60"
 	},
 	{
-		"slug": "boutinot-malbec-rose",
-		"name": "Boutinot Malbec Rosé",
+		"slug": "boutinot-malbek-rose",
+		"name": "Boutinot Mal.bek Rosé",
 		"type": "Rosé",
 		"country": "France",
 		"region": "South West France",
-		"price": 19.95,
+		"price": 18.99,
 		"description": "Unique Malbec rosé with vibrant red fruit, floral notes, and refreshing acidity. Distinctive and approachable.",
 		"image": "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=1200&q=60"
 	},
@@ -615,7 +615,7 @@
 		"type": "Rosé",
 		"country": "France",
 		"region": "Rhône",
-		"price": 16.95,
+		"price": 18.00,
 		"description": "Fresh Côtes du Rhône rosé with cherry, raspberry, and herbal notes. Juicy and food-friendly.",
 		"image": "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=1200&q=60"
 	},
@@ -625,7 +625,7 @@
 		"type": "Sparkling",
 		"country": "Italy",
 		"region": "Veneto",
-		"price": 18.95,
+		"price": 22.95,
 		"description": "Italian sparkling rosé with fine bubbles, red berry fruit, and crisp acidity. Elegant and festive.",
 		"image": "https://images.unsplash.com/photo-1521017432531-fbd92d1cf00b?auto=format&fit=crop&w=1200&q=60"
 	},
@@ -635,7 +635,7 @@
 		"type": "Red",
 		"country": "Spain",
 		"region": "Priorat",
-		"price": 28.95,
+		"price": 19.95,
 		"description": "Unfiltered wine with intense fruit expression and natural texture. Rich, complex, and distinctive. Natural winemaking approach.",
 		"image": "https://images.unsplash.com/photo-1510627498534-cf7e9002facc?auto=format&fit=crop&w=1200&q=60"
 	},
@@ -645,7 +645,7 @@
 		"type": "Sparkling",
 		"country": "Italy",
 		"region": "Veneto",
-		"price": 19.95,
+		"price": 26.95,
 		"description": "Popular Prosecco with fine bubbles, pear, and apple fruit. Fresh, crisp, and approachable. Great value.",
 		"image": "https://images.unsplash.com/photo-1521017432531-fbd92d1cf00b?auto=format&fit=crop&w=1200&q=60"
 	},
@@ -655,7 +655,7 @@
 		"type": "Sparkling",
 		"country": "Italy",
 		"region": "Veneto",
-		"price": 22.95,
+		"price": 29.50,
 		"description": "Organic Prosecco with fresh citrus, white flowers, and fine bubbles. Clean, elegant, and environmentally conscious.",
 		"image": "https://images.unsplash.com/photo-1521017432531-fbd92d1cf00b?auto=format&fit=crop&w=1200&q=60"
 	},
@@ -675,7 +675,7 @@
 		"type": "Sparkling",
 		"country": "Italy",
 		"region": "Veneto",
-		"price": 21.95,
+		"price": 30.00,
 		"description": "Prosecco rosé with fine bubbles, red berry fruit, and crisp acidity. Fresh, elegant, and distinctive.",
 		"image": "https://images.unsplash.com/photo-1521017432531-fbd92d1cf00b?auto=format&fit=crop&w=1200&q=60"
 	},
@@ -695,7 +695,7 @@
 		"type": "Sparkling",
 		"country": "Italy",
 		"region": "Veneto",
-		"price": 17.95,
+		"price": 29.99,
 		"description": "Prosecco DOC from Treviso with citrus, white peach, and fine bubbles. Fresh and approachable.",
 		"image": "https://images.unsplash.com/photo-1521017432531-fbd92d1cf00b?auto=format&fit=crop&w=1200&q=60"
 	}
