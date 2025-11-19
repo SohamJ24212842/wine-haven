@@ -1,5 +1,6 @@
 // API route for products (GET all, POST create)
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getAllProducts, createProduct } from '@/lib/db/products';
 import { Product } from '@/types/product';
 
@@ -49,6 +50,11 @@ export async function POST(request: NextRequest) {
     }
 
     const created = await createProduct(product);
+    
+    // Revalidate homepage and shop page to reflect changes immediately
+    revalidatePath('/');
+    revalidatePath('/shop');
+    
     return NextResponse.json(created, { status: 201 });
   } catch (error: any) {
     console.error('Error creating product:', error);
