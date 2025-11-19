@@ -45,9 +45,16 @@ function AdminPageContent() {
 	const handleBulkAction = async (action: string) => {
 		if (selectedProducts.size === 0) return;
 
+		// Check if Supabase is enabled for write operations
+		if (!USE_SUPABASE && (action === "delete" || action === "feature" || action === "unfeature" || action === "gift-on" || action === "gift-off" || action === "sale-on" || action === "sale-off")) {
+			alert("Bulk actions are disabled in local JSON mode.\n\nEnable Supabase (NEXT_PUBLIC_USE_SUPABASE=true) to perform bulk actions on the live database.");
+			return;
+		}
+
 		const count = selectedProducts.size;
 
 		let actionLabel = "";
+		let isDeleteAction = false;
 		switch (action) {
 			case "feature":
 				actionLabel = "mark as featured";
@@ -67,11 +74,19 @@ function AdminPageContent() {
 			case "sale-off":
 				actionLabel = "remove on sale";
 				break;
+			case "delete":
+				actionLabel = "delete";
+				isDeleteAction = true;
+				break;
 			default:
 				return;
 		}
 
-		if (!confirm(`Apply "${actionLabel}" to ${count} selected product(s)?`)) {
+		const confirmMessage = isDeleteAction
+			? `⚠️ WARNING: This will permanently delete ${count} selected product(s). This action cannot be undone!\n\nAre you sure you want to delete these products?`
+			: `Apply "${actionLabel}" to ${count} selected product(s)?`;
+
+		if (!confirm(confirmMessage)) {
 			return;
 		}
 
@@ -80,6 +95,21 @@ function AdminPageContent() {
 				const product = productsList.find((p) => p.slug === slug);
 				if (!product) return;
 
+				// Handle delete action
+				if (isDeleteAction) {
+					const response = await fetch(`/api/products/${slug}`, {
+						method: "DELETE",
+					});
+
+					if (!response.ok) {
+						const errorData = await response.json();
+						throw new Error(`Failed to delete ${product.name}: ${errorData.error || "Unknown error"}`);
+					}
+
+					return response.json();
+				}
+
+				// Handle update actions
 				let updates: Partial<Product> = {};
 				if (action === "feature") updates = { featured: true };
 				if (action === "unfeature") updates = { featured: false };
@@ -106,9 +136,15 @@ function AdminPageContent() {
 			const selectedCount = count;
 			setSelectedProducts(new Set());
 			fetchProducts();
-			alert(`Successfully applied "${actionLabel}" to ${selectedCount} product(s).`);
+			const successMessage = isDeleteAction
+				? `Successfully deleted ${selectedCount} product(s).`
+				: `Successfully applied "${actionLabel}" to ${selectedCount} product(s).`;
+			alert(successMessage);
 		} catch (error: any) {
-			alert(`Failed to update products: ${error.message}`);
+			const errorMessage = isDeleteAction
+				? `Failed to delete products: ${error.message}`
+				: `Failed to update products: ${error.message}`;
+			alert(errorMessage);
 			console.error(error);
 			fetchProducts();
 		}
@@ -701,6 +737,7 @@ function AdminPageContent() {
 									<option value="gift-off">Unmark Christmas Gift</option>
 									<option value="sale-on">Mark as On Sale</option>
 									<option value="sale-off">Unmark On Sale</option>
+									<option value="delete" className="text-red-600">⚠️ Delete Marked Items</option>
 								</select>
 							</div>
 						</>
