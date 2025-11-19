@@ -1695,7 +1695,7 @@ function ProductForm({
 						{/* Or use URL */}
 						<div className="text-xs text-maroon/60 mb-2">OR</div>
 						<input
-							type="url"
+							type="text"
 							placeholder="Or paste image URL here"
 							value={formData.image && !formData.image.startsWith("data:") ? formData.image : ""}
 							onChange={(e) => {
@@ -2019,7 +2019,7 @@ function PromotionalMediaForm({
 								<div className="text-xs text-maroon/60 mb-2">OR paste image URL</div>
 								
 								<input
-									type="url"
+									type="text"
 									value={formData.url && !formData.url.startsWith("data:") ? formData.url : ""}
 									onChange={(e) => {
 										const url = e.target.value;
@@ -2082,7 +2082,7 @@ function PromotionalMediaForm({
 								{/* Or use URL */}
 								<div className="text-xs text-maroon/60 mb-2">OR paste video URL</div>
 								<input
-									type="url"
+									type="text"
 									value={formData.url && !formData.url.startsWith("data:") ? formData.url : ""}
 									onChange={(e) => {
 										const url = e.target.value;
@@ -2152,7 +2152,7 @@ function PromotionalMediaForm({
 							{/* Or use URL */}
 							<div className="text-xs text-maroon/60 mb-2">OR</div>
 							<input
-								type="url"
+								type="text"
 								value={formData.thumbnail && !formData.thumbnail.startsWith("data:") ? formData.thumbnail : ""}
 								onChange={(e) => {
 									const url = e.target.value;

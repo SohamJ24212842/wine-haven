@@ -7,10 +7,10 @@ import { getAllProducts } from "@/lib/db/products";
 
 export default async function Home() {
   const products = await getAllProducts();
-  const featuredWines = products.filter((p) => p.category === "Wine" && p.featured).slice(0, 10);
-  const featuredSpirits = products.filter((p) => p.category === "Spirit" && p.featured).slice(0, 10);
-  const newArrivals = products.filter((p) => p.new).slice(0, 10);
-  const christmasGifts = products.filter((p) => p.christmasGift).slice(0, 10);
+  const featuredWines = products.filter((p) => p.category === "Wine" && p.featured === true).slice(0, 10);
+  const featuredSpirits = products.filter((p) => p.category === "Spirit" && p.featured === true).slice(0, 10);
+  const newArrivals = products.filter((p) => p.new === true).slice(0, 10);
+  const christmasGifts = products.filter((p) => p.christmasGift === true).slice(0, 10);
 
   return (
     <div>

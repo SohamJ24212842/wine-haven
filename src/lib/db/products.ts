@@ -36,12 +36,12 @@ function mapRowToProduct(row: any): Product {
     beerStyle: row.beer_style || undefined,
     abv: row.abv ? parseFloat(row.abv) : undefined,
     volumeMl: row.volume_ml || undefined,
-    featured: row.featured || false,
-    new: row.new || false,
-    onSale: row.on_sale || false,
+    featured: row.featured === true || row.featured === 'true' || row.featured === 1,
+    new: row.new === true || row.new === 'true' || row.new === 1,
+    onSale: row.on_sale === true || row.on_sale === 'true' || row.on_sale === 1,
     salePrice: row.sale_price ? parseFloat(row.sale_price) : undefined,
     stock: row.stock || 0,
-    christmasGift: row.christmas_gift || false,
+    christmasGift: row.christmas_gift === true || row.christmas_gift === 'true' || row.christmas_gift === 1,
   };
 }
 

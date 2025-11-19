@@ -21,7 +21,7 @@
     "onSale": true,
     "salePrice": 49.46,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/brunello-di-montalcino-banfi-2019.jpg",
     "images": []
   },
   {
@@ -46,7 +46,7 @@
     "onSale": true,
     "salePrice": 76.5,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/sequoia-grove-cabernet-sauvignon-napa-valley.jpg",
     "images": []
   },
   {
@@ -71,7 +71,7 @@
     "onSale": true,
     "salePrice": 49.5,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/cloudy-bay-pinot-noir-2022.jpeg",
     "images": []
   },
   {
@@ -96,7 +96,7 @@
     "onSale": true,
     "salePrice": 47.66,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/cloudy-bay-chardonnay-2022.jpeg",
     "images": []
   },
   {
@@ -121,7 +121,7 @@
     "onSale": true,
     "salePrice": 46.8,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/sequoia-grove-chardonnay-2021.jpeg",
     "images": []
   },
   {
@@ -147,7 +147,7 @@
     "onSale": true,
     "salePrice": 43.65,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/margaux-de-brane-2019.jpg",
     "images": []
   },
   {
@@ -173,7 +173,7 @@
     "onSale": true,
     "salePrice": 44.55,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/frank-phelan-saint-estephe-2018.jpg",
     "images": []
   },
   {
@@ -199,7 +199,7 @@
     "onSale": true,
     "salePrice": 38.25,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/chateau-lilian-ladouys-saint-estephe-2019.jpeg",
     "images": []
   },
   {
@@ -225,7 +225,7 @@
     "onSale": true,
     "salePrice": 39.51,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/labastide-dauzac-margaux-2021.jpeg",
     "images": []
   },
   {
@@ -250,7 +250,7 @@
     "onSale": true,
     "salePrice": 37.8,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/cloudy-bay-sauvignon-blanc-2024.jpg",
     "images": []
   },
   {
@@ -275,7 +275,7 @@
     "onSale": true,
     "salePrice": 33.26,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/barolo-docg-patres.jpg",
     "images": []
   },
   {
@@ -300,7 +300,7 @@
     "onSale": true,
     "salePrice": 31.49,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/chablis-la-sereine.jpg",
     "images": []
   },
   {
@@ -325,7 +325,7 @@
     "onSale": true,
     "salePrice": 35.1,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/piedra-negra-malbec-alta-coleccion-2024.jpg",
     "images": []
   },
   {
@@ -350,7 +350,7 @@
     "onSale": true,
     "salePrice": 31.5,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/rupert-rothschild-classique-2009.jpg",
     "images": []
   },
   {
@@ -375,7 +375,7 @@
     "onSale": true,
     "salePrice": 29.25,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/vale-d-maria-douro-superior-2022.jpg",
     "images": []
   },
   {
@@ -400,7 +400,7 @@
     "onSale": true,
     "salePrice": 29.25,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/faustino-i-gran-reserva-2015.jpeg",
     "images": []
   },
   {
@@ -426,7 +426,7 @@
     "onSale": true,
     "salePrice": 23.39,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/chateau-tour-de-perrigal-bordeaux-superieur-2021.jpeg",
     "images": []
   },
   {
@@ -451,7 +451,7 @@
     "onSale": true,
     "salePrice": 25.16,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/conde-valdemar-rioja-crianza-reserva-2017.jpg",
     "images": []
   },
   {
@@ -476,7 +476,7 @@
     "onSale": true,
     "salePrice": 17.99,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/rioja-vega-crianza-2021.jpg",
     "images": []
   },
   {
@@ -501,7 +501,7 @@
     "onSale": true,
     "salePrice": 19.35,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/lolo-albarino.jpg",
     "images": []
   },
   {
@@ -526,7 +526,7 @@
     "onSale": true,
     "salePrice": 23.31,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/ebano-6-ribera-del-duero.jpeg",
     "images": []
   },
   {
@@ -551,7 +551,7 @@
     "onSale": true,
     "salePrice": 26.96,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/esporao-reserva-tinto-organic-2022.jpeg",
     "images": []
   },
   {
@@ -576,7 +576,7 @@
     "onSale": true,
     "salePrice": 21.6,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/terrazas-de-los-andes-malbec-2022.jpeg",
     "images": []
   },
   {
@@ -601,7 +601,7 @@
     "onSale": true,
     "salePrice": 20.61,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/terrazas-de-los-andes-chardonnay-2024.jpeg",
     "images": []
   },
   {
@@ -626,7 +626,7 @@
     "onSale": true,
     "salePrice": 20.25,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/portillo-malbec-2022.jpg",
     "images": []
   },
   {
@@ -651,7 +651,7 @@
     "onSale": true,
     "salePrice": 20.25,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/fin-del-mundo-malbec-2022.jpeg",
     "images": []
   },
   {
@@ -676,7 +676,7 @@
     "onSale": true,
     "salePrice": 25.19,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/whispering-angel-rose.jpeg",
     "images": []
   },
   {
@@ -701,7 +701,7 @@
     "onSale": true,
     "salePrice": 25.16,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/sancerre-2023.jpg",
     "images": []
   },
   {
@@ -726,7 +726,7 @@
     "onSale": true,
     "salePrice": 26.96,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/louis-jadot-macon-lugny-2023.jpg",
     "images": []
   },
   {
@@ -752,7 +752,7 @@
     "onSale": true,
     "salePrice": 25.16,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/crozes-hermitage-delas-2022.jpeg",
     "images": []
   },
   {
@@ -777,7 +777,7 @@
     "onSale": true,
     "salePrice": 24.25,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/bertani-valpolicella-ripasso.jpg",
     "images": []
   },
   {
@@ -827,7 +827,7 @@
     "onSale": true,
     "salePrice": 22.46,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/valmoissine-pinot-noir-louis-latour-2022.jpg",
     "images": []
   },
   {
@@ -853,7 +853,7 @@
     "onSale": true,
     "salePrice": 17.09,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/grand-veneur-cotes-du-rhone-2023.jpg",
     "images": []
   },
   {
@@ -878,7 +878,7 @@
     "onSale": true,
     "salePrice": 36,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/rupert-rothschild-baroness-nadine-chardonnay-2023.jpg",
     "images": []
   },
   {
@@ -903,7 +903,7 @@
     "onSale": true,
     "salePrice": 27.86,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/domaine-gueneau-sancerre-la-guiberte-2024.jpeg",
     "images": []
   },
   {
@@ -928,7 +928,7 @@
     "onSale": true,
     "salePrice": 22.5,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/assyrtiko-papagiannakos.jpeg",
     "images": []
   },
   {
@@ -953,7 +953,7 @@
     "onSale": true,
     "salePrice": 22.5,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/geyerhof-stockwerk-gruner-veltliner.jpeg",
     "images": []
   },
   {
@@ -978,7 +978,7 @@
     "onSale": true,
     "salePrice": 22.49,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/geyerhof-stockwerk-zweigelt.jpg",
     "images": []
   },
   {
@@ -1003,7 +1003,7 @@
     "onSale": true,
     "salePrice": 15.26,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/pasqua-zin-primitivo.jpeg",
     "images": []
   },
   {
@@ -1028,7 +1028,7 @@
     "onSale": true,
     "salePrice": 15.29,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/pasqua-morago-appassite.jpg",
     "images": []
   },
   {
@@ -1054,7 +1054,7 @@
     "onSale": true,
     "salePrice": 21.59,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/barahonda-organic-monastrellmerlot-2018.jpg",
     "images": []
   },
   {
@@ -1079,7 +1079,7 @@
     "onSale": true,
     "salePrice": 17.95,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/corazon-de-lolita-premium-coupage.jpeg",
     "images": []
   },
   {
@@ -1104,7 +1104,7 @@
     "onSale": true,
     "salePrice": 19.35,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/protos-verdejo-2024.jpeg",
     "images": []
   },
   {
@@ -1129,7 +1129,7 @@
     "onSale": true,
     "salePrice": 16.65,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/picpoul-de-pinet-domaine-de-la-madone-2023.jpeg",
     "images": []
   },
   {
@@ -1154,7 +1154,7 @@
     "onSale": true,
     "salePrice": 17.99,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/viore-verdejo-sobre-lias-2022.jpeg",
     "images": []
   },
   {
@@ -1179,7 +1179,7 @@
     "onSale": true,
     "salePrice": 17.95,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/lagar-de-besada-albarino.jpeg",
     "images": []
   },
   {
@@ -1204,7 +1204,7 @@
     "onSale": true,
     "salePrice": 24.26,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/bread-butter-pinot-noir-2023.jpg",
     "images": []
   },
   {
@@ -1254,7 +1254,7 @@
     "onSale": true,
     "salePrice": 18.89,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/3-wooly-sheep-sauvignon-blanc.jpeg",
     "images": []
   },
   {
@@ -1279,7 +1279,7 @@
     "onSale": true,
     "salePrice": 11.66,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/faustino-vii-blanco.jpeg",
     "images": []
   },
   {
@@ -1354,7 +1354,7 @@
     "onSale": true,
     "salePrice": 13.46,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/lafage-miraflors-blanc.jpeg",
     "images": []
   },
   {
@@ -1379,7 +1379,7 @@
     "onSale": true,
     "salePrice": 13.46,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/lafage-miraflors-rose.jpeg",
     "images": []
   },
   {
@@ -1404,7 +1404,7 @@
     "onSale": true,
     "salePrice": 13.46,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/lafage-miraflors-red.jpg",
     "images": []
   },
   {
@@ -1429,7 +1429,7 @@
     "onSale": true,
     "salePrice": 22.46,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/salisbury-1848-chardonnay-2024.jpeg",
     "images": []
   },
   {
@@ -1454,7 +1454,7 @@
     "onSale": true,
     "salePrice": 15.26,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/hans-baer-riesling-trocken.jpeg",
     "images": []
   },
   {
@@ -1480,7 +1480,7 @@
     "onSale": true,
     "salePrice": 15.26,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/plaimont-colombelle-tannat-cabernet-sauvignon.jpeg",
     "images": []
   },
   {
@@ -1505,7 +1505,7 @@
     "onSale": true,
     "salePrice": 17.09,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/bargemone-rose.jpeg",
     "images": []
   },
   {
@@ -1530,7 +1530,7 @@
     "onSale": true,
     "salePrice": 17.09,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/boutinot-malbek-rose.jpg",
     "images": []
   },
   {
@@ -1555,7 +1555,7 @@
     "onSale": true,
     "salePrice": 16.2,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/les-cerisiers-cotes-du-rhone-rose.jpg",
     "images": []
   },
   {
@@ -1580,7 +1580,7 @@
     "onSale": true,
     "salePrice": 20.66,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/corte-delle-calli-rose-spumante.jpeg",
     "images": []
   },
   {
@@ -1605,7 +1605,7 @@
     "onSale": true,
     "salePrice": 17.95,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/integral-3-unfiltered.jpeg",
     "images": []
   },
   {
@@ -1630,7 +1630,7 @@
     "onSale": true,
     "salePrice": 24.26,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/la-marca-prosecco.jpeg",
     "images": []
   },
   {
@@ -1655,7 +1655,7 @@
     "onSale": true,
     "salePrice": 26.55,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/valdo-bio-prosecco.jpeg",
     "images": []
   },
   {
@@ -1680,7 +1680,7 @@
     "onSale": true,
     "salePrice": 22.46,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/1928-prosecco-doc-frizzante-carvicchioli-e-figli.jpeg",
     "images": []
   },
   {
@@ -1705,7 +1705,7 @@
     "onSale": true,
     "salePrice": 27,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/valdo-prosecco-rose-brut.jpeg",
     "images": []
   },
   {
@@ -1730,7 +1730,7 @@
     "onSale": true,
     "salePrice": 17.06,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/montegrande-prosecco.jpeg",
     "images": []
   },
   {
@@ -1755,7 +1755,7 @@
     "onSale": true,
     "salePrice": 26.99,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/millage-prosecco-doc-treviso.jpeg",
     "images": []
   },
   {
@@ -1782,7 +1782,7 @@
     "onSale": true,
     "salePrice": 31.41,
     "christmasGift": false,
-    "image": "https://placeholder.com/400x500",
+    "image": "/wines/victor-berard-chateauneuf-du-pape-2024.jpeg",
     "images": []
   }
 ]
