@@ -262,7 +262,7 @@ export function DynamicNavbar() {
 
 										{/* Right: Type of Wine + Grape Type (scrollable) */}
 										<div className="grid grid-cols-1 gap-6">
-											<div>
+										<div>
 												<h3 className="font-semibold text-maroon mb-3">Type of Wine</h3>
 												<ul className="space-y-2 text-sm">
 													<li>
@@ -279,36 +279,36 @@ export function DynamicNavbar() {
 															className="text-maroon/70 hover:text-gold transition-colors"
 														>
 															White Wines
-														</Link>
-													</li>
-													<li>
+													</Link>
+												</li>
+												<li>
 														<Link
 															href={buildShopUrl({ category: "Wine", wineType: "Rosé" })}
 															className="text-maroon/70 hover:text-gold transition-colors"
 														>
 															Rosé Wines
-														</Link>
-													</li>
-													<li>
+													</Link>
+												</li>
+												<li>
 														<Link
 															href={buildShopUrl({ category: "Wine", wineType: "Sparkling" })}
 															className="text-maroon/70 hover:text-gold transition-colors"
 														>
 															Sparkling Wines
-														</Link>
-													</li>
-													<li>
+													</Link>
+												</li>
+												<li>
 														<Link
 															href={buildShopUrl({ category: "Wine", wineType: "Prosecco" })}
 															className="text-maroon/70 hover:text-gold transition-colors"
 														>
 															Prosecco
-														</Link>
-													</li>
-												</ul>
-											</div>
+													</Link>
+												</li>
+											</ul>
+										</div>
 
-											<div>
+										<div>
 												<h3 className="font-semibold text-maroon mb-3">Grape Type</h3>
 												<ul className="space-y-2 text-sm h-40 overflow-y-auto pr-1">
 													{[
@@ -332,11 +332,11 @@ export function DynamicNavbar() {
 																className="text-maroon/70 hover:text-gold transition-colors"
 															>
 																{grape}
-															</Link>
-														</li>
+													</Link>
+												</li>
 													))}
-												</ul>
-											</div>
+											</ul>
+										</div>
 										</div>
 									</div>
 								</motion.div>
@@ -382,15 +382,15 @@ export function DynamicNavbar() {
 										<div>
 											<h3 className="font-semibold text-maroon mb-3">Whiskey</h3>
 											<ul className="space-y-2 text-sm">
-												<li>
+														<li>
 													<Link
 														href={buildShopUrl({ category: "Spirit", spiritType: "Whiskey", country: "Ireland" })}
 														className="text-maroon/70 hover:text-gold transition-colors"
 													>
-														Irish Whiskey
-													</Link>
-												</li>
-												<li>
+																Irish Whiskey
+															</Link>
+														</li>
+														<li>
 													<Link
 														href={buildShopUrl({ category: "Spirit", spiritType: "Whiskey", country: "Scotland" })}
 														className="text-maroon/70 hover:text-gold transition-colors"
@@ -419,9 +419,9 @@ export function DynamicNavbar() {
 														href={buildShopUrl({ category: "Spirit", spiritType: "Whiskey" })}
 														className="text-maroon/70 hover:text-gold transition-colors"
 													>
-														All Whiskey
-													</Link>
-												</li>
+																All Whiskey
+															</Link>
+														</li>
 											</ul>
 										</div>
 										<div>
@@ -445,12 +445,12 @@ export function DynamicNavbar() {
 												{menuData.spiritTypes
 													.filter(type => type !== 'Whiskey')
 													.map(type => (
-														<li key={type}>
-															<Link href={buildShopUrl({ category: 'Spirit', spiritType: type })} className="text-maroon/70 hover:text-gold transition-colors">
-																{type}
-															</Link>
-														</li>
-													))}
+													<li key={type}>
+														<Link href={buildShopUrl({ category: 'Spirit', spiritType: type })} className="text-maroon/70 hover:text-gold transition-colors">
+															{type}
+														</Link>
+													</li>
+												))}
 											</ul>
 										</div>
 									</div>
