@@ -3,6 +3,7 @@
 // Body: { products: Product[] }
 
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { createProduct } from '@/lib/db/products';
 import { Product } from '@/types/product';
 import { slugify } from '@/lib/utils/text';
@@ -93,6 +94,12 @@ export async function POST(request: NextRequest) {
     }
 
     console.log(`Bulk import complete: ${results.success.length} success, ${results.skipped.length} skipped, ${results.errors.length} errors`);
+
+    // Revalidate homepage and shop page to reflect changes immediately
+    if (results.success.length > 0) {
+      revalidatePath('/');
+      revalidatePath('/shop');
+    }
 
     // Show first 10 errors in the response for debugging
     const errorPreview = results.errors.slice(0, 10);

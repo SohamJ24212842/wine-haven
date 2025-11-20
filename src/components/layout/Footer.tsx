@@ -13,7 +13,7 @@ export function Footer() {
 					</p>
 					<div className="mt-4 flex items-center gap-3">
 						<a
-							href="https://www.instagram.com/winehaven"
+							href="https://www.instagram.com/wine_haven_2?igsh=MTlmZmFnM2RoZHNldg=="
 							target="_blank"
 							rel="noopener noreferrer"
 							className="text-cream/80 hover:text-gold transition-colors"
@@ -22,7 +22,7 @@ export function Footer() {
 							<Instagram size={20} />
 						</a>
 						<a
-							href="https://www.facebook.com/winehaven"
+							href="https://www.facebook.com/share/1MH89jpgjW/?mibextid=wwXIfr"
 							target="_blank"
 							rel="noopener noreferrer"
 							className="text-cream/80 hover:text-gold transition-colors"

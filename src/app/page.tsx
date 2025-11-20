@@ -5,6 +5,10 @@ import { PromotionalMedia } from "@/components/home/PromotionalMedia";
 import { SectionDivider } from "@/components/ui/SectionDivider";
 import { getAllProducts } from "@/lib/db/products";
 
+// Force dynamic rendering to ensure homepage always shows latest data
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function Home() {
   const products = await getAllProducts();
   const featuredWines = products.filter((p) => p.category === "Wine" && p.featured === true).slice(0, 10);
