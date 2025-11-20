@@ -102,30 +102,46 @@ Email: mahajanwinehaven24@gmail.com
 
     // Send email to store
     try {
-      await resend.emails.send({
+      const storeEmailResult = await resend.emails.send({
         from: FROM_EMAIL,
         to: STORE_EMAIL,
         subject: emailSubject,
         text: storeEmailBody,
       });
-      console.log('Store notification email sent successfully');
+      console.log('Store notification email sent successfully:', storeEmailResult);
     } catch (storeEmailError: any) {
-      console.error('Error sending store email:', storeEmailError);
-      // Continue to try sending customer email even if store email fails
+      console.error('Error sending store email:', {
+        message: storeEmailError.message,
+        name: storeEmailError.name,
+        response: storeEmailError.response?.body || storeEmailError.response
+      });
+      // Return error so we know it failed
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: 'Failed to send store email',
+          details: storeEmailError.message 
+        },
+        { status: 500 }
+      );
     }
 
     // Send confirmation email to customer
     try {
-      await resend.emails.send({
+      const customerEmailResult = await resend.emails.send({
         from: FROM_EMAIL,
         to: orderData.customer_email,
         subject: customerEmailSubject,
         text: customerEmailBody,
       });
-      console.log('Customer confirmation email sent successfully');
+      console.log('Customer confirmation email sent successfully:', customerEmailResult);
     } catch (customerEmailError: any) {
-      console.error('Error sending customer email:', customerEmailError);
-      // Don't fail the whole request if customer email fails
+      console.error('Error sending customer email:', {
+        message: customerEmailError.message,
+        name: customerEmailError.name,
+        response: customerEmailError.response?.body || customerEmailError.response
+      });
+      // Log but don't fail - store email is more important
     }
 
     return NextResponse.json({ 

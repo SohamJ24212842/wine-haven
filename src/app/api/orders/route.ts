@@ -1,6 +1,11 @@
 // API route for creating orders (Click & Collect)
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase';
+import { Resend } from 'resend';
+
+const STORE_EMAIL = 'mahajanwinehaven24@gmail.com';
+const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const USE_SUPABASE = !!process.env.NEXT_PUBLIC_SUPABASE_URL;
 
@@ -89,31 +94,108 @@ export async function POST(request: NextRequest) {
             throw new Error(`Failed to create order items: ${itemsError.message}`);
           }
 
-          // Send email notification (non-blocking)
-          try {
-            await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/orders/send-email`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                orderId: order.id,
-                orderData: {
-                  customer_name,
-                  customer_email,
-                  customer_phone,
-                  collection_date,
-                  collection_time,
-                  notes,
-                  items,
-                  total,
-                },
-              }),
-            }).catch((err) => {
-              console.error('Failed to send email notification:', err);
-              // Don't fail the order if email fails
-            });
-          } catch (emailError) {
-            console.error('Email notification error:', emailError);
-            // Continue even if email fails
+          // Send email notification directly (non-blocking)
+          // We send emails directly here instead of making HTTP requests for better reliability
+          if (process.env.RESEND_API_KEY) {
+            try {
+              // Format order email for store
+              const emailSubject = `New Click & Collect Order #${order.id.substring(0, 8)}`;
+              
+              const storeEmailBody = `
+New Click & Collect Order Received
+
+Order ID: ${order.id}
+Date: ${new Date().toLocaleString('en-IE', { timeZone: 'Europe/Dublin' })}
+
+Customer Details:
+- Name: ${customer_name}
+- Email: ${customer_email}
+- Phone: ${customer_phone}
+
+Collection Details:
+- Date: ${collection_date}
+- Time: ${collection_time}
+${notes ? `- Notes: ${notes}` : ''}
+
+Order Items:
+${items.map((item: any, index: number) => 
+  `${index + 1}. ${item.product_name} (${item.quantity}x) - €${item.product_price.toFixed(2)} each = €${item.subtotal.toFixed(2)}`
+).join('\n')}
+
+Total: €${total.toFixed(2)}
+
+---
+This is an automated notification from Wine Haven website.
+Please contact the customer to confirm their collection time.
+              `.trim();
+
+              // Send email to store
+              await resend.emails.send({
+                from: FROM_EMAIL,
+                to: STORE_EMAIL,
+                subject: emailSubject,
+                text: storeEmailBody,
+              });
+              console.log('Store notification email sent successfully to', STORE_EMAIL);
+
+              // Format customer confirmation email
+              const customerEmailSubject = `Your Click & Collect Order #${order.id.substring(0, 8)} - Wine Haven`;
+              
+              const customerEmailBody = `
+Dear ${customer_name},
+
+Thank you for your order! We've received your Click & Collect order and will have it ready for you.
+
+Order Details:
+Order ID: ${order.id}
+Date: ${new Date().toLocaleString('en-IE', { timeZone: 'Europe/Dublin' })}
+
+Collection Details:
+- Date: ${collection_date}
+- Time: ${collection_time}
+- Location: 47, George's Street Upper, Dún Laoghaire, Dublin, A96 K2H2
+
+Your Order:
+${items.map((item: any, index: number) => 
+  `${index + 1}. ${item.product_name} (${item.quantity}x) - €${item.product_price.toFixed(2)} each = €${item.subtotal.toFixed(2)}`
+).join('\n')}
+
+Total: €${total.toFixed(2)}
+
+${notes ? `\nYour Notes: ${notes}\n` : ''}
+
+We'll contact you at ${customer_phone} to confirm your collection time. If you have any questions, please don't hesitate to reach out to us.
+
+Looking forward to seeing you soon!
+
+Best regards,
+The Wine Haven Team
+
+---
+Wine Haven
+47, George's Street Upper, Dún Laoghaire, Dublin, A96 K2H2
+Phone: +353 89 4581875 | (01) 564 4028
+Email: mahajanwinehaven24@gmail.com
+              `.trim();
+
+              // Send confirmation email to customer
+              await resend.emails.send({
+                from: FROM_EMAIL,
+                to: customer_email,
+                subject: customerEmailSubject,
+                text: customerEmailBody,
+              });
+              console.log('Customer confirmation email sent successfully to', customer_email);
+            } catch (emailError: any) {
+              console.error('Error sending emails:', {
+                message: emailError.message,
+                name: emailError.name,
+                response: emailError.response?.body || emailError.response
+              });
+              // Continue even if email fails - don't fail the order
+            }
+          } else {
+            console.warn('RESEND_API_KEY not configured. Emails will not be sent.');
           }
 
           return NextResponse.json({
