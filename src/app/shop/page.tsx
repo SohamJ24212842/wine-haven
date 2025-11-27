@@ -18,35 +18,66 @@ function ShopPageContent() {
 	const [products, setProducts] = useState<Product[]>([]);
 	const [loading, setLoading] = useState(true);
 
-	// Fetch products from database with fallback to local data
-	useEffect(() => {
-		const fetchProducts = async () => {
-			try {
-				// Check if there's a search query in URL
-				const searchQuery = searchParams.get("search") || searchParams.get("q");
-				const url = searchQuery ? `/api/products?search=${encodeURIComponent(searchQuery)}` : '/api/products';
-				
-				const response = await fetch(url);
-				if (response.ok) {
-					const data = await response.json();
-					// API returns array directly, not wrapped in {products}
-					const productsArray = Array.isArray(data) ? data : (data.products || []);
-					setProducts(productsArray.length > 0 ? productsArray : localProducts);
-				} else {
-					// Fallback to local data if API fails
-					console.warn('API failed, using local data');
-					setProducts(localProducts);
-				}
-			} catch (err) {
-				console.error('Failed to fetch products:', err);
-				// Fallback to local data
-				setProducts(localProducts);
-			} finally {
-				setLoading(false);
-			}
-		};
-		fetchProducts();
-	}, [searchParams]);
+			// Fetch products from database - use Supabase only, no local fallback in production
+			useEffect(() => {
+				const fetchProducts = async () => {
+					try {
+						// Check if there's a search query in URL
+						const searchQuery = searchParams.get("search") || searchParams.get("q");
+						const url = searchQuery ? `/api/products?search=${encodeURIComponent(searchQuery)}` : '/api/products';
+						
+						const response = await fetch(url);
+						if (response.ok) {
+							const data = await response.json();
+							// API returns array directly, not wrapped in {products}
+							const productsArray = Array.isArray(data) ? data : (data.products || []);
+							
+							// Only use Supabase data - no local fallback
+							// If API returns empty array, it means Supabase has no data (or not configured)
+							// Only fallback to local in development (localhost)
+							const isDevelopment = typeof window !== 'undefined' && 
+								(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+							
+							if (productsArray.length > 0) {
+								setProducts(productsArray);
+							} else if (isDevelopment) {
+								// Development fallback only
+								console.warn('No products from API, using local data (development mode)');
+								setProducts(localProducts);
+							} else {
+								// Production: show empty if no Supabase data
+								setProducts([]);
+							}
+						} else {
+							// API error - only fallback in development
+							const isDevelopment = typeof window !== 'undefined' && 
+								(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+							
+							if (isDevelopment) {
+								console.warn('API failed, using local data (development mode)');
+								setProducts(localProducts);
+							} else {
+								console.error('API failed in production mode');
+								setProducts([]);
+							}
+						}
+					} catch (err) {
+						console.error('Failed to fetch products:', err);
+						// Only fallback in development
+						const isDevelopment = typeof window !== 'undefined' && 
+							(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+						
+						if (isDevelopment) {
+							setProducts(localProducts);
+						} else {
+							setProducts([]);
+						}
+					} finally {
+						setLoading(false);
+					}
+				};
+				fetchProducts();
+			}, [searchParams]);
 
 	// Memoize regions, countries, and price calculations
 	const regions = useMemo(() => Array.from(new Set(products.map((p) => p.region).filter(Boolean))) as string[], [products]);

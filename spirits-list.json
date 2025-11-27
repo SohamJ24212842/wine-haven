@@ -2,10 +2,10 @@
   {
     "name": "Slane Irish Whiskey",
     "category": "Spirit",
-    "price": 42.00,
+    "price": 42,
     "country": "Ireland",
     "region": "County Meath",
-    "description": "Description\n\nTriple-casked Irish whiskey from the legendary grounds of Slane Castle, home to the Conyngham family. This blended whiskey is matured in three types of casks—virgin oak, seasoned whiskey, and sherry casks—creating a complex and smooth character. Distilled on the banks of the River Boyne, Slane Irish Whiskey represents a modern take on traditional Irish whiskey craftsmanship.\n\nSpirit Profile\n\nAroma: Vanilla, toasted oak, and subtle spice\n\nPalate: Smooth and approachable with notes of caramel, honey, and dried fruit with a gentle warmth. The triple cask maturation adds layers of complexity.\n\nFinish: Smooth and lingering with hints of oak and sweetness\n\nStyle: Triple-casked Irish whiskey; modern take on traditional craftsmanship\n\nBest For: Neat, on the rocks, or in classic cocktails like an Irish coffee or whiskey sour\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic cocktails. Pairs well with dark chocolate, aged cheeses, or as an after-dinner digestif. Excellent in an Irish coffee or whiskey sour.",
+    "description": "Triple-casked Irish whiskey from the legendary grounds of Slane Castle, home to the Conyngham family. This blended whiskey is matured in three types of casks—virgin oak, seasoned whiskey, and sherry casks—creating a complex and smooth character. Distilled on the banks of the River Boyne, Slane Irish Whiskey represents a modern take on traditional Irish whiskey craftsmanship.\n\nSpirit Profile\n\nAroma: Vanilla, toasted oak, and subtle spice\n\nPalate: Smooth and approachable with notes of caramel, honey, and dried fruit with a gentle warmth. The triple cask maturation adds layers of complexity.\n\nFinish: Smooth and lingering with hints of oak and sweetness\n\nStyle: Triple-casked Irish whiskey; modern take on traditional craftsmanship\n\nBest For: Neat, on the rocks, or in classic cocktails like an Irish coffee or whiskey sour\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic cocktails. Pairs well with dark chocolate, aged cheeses, or as an after-dinner digestif. Excellent in an Irish coffee or whiskey sour.",
     "producer": "Slane Distillery",
     "tasteProfile": "vanilla, toasted oak, caramel, honey, smooth",
     "foodPairing": "Dark chocolate, aged cheeses, cocktails",
@@ -23,7 +23,7 @@
   {
     "name": "Giffard Limoncello",
     "category": "Spirit",
-    "price": 35.00,
+    "price": 35,
     "country": "France",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nPremium French limoncello crafted with lemon zest since 1885. Giffard's traditional recipe uses the finest lemon zest to create a vibrant, authentic Italian-style liqueur. This artisanal limoncello captures the essence of fresh lemons with a perfect balance of sweetness and citrus brightness.\n\nSpirit Profile\n\nAroma: Intense lemon aromas with vibrant citrus character\n\nPalate: Fresh and zesty with natural lemon flavor and balanced sweetness\n\nFinish: Clean and refreshing with authentic, vibrant character\n\nStyle: Premium French limoncello; artisanal Italian-style liqueur\n\nBest For: Chilled as a digestif, over ice, in cocktails, or drizzled over desserts\n\nFood Pairing\n\nPerfect served chilled as a digestif or over ice. Excellent in cocktails, drizzled over ice cream, or paired with fresh fruit. Ideal for summer sipping or as a refreshing aperitif.\n\nAlso available: Giffard Apricot Liqueur, Giffard Crème de Cacao - prices may differ.",
     "producer": "Giffard",
@@ -38,7 +38,9 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/giffard-limoncello.jpg",
-    "images": ["/spirits/giffard-varieties.jpg"]
+    "images": [
+      "/spirits/giffard-varieties.jpg"
+    ]
   },
   {
     "name": "Giffard Crème de Cacao 1885",
@@ -58,12 +60,14 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/giffard-creme-de-cacao.jpg",
-    "images": ["/spirits/giffard-apricot-liqueur.jpg"]
+    "images": [
+      "/spirits/giffard-apricot-liqueur.jpg"
+    ]
   },
   {
     "name": "Absolut Vodka",
     "category": "Spirit",
-    "price": 37.50,
+    "price": 37.5,
     "country": "Sweden",
     "region": "Åhus",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nSwedish vodka made with winter wheat and pure water from the village of Åhus. Absolut has been crafted since 1879 using a continuous distillation process. Made with Swedish water and winter wheat, this premium vodka is known for its exceptional purity and smooth character.\n\nSpirit Profile\n\nAroma: Clean and neutral with subtle grain notes\n\nPalate: Smooth and velvety with exceptional purity and no harshness\n\nFinish: Clean and crisp\n\nStyle: Premium Swedish vodka; continuous distillation since 1879\n\nBest For: Cocktails (martinis, cosmopolitans, vodka tonics), neat, or on the rocks\n\nFood Pairing\n\nVersatile in cocktails—perfect for martinis, cosmopolitans, or vodka tonics. Also excellent neat or on the rocks. Pairs well with caviar, smoked salmon, or pickled herring.\n\nAlso available: Absolut Citron (Lemon), Absolut Raspberry - prices may differ.",
@@ -79,12 +83,14 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/absolut-vodka.jpg",
-    "images": ["/spirits/absolut-varieties.jpg"]
+    "images": [
+      "/spirits/absolut-varieties.jpg"
+    ]
   },
   {
     "name": "Clonakilty Galley Head Irish Whiskey",
     "category": "Spirit",
-    "price": 43.00,
+    "price": 43,
     "country": "Ireland",
     "region": "County Cork",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nSingle pot still Irish whiskey from Clonakilty Atlantic Distillery, distilled from barley grown on the family farm by the edge of the Atlantic Ocean. This coastal whiskey captures the maritime character of its unique location, creating a distinctive expression of Irish whiskey tradition.\n\nSpirit Profile\n\nAroma: Maritime salt, fresh barley, and gentle spice with coastal influences\n\nPalate: Smooth and approachable with notes of honey, vanilla, and toasted grains with a subtle briny character\n\nFinish: Clean and coastal\n\nStyle: Single pot still Irish whiskey; coastal character from Atlantic location\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nEnjoy neat or with a drop of water to release the aromas. Pairs beautifully with fresh seafood, particularly oysters or smoked salmon. Also excellent with Irish cheeses or dark chocolate.\n\nAlso available: Clonakilty Single Pot Still, Clonakilty Double Oak Cask, Clonakilty Port Cask, Clonakilty Cask Finish Series - prices may differ.",
@@ -100,15 +106,17 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/clonakilty-galley-head-irish-whiskey.jpg",
-    "images": ["/spirits/clonakilty-varieties.jpg"]
+    "images": [
+      "/spirits/clonakilty-varieties.jpg"
+    ]
   },
   {
     "name": "Maker's Mark Kentucky Straight Bourbon Whisky",
     "category": "Spirit",
-    "price": 55.00,
+    "price": 55,
     "country": "USA",
     "region": "Kentucky",
-    "description": "Description\n\nHandmade bourbon since 1953, crafted at Star Hill Farm in Loretto, Kentucky. Maker's Mark is known for its signature red wax seal and smooth, approachable character. Made with soft red winter wheat instead of rye, creating a uniquely smooth and mellow bourbon.\n\nSpirit Profile\n\nAroma: Vanilla, caramel, and oak\n\nPalate: Smooth and mellow with notes of toffee, honey, and gentle spice. The wheat-based mash bill creates exceptional smoothness.\n\nFinish: Long and warm\n\nStyle: Handmade Kentucky straight bourbon; wheat-based mash bill for smoothness\n\nBest For: Neat, on the rocks, or in classic bourbon cocktails like an Old Fashioned or Manhattan\n\nFood Pairing\n\nPerfect neat, on the rocks, or in classic bourbon cocktails. Pairs well with grilled meats, barbecue, or dark chocolate. Excellent in an Old Fashioned or Manhattan.",
+    "description": "Handmade bourbon since 1953, crafted at Star Hill Farm in Loretto, Kentucky. Maker's Mark is known for its signature red wax seal and smooth, approachable character. Made with soft red winter wheat instead of rye, creating a uniquely smooth and mellow bourbon.\n\nSpirit Profile\n\nAroma: Vanilla, caramel, and oak\n\nPalate: Smooth and mellow with notes of toffee, honey, and gentle spice. The wheat-based mash bill creates exceptional smoothness.\n\nFinish: Long and warm\n\nStyle: Handmade Kentucky straight bourbon; wheat-based mash bill for smoothness\n\nBest For: Neat, on the rocks, or in classic bourbon cocktails like an Old Fashioned or Manhattan\n\nFood Pairing\n\nPerfect neat, on the rocks, or in classic bourbon cocktails. Pairs well with grilled meats, barbecue, or dark chocolate. Excellent in an Old Fashioned or Manhattan.",
     "producer": "Maker's Mark Distillery",
     "tasteProfile": "vanilla, caramel, smooth, mellow, toffee",
     "foodPairing": "Grilled meats, barbecue, dark chocolate",
@@ -129,7 +137,7 @@
     "price": 79.95,
     "country": "France",
     "region": "Cognac",
-    "description": "Description\n\nPremium cognac from the House of Rémy Martin, founded in 1724. This V.S.O.P (Very Superior Old Pale) is made exclusively from grapes grown in the Grande and Petite Champagne regions—the finest terroirs of Cognac. Aged in French oak barrels, it represents the pinnacle of cognac craftsmanship.\n\nSpirit Profile\n\nAroma: Complex aromas of dried fruit, vanilla, and floral notes\n\nPalate: Smooth and elegant with flavors of apricot, honey, and toasted oak\n\nFinish: Long and warming with hints of spice and dried fruit\n\nStyle: Premium cognac V.S.O.P; Grande and Petite Champagne regions\n\nBest For: Neat, with a single ice cube, or in cocktails like a Sidecar or French 75\n\nFood Pairing\n\nTraditionally enjoyed as a digestif, neat or with a single ice cube. Pairs beautifully with dark chocolate, foie gras, or blue cheese. Also excellent in cocktails like a Sidecar or French 75.",
+    "description": "Premium cognac from the House of Rémy Martin, founded in 1724. This V.S.O.P (Very Superior Old Pale) is made exclusively from grapes grown in the Grande and Petite Champagne regions—the finest terroirs of Cognac. Aged in French oak barrels, it represents the pinnacle of cognac craftsmanship.\n\nSpirit Profile\n\nAroma: Complex aromas of dried fruit, vanilla, and floral notes\n\nPalate: Smooth and elegant with flavors of apricot, honey, and toasted oak\n\nFinish: Long and warming with hints of spice and dried fruit\n\nStyle: Premium cognac V.S.O.P; Grande and Petite Champagne regions\n\nBest For: Neat, with a single ice cube, or in cocktails like a Sidecar or French 75\n\nFood Pairing\n\nTraditionally enjoyed as a digestif, neat or with a single ice cube. Pairs beautifully with dark chocolate, foie gras, or blue cheese. Also excellent in cocktails like a Sidecar or French 75.",
     "producer": "Rémy Martin",
     "tasteProfile": "dried fruit, vanilla, apricot, honey, elegant",
     "foodPairing": "Dark chocolate, foie gras, blue cheese",
@@ -147,7 +155,7 @@
   {
     "name": "Teeling Small Batch Irish Whiskey",
     "category": "Spirit",
-    "price": 42.00,
+    "price": 42,
     "country": "Ireland",
     "region": "Dublin",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nDublin-born Irish whiskey from the Teeling Whiskey Company, reborn in 2012. This small batch expression is finished in rum casks, creating a unique and innovative flavor profile. Non-chill filtered to preserve the full character and natural oils of the whiskey.\n\nSpirit Profile\n\nAroma: Vanilla, spice, and tropical fruit with rum cask influences\n\nPalate: Smooth and creamy with notes of banana, coconut, and caramel. The rum cask finish adds complexity.\n\nFinish: Sweet and lingering\n\nStyle: Rum cask finished Irish whiskey; non-chill filtered\n\nBest For: Neat, with a drop of water, or in cocktails like an Irish coffee\n\nFood Pairing\n\nEnjoy neat or with a drop of water. Pairs well with tropical fruits, coconut desserts, or spiced nuts. Excellent in cocktails or as a unique addition to an Irish coffee.\n\nAlso available: Teeling Single Grain (Cabernet Sauvignon Cask), Teeling Single Pot Still, Teeling Single Malt, and other expressions - prices may differ.",
@@ -163,14 +171,16 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/teeling-small-batch-irish-whiskey.jpg",
-    "images": ["/spirits/teeling-varieties.jpg"]
+    "images": [
+      "/spirits/teeling-varieties.jpg"
+    ]
   },
   {
     "name": "Chivas Regal 12 Year Old Blended Scotch Whisky",
     "category": "Spirit",
     "price": 49.95,
     "country": "Scotland",
-    "description": "Description\n\nBlended Scotch whisky from Chivas Brothers, established in 1801. Known as the 'Prince of Whiskies,' this 12-year-old expression is a masterful blend of the finest malt and grain whiskies. Aged for a minimum of 12 years, it represents exceptional value and quality in blended Scotch.\n\nSpirit Profile\n\nAroma: Honey, vanilla, and orchard fruits\n\nPalate: Smooth and mellow with notes of apple, pear, and gentle spice. Well-balanced and approachable yet complex.\n\nFinish: Long and warming\n\nStyle: Blended Scotch whisky; 12-year-old expression\n\nBest For: Neat, on the rocks, or with a splash of water. Excellent in a Rob Roy or Whisky Sour\n\nFood Pairing\n\nEnjoy neat, on the rocks, or with a splash of water. Pairs well with smoked salmon, aged cheeses, or dark chocolate. Excellent in a Rob Roy or Whisky Sour.",
+    "description": "Blended Scotch whisky from Chivas Brothers, established in 1801. Known as the 'Prince of Whiskies,' this 12-year-old expression is a masterful blend of the finest malt and grain whiskies. Aged for a minimum of 12 years, it represents exceptional value and quality in blended Scotch.\n\nSpirit Profile\n\nAroma: Honey, vanilla, and orchard fruits\n\nPalate: Smooth and mellow with notes of apple, pear, and gentle spice. Well-balanced and approachable yet complex.\n\nFinish: Long and warming\n\nStyle: Blended Scotch whisky; 12-year-old expression\n\nBest For: Neat, on the rocks, or with a splash of water. Excellent in a Rob Roy or Whisky Sour\n\nFood Pairing\n\nEnjoy neat, on the rocks, or with a splash of water. Pairs well with smoked salmon, aged cheeses, or dark chocolate. Excellent in a Rob Roy or Whisky Sour.",
     "producer": "Chivas Brothers",
     "tasteProfile": "honey, vanilla, apple, pear, smooth",
     "foodPairing": "Smoked salmon, aged cheeses, dark chocolate",
@@ -188,10 +198,10 @@
   {
     "name": "Minke Irish Vodka",
     "category": "Spirit",
-    "price": 35.00,
+    "price": 35,
     "country": "Ireland",
     "region": "County Cork",
-    "description": "Description\n\nAward-winning Irish vodka from Clonakilty Atlantic Distillery. Winner of World Vodka Awards - World's Best, this premium vodka is crafted on the Atlantic coast of Ireland. Named after the minke whale, this vodka captures the spirit of the Irish coast.\n\nLanguage of Wine\n\nCrystal clear with a smooth, clean character. Subtle notes of grain and a hint of coastal freshness. Exceptionally smooth on the palate with a clean, crisp finish. Award-winning quality with no harshness.\n\nFood Pairing\n\nPerfect in cocktails or served neat over ice. Pairs beautifully with fresh seafood, particularly oysters or smoked salmon. Excellent in a vodka martini or Bloody Mary.",
+    "description": "Award-winning Irish vodka from Clonakilty Atlantic Distillery. Winner of World Vodka Awards - World's Best, this premium vodka is crafted on the Atlantic coast of Ireland. Named after the minke whale, this vodka captures the spirit of the Irish coast.\n\nLanguage of Wine\n\nCrystal clear with a smooth, clean character. Subtle notes of grain and a hint of coastal freshness. Exceptionally smooth on the palate with a clean, crisp finish. Award-winning quality with no harshness.\n\nFood Pairing\n\nPerfect in cocktails or served neat over ice. Pairs beautifully with fresh seafood, particularly oysters or smoked salmon. Excellent in a vodka martini or Bloody Mary.",
     "producer": "Clonakilty Atlantic Distillery",
     "tasteProfile": "smooth, clean, crisp, coastal, award-winning",
     "foodPairing": "Fresh seafood, oysters, cocktails",
@@ -209,7 +219,7 @@
   {
     "name": "Smirnoff No. 21 Vodka",
     "category": "Spirit",
-    "price": 24.00,
+    "price": 24,
     "country": "Russia",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nWorld's number one vodka, ten times filtered for extraordinary purity and remarkably smooth character. Smirnoff No. 21 is the original recipe, established in 1864. This iconic vodka is known for its exceptional smoothness and versatility in cocktails.\n\nLanguage of Wine\n\nCrystal clear with a neutral, clean character. Exceptionally smooth on the palate with no harshness or burn. The ten-time filtration process ensures remarkable purity and a clean, crisp finish.\n\nFood Pairing\n\nVersatile in any cocktail—perfect for martinis, cosmopolitans, or mixed drinks. Also excellent neat or on the rocks. Pairs well with caviar, pickled vegetables, or smoked fish.\n\nAlso available: Smirnoff Spicy Tamarind, Smirnoff Raspberry Crush, Smirnoff Mango & Passionfruit Twist, Smirnoff Vanilla varieties - prices may differ.",
     "producer": "Smirnoff",
@@ -224,15 +234,17 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/smirnoff-no21-vodka.jpg",
-    "images": ["/spirits/smirnoff-varieties.jpg"]
+    "images": [
+      "/spirits/smirnoff-varieties.jpg"
+    ]
   },
   {
     "name": "Jim Beam Kentucky Straight Bourbon Whiskey",
     "category": "Spirit",
-    "price": 36.00,
+    "price": 36,
     "country": "USA",
     "region": "Kentucky",
-    "description": "Description\n\nThe world's number one bourbon whiskey, made by the Beam family since 1795. This Kentucky straight bourbon follows the family's traditional recipe, creating a smooth, approachable bourbon that's perfect for sipping or mixing.\n\nSpirit Profile\n\nAroma: Vanilla, oak, and caramel\n\nPalate: Smooth and mellow with notes of corn, vanilla, and gentle spice. Well-balanced.\n\nFinish: Warm and satisfying\n\nStyle: Kentucky straight bourbon; world's number one bourbon since 1795\n\nBest For: Classic bourbon cocktails, neat, or in a Whiskey Sour or Mint Julep\n\nFood Pairing\n\nPerfect in classic bourbon cocktails or enjoyed neat. Pairs well with barbecue, grilled meats, or pecan pie. Excellent in a Whiskey Sour or Mint Julep.",
+    "description": "The world's number one bourbon whiskey, made by the Beam family since 1795. This Kentucky straight bourbon follows the family's traditional recipe, creating a smooth, approachable bourbon that's perfect for sipping or mixing.\n\nSpirit Profile\n\nAroma: Vanilla, oak, and caramel\n\nPalate: Smooth and mellow with notes of corn, vanilla, and gentle spice. Well-balanced.\n\nFinish: Warm and satisfying\n\nStyle: Kentucky straight bourbon; world's number one bourbon since 1795\n\nBest For: Classic bourbon cocktails, neat, or in a Whiskey Sour or Mint Julep\n\nFood Pairing\n\nPerfect in classic bourbon cocktails or enjoyed neat. Pairs well with barbecue, grilled meats, or pecan pie. Excellent in a Whiskey Sour or Mint Julep.",
     "producer": "James B. Beam Distilling Co.",
     "tasteProfile": "vanilla, oak, caramel, smooth, mellow",
     "foodPairing": "Barbecue, grilled meats, pecan pie",
@@ -250,10 +262,10 @@
   {
     "name": "Dingle Original Gin",
     "category": "Spirit",
-    "price": 39.50,
+    "price": 39.5,
     "country": "Ireland",
     "region": "County Kerry",
-    "description": "Description\n\nPot still gin from Dingle Distillery in County Kerry, Ireland. This original expression is crafted using traditional pot still distillation methods, creating a distinctive Irish gin with character and depth. Made with carefully selected botanicals.\n\nSpirit Profile\n\nAroma: Complex botanical aromas\n\nPalate: Smooth and well-balanced with notes of juniper, citrus, and herbal botanicals. The pot still method creates a fuller body and richer flavor profile.\n\nFinish: Clean and crisp\n\nStyle: Pot still gin; traditional Irish gin from County Kerry\n\nBest For: Classic gin and tonic, martini, or citrus-based cocktails\n\nFood Pairing\n\nPerfect in a classic gin and tonic or martini. Pairs beautifully with fresh seafood, particularly oysters or smoked salmon. Also excellent with citrus-based cocktails or served with a slice of orange.",
+    "description": "Pot still gin from Dingle Distillery in County Kerry, Ireland. This original expression is crafted using traditional pot still distillation methods, creating a distinctive Irish gin with character and depth. Made with carefully selected botanicals.\n\nSpirit Profile\n\nAroma: Complex botanical aromas\n\nPalate: Smooth and well-balanced with notes of juniper, citrus, and herbal botanicals. The pot still method creates a fuller body and richer flavor profile.\n\nFinish: Clean and crisp\n\nStyle: Pot still gin; traditional Irish gin from County Kerry\n\nBest For: Classic gin and tonic, martini, or citrus-based cocktails\n\nFood Pairing\n\nPerfect in a classic gin and tonic or martini. Pairs beautifully with fresh seafood, particularly oysters or smoked salmon. Also excellent with citrus-based cocktails or served with a slice of orange.",
     "producer": "Dingle Distillery",
     "tasteProfile": "juniper, citrus, herbal, smooth, complex",
     "foodPairing": "Fresh seafood, oysters, gin and tonic",
@@ -271,10 +283,10 @@
   {
     "name": "Heaven's Door Tennessee Bourbon",
     "category": "Spirit",
-    "price": 89.00,
+    "price": 89,
     "country": "USA",
     "region": "Tennessee",
-    "description": "Description\n\nTennessee bourbon created in collaboration with Bob Dylan. This straight bourbon whiskey features a distinctive bottle design inspired by Dylan's iron gates. Crafted with attention to detail, it represents a unique expression of American whiskey tradition.\n\nSpirit Profile\n\nAroma: Vanilla, caramel, and oak\n\nPalate: Smooth and warming with notes of toffee, spice, and toasted oak. Well-balanced.\n\nFinish: Long and satisfying\n\nStyle: Tennessee bourbon; created in collaboration with Bob Dylan\n\nBest For: Neat, on the rocks, or in classic bourbon cocktails like an Old Fashioned or Manhattan\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic bourbon cocktails. Pairs well with grilled meats, barbecue, or dark chocolate. Excellent in an Old Fashioned or Manhattan.",
+    "description": "Tennessee bourbon created in collaboration with Bob Dylan. This straight bourbon whiskey features a distinctive bottle design inspired by Dylan's iron gates. Crafted with attention to detail, it represents a unique expression of American whiskey tradition.\n\nSpirit Profile\n\nAroma: Vanilla, caramel, and oak\n\nPalate: Smooth and warming with notes of toffee, spice, and toasted oak. Well-balanced.\n\nFinish: Long and satisfying\n\nStyle: Tennessee bourbon; created in collaboration with Bob Dylan\n\nBest For: Neat, on the rocks, or in classic bourbon cocktails like an Old Fashioned or Manhattan\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic bourbon cocktails. Pairs well with grilled meats, barbecue, or dark chocolate. Excellent in an Old Fashioned or Manhattan.",
     "producer": "Heaven's Door",
     "tasteProfile": "vanilla, caramel, toffee, oak, smooth",
     "foodPairing": "Grilled meats, barbecue, dark chocolate",
@@ -292,10 +304,10 @@
   {
     "name": "Blue Spot Single Pot Still Irish Whiskey",
     "category": "Spirit",
-    "price": 115.00,
+    "price": 115,
     "country": "Ireland",
     "region": "Midleton",
-    "description": "Description\n\nCask strength single pot still Irish whiskey aged 7 years, matured in bourbon barrels, sherry butts, and Madeira casks. Non-chill filtered to preserve the full character. Bottled exclusively for Mitchell & Son, this expression represents the pinnacle of Irish whiskey craftsmanship.\n\nSpirit Profile\n\nAroma: Complex aromas of dried fruit, spice, and oak\n\nPalate: Full-bodied and rich with notes of vanilla, honey, dark fruit, and warming spice. The cask strength delivers intense flavor.\n\nFinish: Long and warming\n\nStyle: Cask strength single pot still Irish whiskey; triple cask maturation (bourbon, sherry, Madeira)\n\nBest For: Neat or with a drop of water to release the aromas\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water to release the aromas. Pairs beautifully with dark chocolate, aged cheeses, or as an after-dinner digestif. A truly special whiskey for connoisseurs.",
+    "description": "Cask strength single pot still Irish whiskey aged 7 years, matured in bourbon barrels, sherry butts, and Madeira casks. Non-chill filtered to preserve the full character. Bottled exclusively for Mitchell & Son, this expression represents the pinnacle of Irish whiskey craftsmanship.\n\nSpirit Profile\n\nAroma: Complex aromas of dried fruit, spice, and oak\n\nPalate: Full-bodied and rich with notes of vanilla, honey, dark fruit, and warming spice. The cask strength delivers intense flavor.\n\nFinish: Long and warming\n\nStyle: Cask strength single pot still Irish whiskey; triple cask maturation (bourbon, sherry, Madeira)\n\nBest For: Neat or with a drop of water to release the aromas\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water to release the aromas. Pairs beautifully with dark chocolate, aged cheeses, or as an after-dinner digestif. A truly special whiskey for connoisseurs.",
     "producer": "Mitchell & Son",
     "tasteProfile": "dried fruit, spice, vanilla, honey, full-bodied",
     "foodPairing": "Dark chocolate, aged cheeses, digestif",
@@ -313,7 +325,7 @@
   {
     "name": "Red Spot Single Pot Still Irish Whiskey",
     "category": "Spirit",
-    "price": 150.00,
+    "price": 150,
     "country": "Ireland",
     "region": "Midleton",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nSingle pot still Irish whiskey from the Spot range, triple distilled and matured in a combination of American bourbon casks, Spanish sherry butts, and Marsala wine casks. This expression showcases the complexity that comes from multiple cask maturation.\n\nSpirit Profile\n\nAroma: Deep, complex aromas of dried fruit, spice, and wine cask influence\n\nPalate: Full-bodied and rich with notes of dark fruit, nuts, spice, and a distinctive Marsala character\n\nFinish: Long and warming with layers of complexity\n\nStyle: Single pot still Irish whiskey; triple cask maturation (bourbon, sherry, Marsala)\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water. Pairs beautifully with dark chocolate, aged cheeses, or rich desserts. A truly exceptional whiskey for special occasions.\n\nAlso available: Red Spot 19 Year Old (Single Cask) - prices may differ.",
@@ -334,10 +346,10 @@
   {
     "name": "Red Spot Single Pot Still 19 Year Old Irish Whiskey",
     "category": "Spirit",
-    "price": 695.00,
+    "price": 695,
     "country": "Ireland",
     "region": "Midleton",
-    "description": "Description\n\nSingle cask single pot still Irish whiskey aged 19 years. This exceptional expression from the Spot range represents the pinnacle of Irish whiskey craftsmanship. Triple distilled and matured in a combination of casks, creating extraordinary complexity and depth.\n\nSpirit Profile\n\nAroma: Expansive, complex aromas of dried fruit, spice, nuts, and wine cask influence\n\nPalate: Full-bodied and exceptionally rich with layers of dark fruit, nuts, spice, and distinctive cask character\n\nFinish: Long and luxurious with endless complexity\n\nStyle: Single cask single pot still Irish whiskey; 19 years aged\n\nBest For: Neat or with a drop of water to release the aromas\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water to release the aromas. Pairs beautifully with dark chocolate, aged cheeses, or rich desserts. A truly exceptional whiskey for connoisseurs and special occasions.",
+    "description": "Single cask single pot still Irish whiskey aged 19 years. This exceptional expression from the Spot range represents the pinnacle of Irish whiskey craftsmanship. Triple distilled and matured in a combination of casks, creating extraordinary complexity and depth.\n\nSpirit Profile\n\nAroma: Expansive, complex aromas of dried fruit, spice, nuts, and wine cask influence\n\nPalate: Full-bodied and exceptionally rich with layers of dark fruit, nuts, spice, and distinctive cask character\n\nFinish: Long and luxurious with endless complexity\n\nStyle: Single cask single pot still Irish whiskey; 19 years aged\n\nBest For: Neat or with a drop of water to release the aromas\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water to release the aromas. Pairs beautifully with dark chocolate, aged cheeses, or rich desserts. A truly exceptional whiskey for connoisseurs and special occasions.",
     "producer": "Mitchell & Son",
     "tasteProfile": "dried fruit, spice, dark fruit, nuts, exceptionally complex",
     "foodPairing": "Dark chocolate, aged cheeses, rich desserts",
@@ -355,9 +367,9 @@
   {
     "name": "Chivas Regal 18 Year Old Blended Scotch Whisky",
     "category": "Spirit",
-    "price": 99.00,
+    "price": 99,
     "country": "Scotland",
-    "description": "Description\n\nPremium blended Scotch whisky aged 18 years, featuring the Gold Signature edition. Masterfully blended by Chivas Brothers, this expression represents exceptional quality and sophistication. Aged for a minimum of 18 years in the finest oak casks.\n\nSpirit Profile\n\nAroma: Complex aromas of honey, dried fruit, and oak\n\nPalate: Smooth and elegant with notes of toffee, spice, and dark chocolate. Exceptionally well-balanced.\n\nFinish: Long and luxurious\n\nStyle: Premium blended Scotch whisky; 18-year-old Gold Signature edition\n\nBest For: Neat or with a single ice cube\n\nFood Pairing\n\nEnjoy neat or with a single ice cube. Pairs beautifully with dark chocolate, foie gras, or aged cheeses. A perfect after-dinner digestif or special occasion whiskey.",
+    "description": "Premium blended Scotch whisky aged 18 years, featuring the Gold Signature edition. Masterfully blended by Chivas Brothers, this expression represents exceptional quality and sophistication. Aged for a minimum of 18 years in the finest oak casks.\n\nSpirit Profile\n\nAroma: Complex aromas of honey, dried fruit, and oak\n\nPalate: Smooth and elegant with notes of toffee, spice, and dark chocolate. Exceptionally well-balanced.\n\nFinish: Long and luxurious\n\nStyle: Premium blended Scotch whisky; 18-year-old Gold Signature edition\n\nBest For: Neat or with a single ice cube\n\nFood Pairing\n\nEnjoy neat or with a single ice cube. Pairs beautifully with dark chocolate, foie gras, or aged cheeses. A perfect after-dinner digestif or special occasion whiskey.",
     "producer": "Chivas Brothers",
     "tasteProfile": "honey, dried fruit, toffee, spice, elegant",
     "foodPairing": "Dark chocolate, foie gras, aged cheeses",
@@ -378,7 +390,7 @@
     "price": 95.95,
     "country": "Ireland",
     "region": "Midleton",
-    "description": "Description\n\nSingle pot still Irish whiskey aged 12 years with triple cask maturation in bourbon barrels, sherry butts, and Malaga casks. Non-chill filtered to preserve the full character. Bottled exclusively for Mitchell & Son, this expression showcases the complexity of Irish whiskey.\n\nSpirit Profile\n\nAroma: Rich aromas of vanilla, honey, and dried fruit\n\nPalate: Full-bodied and complex with notes of tropical fruit, spice, and sweet wine influence from the Malaga casks\n\nFinish: Long and warming with layers of flavor\n\nStyle: Single pot still Irish whiskey; 12-year-old triple cask maturation (bourbon, sherry, Malaga)\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water. Pairs beautifully with dark chocolate, fruit desserts, or aged cheeses. A truly special whiskey for connoisseurs.",
+    "description": "Single pot still Irish whiskey aged 12 years with triple cask maturation in bourbon barrels, sherry butts, and Malaga casks. Non-chill filtered to preserve the full character. Bottled exclusively for Mitchell & Son, this expression showcases the complexity of Irish whiskey.\n\nSpirit Profile\n\nAroma: Rich aromas of vanilla, honey, and dried fruit\n\nPalate: Full-bodied and complex with notes of tropical fruit, spice, and sweet wine influence from the Malaga casks\n\nFinish: Long and warming with layers of flavor\n\nStyle: Single pot still Irish whiskey; 12-year-old triple cask maturation (bourbon, sherry, Malaga)\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water. Pairs beautifully with dark chocolate, fruit desserts, or aged cheeses. A truly special whiskey for connoisseurs.",
     "producer": "Mitchell & Son",
     "tasteProfile": "vanilla, honey, tropical fruit, spice, complex",
     "foodPairing": "Dark chocolate, fruit desserts, aged cheeses",
@@ -396,10 +408,10 @@
   {
     "name": "Minke Irish Gin",
     "category": "Spirit",
-    "price": 45.00,
+    "price": 45,
     "country": "Ireland",
     "region": "County Cork",
-    "description": "Description\n\nAward-winning Irish gin from Clonakilty Atlantic Distillery. Winner of World Gin Awards Ireland Classic, this premium gin is crafted on the Atlantic coast. Named after the minke whale, this gin captures the spirit of the Irish coast with carefully selected botanicals.\n\nSpirit Profile\n\nAroma: Complex botanical aromas including juniper, citrus, and coastal botanicals\n\nPalate: Smooth and well-balanced with notes of citrus, herbs, and a subtle coastal character\n\nFinish: Clean and crisp with lingering botanical notes\n\nStyle: Award-winning Irish gin; World Gin Awards Ireland Classic winner\n\nBest For: Classic gin and tonic, martini, or citrus-based cocktails\n\nFood Pairing\n\nPerfect in a classic gin and tonic or martini. Pairs beautifully with fresh seafood, particularly oysters or smoked salmon. Also excellent with citrus-based cocktails or served with a slice of lemon.",
+    "description": "Award-winning Irish gin from Clonakilty Atlantic Distillery. Winner of World Gin Awards Ireland Classic, this premium gin is crafted on the Atlantic coast. Named after the minke whale, this gin captures the spirit of the Irish coast with carefully selected botanicals.\n\nSpirit Profile\n\nAroma: Complex botanical aromas including juniper, citrus, and coastal botanicals\n\nPalate: Smooth and well-balanced with notes of citrus, herbs, and a subtle coastal character\n\nFinish: Clean and crisp with lingering botanical notes\n\nStyle: Award-winning Irish gin; World Gin Awards Ireland Classic winner\n\nBest For: Classic gin and tonic, martini, or citrus-based cocktails\n\nFood Pairing\n\nPerfect in a classic gin and tonic or martini. Pairs beautifully with fresh seafood, particularly oysters or smoked salmon. Also excellent with citrus-based cocktails or served with a slice of lemon.",
     "producer": "Clonakilty Atlantic Distillery",
     "tasteProfile": "juniper, citrus, coastal, smooth, award-winning",
     "foodPairing": "Fresh seafood, oysters, gin and tonic",
@@ -417,9 +429,9 @@
   {
     "name": "Teacher's Highland Cream Blended Scotch Whisky",
     "category": "Spirit",
-    "price": 29.90,
+    "price": 29.9,
     "country": "Scotland",
-    "description": "Description\n\nBlended Scotch whisky from William Teacher & Sons, established in 1849. Known for being high in peated malt, this whisky offers unique character and full flavor. A classic Highland blend that's approachable yet characterful.\n\nSpirit Profile\n\nAroma: Peat, smoke, and malt\n\nPalate: Full and robust with notes of honey, vanilla, and gentle peat smoke. Well-balanced.\n\nFinish: Warming and satisfying\n\nStyle: Blended Scotch whisky; high in peated malt\n\nBest For: Neat, on the rocks, or with a splash of water. Excellent in a Rob Roy or Whisky Sour\n\nFood Pairing\n\nEnjoy neat, on the rocks, or with a splash of water. Pairs well with smoked salmon, aged cheeses, or dark chocolate. Excellent in a Rob Roy or Whisky Sour.",
+    "description": "Blended Scotch whisky from William Teacher & Sons, established in 1849. Known for being high in peated malt, this whisky offers unique character and full flavor. A classic Highland blend that's approachable yet characterful.\n\nSpirit Profile\n\nAroma: Peat, smoke, and malt\n\nPalate: Full and robust with notes of honey, vanilla, and gentle peat smoke. Well-balanced.\n\nFinish: Warming and satisfying\n\nStyle: Blended Scotch whisky; high in peated malt\n\nBest For: Neat, on the rocks, or with a splash of water. Excellent in a Rob Roy or Whisky Sour\n\nFood Pairing\n\nEnjoy neat, on the rocks, or with a splash of water. Pairs well with smoked salmon, aged cheeses, or dark chocolate. Excellent in a Rob Roy or Whisky Sour.",
     "producer": "William Teacher & Sons",
     "tasteProfile": "peat, smoke, honey, vanilla, robust",
     "foodPairing": "Smoked salmon, aged cheeses, dark chocolate",
@@ -437,7 +449,7 @@
   {
     "name": "Green Spot Single Pot Still Irish Whiskey",
     "category": "Spirit",
-    "price": 65.00,
+    "price": 65,
     "country": "Ireland",
     "region": "Midleton",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nSingle pot still Irish whiskey from the Spot range, triple distilled and matured in American bourbon barrels and Oloroso sherry casks. Bottled exclusively for Mitchell & Son Fine Wines & Spirits, Dublin, this expression represents a tradition dating to 1805.\n\nSpirit Profile\n\nAroma: Vanilla, honey, and orchard fruits\n\nPalate: Smooth and approachable with notes of apple, pear, and gentle spice. Well-balanced.\n\nFinish: Long and satisfying\n\nStyle: Single pot still Irish whiskey; triple cask maturation (bourbon, sherry)\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nEnjoy neat or with a drop of water. Pairs beautifully with fresh seafood, Irish cheeses, or fruit desserts. A classic Irish whiskey that's perfect for any occasion.\n\nAlso available: Green Spot 10 Year Old (100 Year Anniversary), and other expressions.",
@@ -461,7 +473,7 @@
     "price": 0,
     "country": "Ireland",
     "region": "Midleton",
-    "description": "Description\n\nSingle pot still Irish whiskey from the Spot range, aged 10 years. This special 100 Year Anniversary edition celebrates a century of tradition. Triple distilled and matured in American bourbon barrels and Oloroso sherry casks. Bottled exclusively for Mitchell & Son Fine Wines & Spirits, Dublin.\n\nSpirit Profile\n\nAroma: Rich aromas of vanilla, honey, and dried fruit\n\nPalate: Full-bodied and complex with notes of orchard fruits, spice, and toasted oak. Well-aged with exceptional depth.\n\nFinish: Long and satisfying\n\nStyle: Single pot still Irish whiskey; 10-year-old 100 Year Anniversary edition\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water. Pairs beautifully with dark chocolate, aged cheeses, or rich desserts. A special edition for connoisseurs.",
+    "description": "Single pot still Irish whiskey from the Spot range, aged 10 years. This special 100 Year Anniversary edition celebrates a century of tradition. Triple distilled and matured in American bourbon barrels and Oloroso sherry casks. Bottled exclusively for Mitchell & Son Fine Wines & Spirits, Dublin.\n\nSpirit Profile\n\nAroma: Rich aromas of vanilla, honey, and dried fruit\n\nPalate: Full-bodied and complex with notes of orchard fruits, spice, and toasted oak. Well-aged with exceptional depth.\n\nFinish: Long and satisfying\n\nStyle: Single pot still Irish whiskey; 10-year-old 100 Year Anniversary edition\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water. Pairs beautifully with dark chocolate, aged cheeses, or rich desserts. A special edition for connoisseurs.",
     "producer": "Mitchell & Son",
     "tasteProfile": "vanilla, honey, dried fruit, spice, complex",
     "foodPairing": "Dark chocolate, aged cheeses, rich desserts",
@@ -479,10 +491,10 @@
   {
     "name": "The Balvenie Caribbean Cask Aged 14 Years",
     "category": "Spirit",
-    "price": 125.00,
+    "price": 125,
     "country": "Scotland",
     "region": "Speyside",
-    "description": "Description\n\nSingle malt Scotch whisky aged 14 years, finished in casks that previously held Caribbean rum. Created by The Balvenie Malt Master David Stewart, this expression enhances the whisky's vanilla notes while adding spicy aromatic qualities. Established in 1892.\n\nSpirit Profile\n\nAroma: Vanilla, tropical fruit, and spice\n\nPalate: Smooth and creamy with notes of toffee, coconut, and warming spice. The rum cask finish adds complexity.\n\nFinish: Sweet and lingering\n\nStyle: Single malt Scotch whisky; 14-year-old Caribbean rum cask finish\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water. Pairs beautifully with tropical fruits, coconut desserts, or dark chocolate. A unique and flavorful expression of Speyside whisky.",
+    "description": "Single malt Scotch whisky aged 14 years, finished in casks that previously held Caribbean rum. Created by The Balvenie Malt Master David Stewart, this expression enhances the whisky's vanilla notes while adding spicy aromatic qualities. Established in 1892.\n\nSpirit Profile\n\nAroma: Vanilla, tropical fruit, and spice\n\nPalate: Smooth and creamy with notes of toffee, coconut, and warming spice. The rum cask finish adds complexity.\n\nFinish: Sweet and lingering\n\nStyle: Single malt Scotch whisky; 14-year-old Caribbean rum cask finish\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water. Pairs beautifully with tropical fruits, coconut desserts, or dark chocolate. A unique and flavorful expression of Speyside whisky.",
     "producer": "The Balvenie Distillery",
     "tasteProfile": "vanilla, tropical fruit, toffee, coconut, spicy",
     "foodPairing": "Tropical fruits, coconut desserts, dark chocolate",
@@ -500,9 +512,9 @@
   {
     "name": "Mars Maltage Cosmo Blended Malt Whisky",
     "category": "Spirit",
-    "price": 89.00,
+    "price": 89,
     "country": "Japan",
-    "description": "Description\n\nBlended malt whisky from Hombo Shuzo Co., Ltd., Japan. This expression features a careful selection of malts, creating a unique and complex flavor profile. The 'Cosmo' represents a harmonious blend of carefully selected single malts.\n\nSpirit Profile\n\nAroma: Complex aromas of malt, fruit, and gentle spice\n\nPalate: Smooth and well-balanced with notes of honey, vanilla, and subtle smoke. Elegant and refined.\n\nFinish: Long and satisfying\n\nStyle: Blended malt whisky from Japan; harmonious blend of single malts\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nEnjoy neat or with a drop of water. Pairs well with sushi, grilled fish, or Japanese cuisine. Also excellent with dark chocolate or aged cheeses.",
+    "description": "Blended malt whisky from Hombo Shuzo Co., Ltd., Japan. This expression features a careful selection of malts, creating a unique and complex flavor profile. The 'Cosmo' represents a harmonious blend of carefully selected single malts.\n\nSpirit Profile\n\nAroma: Complex aromas of malt, fruit, and gentle spice\n\nPalate: Smooth and well-balanced with notes of honey, vanilla, and subtle smoke. Elegant and refined.\n\nFinish: Long and satisfying\n\nStyle: Blended malt whisky from Japan; harmonious blend of single malts\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nEnjoy neat or with a drop of water. Pairs well with sushi, grilled fish, or Japanese cuisine. Also excellent with dark chocolate or aged cheeses.",
     "producer": "Hombo Shuzo Co., Ltd.",
     "tasteProfile": "malt, honey, vanilla, subtle smoke, elegant",
     "foodPairing": "Sushi, grilled fish, Japanese cuisine",
@@ -536,15 +548,17 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/bushmills-single-malt.jpg",
-    "images": ["/spirits/bushmills-varieties.jpg"]
+    "images": [
+      "/spirits/bushmills-varieties.jpg"
+    ]
   },
   {
     "name": "Bushmills 16 Year Old Single Malt Irish Whiskey",
     "category": "Spirit",
-    "price": 128.00,
+    "price": 128,
     "country": "Ireland",
     "region": "County Antrim",
-    "description": "Description\n\nSingle malt Irish whiskey aged 16 years from the world's oldest licensed whiskey distillery, established in 1608. Triple distilled in Ireland at The Old Bushmills Distillery, this expression represents exceptional quality and complexity.\n\nSpirit Profile\n\nAroma: Complex aromas of honey, vanilla, dried fruit, and oak\n\nPalate: Smooth and elegant with notes of toffee, spice, and toasted oak. Well-aged with exceptional depth.\n\nFinish: Long and satisfying\n\nStyle: Single malt Irish whiskey; 16-year-old from world's oldest licensed distillery\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water. Pairs beautifully with dark chocolate, aged cheeses, or rich desserts. A premium Irish whiskey for special occasions.",
+    "description": "Single malt Irish whiskey aged 16 years from the world's oldest licensed whiskey distillery, established in 1608. Triple distilled in Ireland at The Old Bushmills Distillery, this expression represents exceptional quality and complexity.\n\nSpirit Profile\n\nAroma: Complex aromas of honey, vanilla, dried fruit, and oak\n\nPalate: Smooth and elegant with notes of toffee, spice, and toasted oak. Well-aged with exceptional depth.\n\nFinish: Long and satisfying\n\nStyle: Single malt Irish whiskey; 16-year-old from world's oldest licensed distillery\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water. Pairs beautifully with dark chocolate, aged cheeses, or rich desserts. A premium Irish whiskey for special occasions.",
     "producer": "The Old Bushmills Distillery",
     "tasteProfile": "honey, vanilla, toffee, spice, complex",
     "foodPairing": "Dark chocolate, aged cheeses, rich desserts",
@@ -562,10 +576,10 @@
   {
     "name": "Bushmills 2011 The Causeway Collection Irish Whiskey",
     "category": "Spirit",
-    "price": 115.00,
+    "price": 115,
     "country": "Ireland",
     "region": "County Antrim",
-    "description": "Description\n\nSingle malt Irish whiskey from The Causeway Collection, cask strength at 53.4% ABV. This 2011 vintage expression from The Old Bushmills Distillery represents exceptional quality and showcases the distillery's craftsmanship. The Causeway Collection features unique, limited expressions.\n\nSpirit Profile\n\nAroma: Intense, complex aromas of honey, vanilla, dried fruit, and oak\n\nPalate: Full-bodied and rich with notes of toffee, spice, and toasted oak. The cask strength delivers exceptional intensity.\n\nFinish: Long and warming\n\nStyle: Single malt Irish whiskey; cask strength 2011 vintage from Causeway Collection\n\nBest For: Neat or with a drop of water to release the aromas\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water to release the aromas. Pairs beautifully with dark chocolate, aged cheeses, or as an after-dinner digestif. A truly exceptional whiskey for connoisseurs.",
+    "description": "Single malt Irish whiskey from The Causeway Collection, cask strength at 53.4% ABV. This 2011 vintage expression from The Old Bushmills Distillery represents exceptional quality and showcases the distillery's craftsmanship. The Causeway Collection features unique, limited expressions.\n\nSpirit Profile\n\nAroma: Intense, complex aromas of honey, vanilla, dried fruit, and oak\n\nPalate: Full-bodied and rich with notes of toffee, spice, and toasted oak. The cask strength delivers exceptional intensity.\n\nFinish: Long and warming\n\nStyle: Single malt Irish whiskey; cask strength 2011 vintage from Causeway Collection\n\nBest For: Neat or with a drop of water to release the aromas\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water to release the aromas. Pairs beautifully with dark chocolate, aged cheeses, or as an after-dinner digestif. A truly exceptional whiskey for connoisseurs.",
     "producer": "The Old Bushmills Distillery",
     "tasteProfile": "honey, vanilla, toffee, spice, intense",
     "foodPairing": "Dark chocolate, aged cheeses, digestif",
@@ -583,9 +597,9 @@
   {
     "name": "Hendrick's Gin",
     "category": "Spirit",
-    "price": 49.00,
+    "price": 49,
     "country": "Scotland",
-    "description": "Description\n\nSmall batch, handcrafted gin from Scotland, established in 1886. Hendrick's is known for its unique infusion of cucumber and rose petals, creating a distinctive and refreshing gin. Distilled in small batches using a combination of traditional and modern methods.\n\nSpirit Profile\n\nAroma: Distinctive aromas of cucumber, rose, and juniper\n\nPalate: Smooth and refreshing with notes of citrus, cucumber, and floral botanicals. Unique and well-balanced.\n\nFinish: Clean and crisp\n\nStyle: Small batch handcrafted gin; unique cucumber and rose infusion\n\nBest For: Classic gin and tonic with cucumber, cocktails, or served with a slice of cucumber\n\nFood Pairing\n\nPerfect in a classic gin and tonic with cucumber. Pairs beautifully with fresh seafood, particularly oysters or smoked salmon. Also excellent in cocktails or served with a slice of cucumber.",
+    "description": "Small batch, handcrafted gin from Scotland, established in 1886. Hendrick's is known for its unique infusion of cucumber and rose petals, creating a distinctive and refreshing gin. Distilled in small batches using a combination of traditional and modern methods.\n\nSpirit Profile\n\nAroma: Distinctive aromas of cucumber, rose, and juniper\n\nPalate: Smooth and refreshing with notes of citrus, cucumber, and floral botanicals. Unique and well-balanced.\n\nFinish: Clean and crisp\n\nStyle: Small batch handcrafted gin; unique cucumber and rose infusion\n\nBest For: Classic gin and tonic with cucumber, cocktails, or served with a slice of cucumber\n\nFood Pairing\n\nPerfect in a classic gin and tonic with cucumber. Pairs beautifully with fresh seafood, particularly oysters or smoked salmon. Also excellent in cocktails or served with a slice of cucumber.",
     "producer": "Hendrick's",
     "tasteProfile": "cucumber, rose, juniper, citrus, refreshing",
     "foodPairing": "Fresh seafood, oysters, gin and tonic",
@@ -603,10 +617,10 @@
   {
     "name": "Glendalough Porter Cask Single Malt Irish Whiskey",
     "category": "Spirit",
-    "price": 89.00,
+    "price": 89,
     "country": "Ireland",
     "region": "Wicklow Mountains",
-    "description": "Description\n\nSingle malt Irish whiskey aged 7 years, first matured in American oak bourbon barrels, then finished in Black Pitts Porter barrels. This unique finish adds depth and complexity, creating a distinctive expression of Irish whiskey.\n\nSpirit Profile\n\nAroma: Dark fruit, chocolate, and porter influence\n\nPalate: Smooth and full-bodied with notes of coffee, dark chocolate, and roasted malt. The porter cask finish adds unique complexity.\n\nFinish: Long and warming\n\nStyle: Single malt Irish whiskey; porter cask finish\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water. Pairs beautifully with dark chocolate, coffee desserts, or rich cheeses. A unique and flavorful expression of Irish whiskey.",
+    "description": "Single malt Irish whiskey aged 7 years, first matured in American oak bourbon barrels, then finished in Black Pitts Porter barrels. This unique finish adds depth and complexity, creating a distinctive expression of Irish whiskey.\n\nSpirit Profile\n\nAroma: Dark fruit, chocolate, and porter influence\n\nPalate: Smooth and full-bodied with notes of coffee, dark chocolate, and roasted malt. The porter cask finish adds unique complexity.\n\nFinish: Long and warming\n\nStyle: Single malt Irish whiskey; porter cask finish\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water. Pairs beautifully with dark chocolate, coffee desserts, or rich cheeses. A unique and flavorful expression of Irish whiskey.",
     "producer": "Glendalough",
     "tasteProfile": "dark fruit, chocolate, coffee, roasted malt, full-bodied",
     "foodPairing": "Dark chocolate, coffee desserts, rich cheeses",
@@ -624,7 +638,7 @@
   {
     "name": "Diplomatico Mantuano Rum",
     "category": "Spirit",
-    "price": 49.00,
+    "price": 49,
     "country": "Venezuela",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nExtra-aged rum from Venezuela, inspired by Don Juancho Nieto Meléndez. This premium rum is crafted using traditional methods, creating a rich and complex expression. The Mantuano represents the finest quality in Venezuelan rum.\n\nSpirit Profile\n\nAroma: Caramel, vanilla, and tropical fruit\n\nPalate: Smooth and full-bodied with notes of toffee, spice, and dried fruit. Well-balanced.\n\nFinish: Long and warming\n\nStyle: Extra-aged Venezuelan rum; premium traditional methods\n\nBest For: Neat, on the rocks, or in classic rum cocktails like a Dark 'n' Stormy or Rum Old Fashioned\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic rum cocktails. Pairs well with dark chocolate, tropical fruits, or spiced desserts. Excellent in a Dark 'n' Stormy or Rum Old Fashioned.\n\nAlso available: Diplomatico Reserva Exclusiva - prices may differ.",
     "producer": "Diplomatico",
@@ -644,7 +658,7 @@
   {
     "name": "Glendalough Double Barrel Irish Whiskey",
     "category": "Spirit",
-    "price": 66.00,
+    "price": 66,
     "country": "Ireland",
     "region": "Wicklow Mountains",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nPot still Irish whiskey first matured in an American oak ex-bourbon cask, then matured in a Spanish Oloroso sherry cask. This unique double barrel maturation creates a distinctive expression that showcases the complexity of Irish whiskey.\n\nSpirit Profile\n\nAroma: Vanilla, honey, and oak\n\nPalate: Smooth and well-balanced with notes of orchard fruits, spice, and toasted oak. The sherry cask finish adds unique complexity.\n\nFinish: Long and satisfying\n\nStyle: Pot still Irish whiskey; double barrel maturation (bourbon, sherry)\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water. Pairs beautifully with fresh seafood, Irish cheeses, or fruit desserts. A unique expression that showcases Irish terroir.\n\nAlso available: Glendalough Pot Still Peated (Virgin Irish Oak Finish), Glendalough Single Cask (Calvados XO Cask Finish) - prices may differ.",
@@ -660,15 +674,17 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/glendalough-double-barrel.jpg",
-    "images": ["/spirits/glendalough-varieties.jpg"]
+    "images": [
+      "/spirits/glendalough-varieties.jpg"
+    ]
   },
   {
     "name": "Glendalough Pot Still Triple Casked Irish Whiskey",
     "category": "Spirit",
-    "price": 66.00,
+    "price": 66,
     "country": "Ireland",
     "region": "Wicklow Mountains",
-    "description": "Description\n\nPot still Irish whiskey aged 3+1 years with triple cask maturation. This unique expression from Glendalough showcases the complexity that comes from multiple cask types, creating a distinctive and flavorful Irish whiskey.\n\nSpirit Profile\n\nAroma: Vanilla, honey, and oak\n\nPalate: Smooth and well-balanced with notes of orchard fruits, spice, and toasted oak. The triple cask maturation adds layers of complexity.\n\nFinish: Long and satisfying\n\nStyle: Pot still Irish whiskey; triple cask maturation\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water. Pairs beautifully with fresh seafood, Irish cheeses, or fruit desserts. A unique expression that showcases Irish whiskey craftsmanship.",
+    "description": "Pot still Irish whiskey aged 3+1 years with triple cask maturation. This unique expression from Glendalough showcases the complexity that comes from multiple cask types, creating a distinctive and flavorful Irish whiskey.\n\nSpirit Profile\n\nAroma: Vanilla, honey, and oak\n\nPalate: Smooth and well-balanced with notes of orchard fruits, spice, and toasted oak. The triple cask maturation adds layers of complexity.\n\nFinish: Long and satisfying\n\nStyle: Pot still Irish whiskey; triple cask maturation\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water. Pairs beautifully with fresh seafood, Irish cheeses, or fruit desserts. A unique expression that showcases Irish whiskey craftsmanship.",
     "producer": "Glendalough",
     "tasteProfile": "vanilla, honey, orchard fruits, oak, smooth",
     "foodPairing": "Fresh seafood, Irish cheeses, fruit desserts",
@@ -686,9 +702,9 @@
   {
     "name": "Brockmans Intensely Smooth Gin",
     "category": "Spirit",
-    "price": 50.00,
+    "price": 50,
     "country": "United Kingdom",
-    "description": "Description\n\nPremium gin crafted with dark berries and noble traditions. Made from 100% neutral grain spirit, this gin is known for its intensely smooth character. The unique botanical blend includes dark berries, creating a distinctive and flavorful gin.\n\nSpirit Profile\n\nAroma: Complex aromas of juniper, dark berries, and botanicals\n\nPalate: Smooth and well-balanced with notes of berries, citrus, and gentle spice. Exceptionally smooth.\n\nFinish: Clean and lingering\n\nStyle: Premium gin; dark berry botanical blend\n\nBest For: Classic gin and tonic, martini, or cocktails\n\nFood Pairing\n\nPerfect in a classic gin and tonic or martini. Pairs beautifully with fresh berries, dark chocolate, or citrus desserts. Also excellent in cocktails or served with a slice of orange.",
+    "description": "Premium gin crafted with dark berries and noble traditions. Made from 100% neutral grain spirit, this gin is known for its intensely smooth character. The unique botanical blend includes dark berries, creating a distinctive and flavorful gin.\n\nSpirit Profile\n\nAroma: Complex aromas of juniper, dark berries, and botanicals\n\nPalate: Smooth and well-balanced with notes of berries, citrus, and gentle spice. Exceptionally smooth.\n\nFinish: Clean and lingering\n\nStyle: Premium gin; dark berry botanical blend\n\nBest For: Classic gin and tonic, martini, or cocktails\n\nFood Pairing\n\nPerfect in a classic gin and tonic or martini. Pairs beautifully with fresh berries, dark chocolate, or citrus desserts. Also excellent in cocktails or served with a slice of orange.",
     "producer": "Brockmans",
     "tasteProfile": "juniper, dark berries, citrus, smooth, complex",
     "foodPairing": "Fresh berries, dark chocolate, citrus desserts",
@@ -706,7 +722,7 @@
   {
     "name": "Jack Daniel's Single Barrel Select Tennessee Whiskey",
     "category": "Spirit",
-    "price": 69.50,
+    "price": 69.5,
     "country": "USA",
     "region": "Tennessee",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nUniquely crafted Tennessee whiskey from individually selected barrels. Each bottle comes from a single barrel, hand-selected for its exceptional character. Made with handmade barrels and the unique charcoal mellowing process that defines Jack Daniel's.\n\nSpirit Profile\n\nAroma: Vanilla, caramel, and oak\n\nPalate: Smooth and full-bodied with notes of toffee, spice, and toasted oak. Each barrel offers unique characteristics.\n\nFinish: Long and warming\n\nStyle: Single barrel Tennessee whiskey; charcoal mellowed\n\nBest For: Neat, on the rocks, or in classic whiskey cocktails like an Old Fashioned or Whiskey Sour\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic whiskey cocktails. Pairs well with barbecue, grilled meats, or dark chocolate. Excellent in an Old Fashioned or Whiskey Sour.\n\nAlso available: Jack Daniel's Old No. 7 (Original), Jack Daniel's Tennessee Apple, Jack Daniel's Tennessee Honey - prices may differ.",
@@ -722,14 +738,16 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/jack-daniels-single-barrel-select.jpg",
-    "images": ["/spirits/jack-daniels-varieties.jpg"]
+    "images": [
+      "/spirits/jack-daniels-varieties.jpg"
+    ]
   },
   {
     "name": "Duppy Share Spiced Rum",
     "category": "Spirit",
-    "price": 44.50,
+    "price": 44.5,
     "country": "Caribbean",
-    "description": "Description\n\nCaribbean spiced rum with pineapple and kola nut flavors. This vibrant rum captures the spirit of the Caribbean with tropical flavors and a smooth, approachable character. Perfect for cocktails or sipping.\n\nSpirit Profile\n\nAroma: Pineapple, spice, and tropical fruit\n\nPalate: Smooth and sweet with notes of pineapple, kola nut, and warming spices. Well-balanced.\n\nFinish: Tropical and lingering\n\nStyle: Caribbean spiced rum; pineapple and kola nut flavors\n\nBest For: Tropical cocktails, over ice, in a Piña Colada or Rum Punch\n\nFood Pairing\n\nPerfect in tropical cocktails or served over ice. Pairs well with tropical fruits, coconut desserts, or spiced dishes. Excellent in a Piña Colada or Rum Punch.",
+    "description": "Caribbean spiced rum with pineapple and kola nut flavors. This vibrant rum captures the spirit of the Caribbean with tropical flavors and a smooth, approachable character. Perfect for cocktails or sipping.\n\nSpirit Profile\n\nAroma: Pineapple, spice, and tropical fruit\n\nPalate: Smooth and sweet with notes of pineapple, kola nut, and warming spices. Well-balanced.\n\nFinish: Tropical and lingering\n\nStyle: Caribbean spiced rum; pineapple and kola nut flavors\n\nBest For: Tropical cocktails, over ice, in a Piña Colada or Rum Punch\n\nFood Pairing\n\nPerfect in tropical cocktails or served over ice. Pairs well with tropical fruits, coconut desserts, or spiced dishes. Excellent in a Piña Colada or Rum Punch.",
     "producer": "Duppy Share",
     "tasteProfile": "pineapple, kola nut, tropical, spice, smooth",
     "foodPairing": "Tropical fruits, coconut desserts, cocktails",
@@ -747,10 +765,10 @@
   {
     "name": "Buffalo Trace Kentucky Straight Bourbon Whiskey",
     "category": "Spirit",
-    "price": 50.00,
+    "price": 50,
     "country": "USA",
     "region": "Kentucky",
-    "description": "Description\n\nKentucky straight bourbon whiskey from one of America's most awarded distilleries. Made with the finest ingredients and aged in new charred oak barrels, this bourbon represents exceptional value and quality. A true American classic.\n\nSpirit Profile\n\nAroma: Vanilla, caramel, and oak\n\nPalate: Smooth and well-balanced with notes of toffee, honey, and gentle spice. Approachable yet complex.\n\nFinish: Long and satisfying\n\nStyle: Kentucky straight bourbon; America's most awarded distillery\n\nBest For: Neat, on the rocks, or in classic bourbon cocktails like an Old Fashioned or Whiskey Sour\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic bourbon cocktails. Pairs well with barbecue, grilled meats, or pecan pie. Excellent in an Old Fashioned or Whiskey Sour.",
+    "description": "Kentucky straight bourbon whiskey from one of America's most awarded distilleries. Made with the finest ingredients and aged in new charred oak barrels, this bourbon represents exceptional value and quality. A true American classic.\n\nSpirit Profile\n\nAroma: Vanilla, caramel, and oak\n\nPalate: Smooth and well-balanced with notes of toffee, honey, and gentle spice. Approachable yet complex.\n\nFinish: Long and satisfying\n\nStyle: Kentucky straight bourbon; America's most awarded distillery\n\nBest For: Neat, on the rocks, or in classic bourbon cocktails like an Old Fashioned or Whiskey Sour\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic bourbon cocktails. Pairs well with barbecue, grilled meats, or pecan pie. Excellent in an Old Fashioned or Whiskey Sour.",
     "producer": "Buffalo Trace",
     "tasteProfile": "vanilla, caramel, toffee, honey, smooth",
     "foodPairing": "Barbecue, grilled meats, pecan pie",
@@ -768,9 +786,9 @@
   {
     "name": "Bumbu Rum",
     "category": "Spirit",
-    "price": 38.00,
+    "price": 38,
     "country": "Barbados",
-    "description": "Description\n\nThe original rum from Barbados, crafted with a blend of spices and natural flavors. Bumbu represents the authentic taste of the Caribbean, made with traditional methods and the finest ingredients. A premium rum with character and depth.\n\nSpirit Profile\n\nAroma: Vanilla, spice, and tropical fruit\n\nPalate: Smooth and full-bodied with notes of caramel, banana, and warming spices. Well-balanced.\n\nFinish: Sweet and lingering\n\nStyle: Original rum from Barbados; authentic Caribbean taste\n\nBest For: Neat, on the rocks, or in classic rum cocktails like a Dark 'n' Stormy or Rum Old Fashioned\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic rum cocktails. Pairs well with tropical fruits, coconut desserts, or spiced dishes. Excellent in a Dark 'n' Stormy or Rum Old Fashioned.",
+    "description": "The original rum from Barbados, crafted with a blend of spices and natural flavors. Bumbu represents the authentic taste of the Caribbean, made with traditional methods and the finest ingredients. A premium rum with character and depth.\n\nSpirit Profile\n\nAroma: Vanilla, spice, and tropical fruit\n\nPalate: Smooth and full-bodied with notes of caramel, banana, and warming spices. Well-balanced.\n\nFinish: Sweet and lingering\n\nStyle: Original rum from Barbados; authentic Caribbean taste\n\nBest For: Neat, on the rocks, or in classic rum cocktails like a Dark 'n' Stormy or Rum Old Fashioned\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic rum cocktails. Pairs well with tropical fruits, coconut desserts, or spiced dishes. Excellent in a Dark 'n' Stormy or Rum Old Fashioned.",
     "producer": "Bumbu",
     "tasteProfile": "vanilla, spice, caramel, banana, smooth",
     "foodPairing": "Tropical fruits, coconut desserts, cocktails",
@@ -790,7 +808,7 @@
     "category": "Spirit",
     "price": 35.99,
     "country": "Mexico",
-    "description": "Description\n\nReposado tequila made with 100% blue agave. Aged in oak barrels, this tequila develops a smooth, mellow character with notes of agave, vanilla, and oak. A premium expression of Mexican tequila tradition.\n\nSpirit Profile\n\nAroma: Agave, vanilla, and oak\n\nPalate: Smooth and mellow with notes of caramel, spice, and toasted agave. Well-balanced.\n\nFinish: Clean and satisfying\n\nStyle: Reposado tequila; 100% blue agave, oak barrel aged\n\nBest For: Neat, on the rocks, or in classic tequila cocktails like a Margarita or Tequila Sunrise\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic tequila cocktails. Pairs well with Mexican cuisine, grilled meats, or citrus-based dishes. Excellent in a Margarita or Tequila Sunrise.",
+    "description": "Reposado tequila made with 100% blue agave. Aged in oak barrels, this tequila develops a smooth, mellow character with notes of agave, vanilla, and oak. A premium expression of Mexican tequila tradition.\n\nSpirit Profile\n\nAroma: Agave, vanilla, and oak\n\nPalate: Smooth and mellow with notes of caramel, spice, and toasted agave. Well-balanced.\n\nFinish: Clean and satisfying\n\nStyle: Reposado tequila; 100% blue agave, oak barrel aged\n\nBest For: Neat, on the rocks, or in classic tequila cocktails like a Margarita or Tequila Sunrise\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic tequila cocktails. Pairs well with Mexican cuisine, grilled meats, or citrus-based dishes. Excellent in a Margarita or Tequila Sunrise.",
     "producer": "Olmeca",
     "tasteProfile": "agave, vanilla, caramel, oak, smooth",
     "foodPairing": "Mexican cuisine, grilled meats, citrus dishes",
@@ -811,7 +829,7 @@
     "price": 37.95,
     "country": "Ireland",
     "region": "County Cork",
-    "description": "Description\n\nSingle batch Irish cream liqueur made with fresh dairy cream from five family-owned farms in County Cork. Expertly blended with triple-distilled Irish whiskey, this liqueur represents the finest quality in Irish cream. Exclusively sourced in County Cork, Ireland.\n\nSpirit Profile\n\nAroma: Fresh cream, vanilla, and Irish whiskey\n\nPalate: Smooth and luxurious with notes of chocolate, coffee, and cream. Well-balanced sweetness.\n\nFinish: Long and satisfying\n\nStyle: Single batch Irish cream liqueur; fresh dairy cream from five farms\n\nBest For: Chilled, on the rocks, or in coffee\n\nFood Pairing\n\nPerfect served chilled, on the rocks, or in coffee. Pairs beautifully with desserts, particularly chocolate or coffee-based treats. Also excellent in cocktails or as a dessert liqueur.",
+    "description": "Single batch Irish cream liqueur made with fresh dairy cream from five family-owned farms in County Cork. Expertly blended with triple-distilled Irish whiskey, this liqueur represents the finest quality in Irish cream. Exclusively sourced in County Cork, Ireland.\n\nSpirit Profile\n\nAroma: Fresh cream, vanilla, and Irish whiskey\n\nPalate: Smooth and luxurious with notes of chocolate, coffee, and cream. Well-balanced sweetness.\n\nFinish: Long and satisfying\n\nStyle: Single batch Irish cream liqueur; fresh dairy cream from five farms\n\nBest For: Chilled, on the rocks, or in coffee\n\nFood Pairing\n\nPerfect served chilled, on the rocks, or in coffee. Pairs beautifully with desserts, particularly chocolate or coffee-based treats. Also excellent in cocktails or as a dessert liqueur.",
     "producer": "Five Farms",
     "tasteProfile": "cream, vanilla, chocolate, coffee, smooth",
     "foodPairing": "Desserts, chocolate, coffee",
@@ -829,9 +847,9 @@
   {
     "name": "William Lawson's Blended Scotch Whisky",
     "category": "Spirit",
-    "price": 31.50,
+    "price": 31.5,
     "country": "Scotland",
-    "description": "Description\n\nBlended Scotch whisky from William Lawson Distillers, established in 1849. Distilled, aged, and bottled in Scotland, this whisky offers a classic Highland character. A well-balanced blend that's approachable and flavorful.\n\nSpirit Profile\n\nAroma: Malt, honey, and gentle spice\n\nPalate: Smooth and well-balanced with notes of vanilla, toffee, and subtle smoke. Approachable.\n\nFinish: Warm and satisfying\n\nStyle: Blended Scotch whisky; classic Highland character\n\nBest For: Neat, on the rocks, or with a splash of water. Excellent in a Rob Roy or Whisky Sour\n\nFood Pairing\n\nEnjoy neat, on the rocks, or with a splash of water. Pairs well with smoked salmon, aged cheeses, or dark chocolate. Excellent in a Rob Roy or Whisky Sour.",
+    "description": "Blended Scotch whisky from William Lawson Distillers, established in 1849. Distilled, aged, and bottled in Scotland, this whisky offers a classic Highland character. A well-balanced blend that's approachable and flavorful.\n\nSpirit Profile\n\nAroma: Malt, honey, and gentle spice\n\nPalate: Smooth and well-balanced with notes of vanilla, toffee, and subtle smoke. Approachable.\n\nFinish: Warm and satisfying\n\nStyle: Blended Scotch whisky; classic Highland character\n\nBest For: Neat, on the rocks, or with a splash of water. Excellent in a Rob Roy or Whisky Sour\n\nFood Pairing\n\nEnjoy neat, on the rocks, or with a splash of water. Pairs well with smoked salmon, aged cheeses, or dark chocolate. Excellent in a Rob Roy or Whisky Sour.",
     "producer": "William Lawson Distillers",
     "tasteProfile": "malt, honey, vanilla, toffee, smooth",
     "foodPairing": "Smoked salmon, aged cheeses, dark chocolate",
@@ -851,7 +869,7 @@
     "category": "Spirit",
     "price": 49.95,
     "country": "United Kingdom",
-    "description": "Description\n\nSmall batch gin distilled with imported fresh citrus and botanicals. Tanqueray No. Ten is named after the still number used to create this premium expression. Made with fresh citrus fruits, creating a vibrant and flavorful gin.\n\nSpirit Profile\n\nAroma: Bright aromas of citrus, juniper, and botanicals\n\nPalate: Smooth and vibrant with notes of grapefruit, lime, and juniper. Well-balanced.\n\nFinish: Clean and crisp\n\nStyle: Small batch gin; fresh citrus and botanicals\n\nBest For: Classic gin and tonic, martini, or citrus-based cocktails\n\nFood Pairing\n\nPerfect in a classic gin and tonic or martini. Pairs beautifully with fresh seafood, particularly oysters or ceviche. Also excellent in citrus-based cocktails or served with a slice of grapefruit.",
+    "description": "Small batch gin distilled with imported fresh citrus and botanicals. Tanqueray No. Ten is named after the still number used to create this premium expression. Made with fresh citrus fruits, creating a vibrant and flavorful gin.\n\nSpirit Profile\n\nAroma: Bright aromas of citrus, juniper, and botanicals\n\nPalate: Smooth and vibrant with notes of grapefruit, lime, and juniper. Well-balanced.\n\nFinish: Clean and crisp\n\nStyle: Small batch gin; fresh citrus and botanicals\n\nBest For: Classic gin and tonic, martini, or citrus-based cocktails\n\nFood Pairing\n\nPerfect in a classic gin and tonic or martini. Pairs beautifully with fresh seafood, particularly oysters or ceviche. Also excellent in citrus-based cocktails or served with a slice of grapefruit.",
     "producer": "Tanqueray",
     "tasteProfile": "citrus, juniper, grapefruit, lime, vibrant",
     "foodPairing": "Fresh seafood, oysters, gin and tonic",
@@ -869,10 +887,10 @@
   {
     "name": "Woodford Reserve Kentucky Straight Bourbon Whiskey",
     "category": "Spirit",
-    "price": 58.00,
+    "price": 58,
     "country": "USA",
     "region": "Kentucky",
-    "description": "Description\n\nDistiller's Select Kentucky straight bourbon whiskey, selected by Master Distiller Chris Morris. Made at the historic distillery site, this bourbon represents the pinnacle of bourbon craftsmanship. Each batch is carefully selected for its exceptional character.\n\nSpirit Profile\n\nAroma: Complex aromas of vanilla, caramel, and oak\n\nPalate: Smooth and full-bodied with notes of toffee, spice, and toasted oak. Well-balanced.\n\nFinish: Long and warming\n\nStyle: Distiller's Select Kentucky straight bourbon; Master Distiller selected\n\nBest For: Neat, on the rocks, or in classic bourbon cocktails like an Old Fashioned or Manhattan\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic bourbon cocktails. Pairs well with barbecue, grilled meats, or dark chocolate. Excellent in an Old Fashioned or Manhattan.",
+    "description": "Distiller's Select Kentucky straight bourbon whiskey, selected by Master Distiller Chris Morris. Made at the historic distillery site, this bourbon represents the pinnacle of bourbon craftsmanship. Each batch is carefully selected for its exceptional character.\n\nSpirit Profile\n\nAroma: Complex aromas of vanilla, caramel, and oak\n\nPalate: Smooth and full-bodied with notes of toffee, spice, and toasted oak. Well-balanced.\n\nFinish: Long and warming\n\nStyle: Distiller's Select Kentucky straight bourbon; Master Distiller selected\n\nBest For: Neat, on the rocks, or in classic bourbon cocktails like an Old Fashioned or Manhattan\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic bourbon cocktails. Pairs well with barbecue, grilled meats, or dark chocolate. Excellent in an Old Fashioned or Manhattan.",
     "producer": "Woodford Reserve",
     "tasteProfile": "vanilla, caramel, toffee, oak, full-bodied",
     "foodPairing": "Barbecue, grilled meats, dark chocolate",
@@ -892,7 +910,7 @@
     "category": "Spirit",
     "price": 39.95,
     "country": "Mexico",
-    "description": "Description\n\nReposado tequila made with blue agave. This limited edition expression features a distinctive Day of the Dead design, celebrating Mexican tradition and culture. Aged in oak barrels, creating a smooth, mellow character.\n\nSpirit Profile\n\nAroma: Agave, vanilla, and oak\n\nPalate: Smooth and mellow with notes of caramel, spice, and toasted agave. Well-balanced.\n\nFinish: Clean and satisfying\n\nStyle: Reposado tequila; limited edition Day of the Dead design\n\nBest For: Neat, on the rocks, or in classic tequila cocktails like a Margarita or Tequila Sunrise\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic tequila cocktails. Pairs well with Mexican cuisine, grilled meats, or citrus-based dishes. Excellent in a Margarita or Tequila Sunrise.",
+    "description": "Reposado tequila made with blue agave. This limited edition expression features a distinctive Day of the Dead design, celebrating Mexican tradition and culture. Aged in oak barrels, creating a smooth, mellow character.\n\nSpirit Profile\n\nAroma: Agave, vanilla, and oak\n\nPalate: Smooth and mellow with notes of caramel, spice, and toasted agave. Well-balanced.\n\nFinish: Clean and satisfying\n\nStyle: Reposado tequila; limited edition Day of the Dead design\n\nBest For: Neat, on the rocks, or in classic tequila cocktails like a Margarita or Tequila Sunrise\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic tequila cocktails. Pairs well with Mexican cuisine, grilled meats, or citrus-based dishes. Excellent in a Margarita or Tequila Sunrise.",
     "producer": "Jose Cuervo",
     "tasteProfile": "agave, vanilla, caramel, oak, smooth",
     "foodPairing": "Mexican cuisine, grilled meats, citrus dishes",
@@ -910,9 +928,9 @@
   {
     "name": "1800 Añejo Tequila",
     "category": "Spirit",
-    "price": 65.00,
+    "price": 65,
     "country": "Mexico",
-    "description": "Description\n\nWorld's most awarded tequila, made with 100% blue agave. Aged in French and American oak barrels, this añejo tequila represents exceptional quality. Family recipe since 1800, crafted by Juan Beckmann, 10th generation.\n\nSpirit Profile\n\nAroma: Complex aromas of agave, vanilla, and oak\n\nPalate: Smooth and full-bodied with notes of caramel, spice, and toasted agave. Well-aged.\n\nFinish: Long and warming\n\nStyle: Añejo tequila; world's most awarded, aged in French and American oak\n\nBest For: Neat or on the rocks. Also excellent in premium tequila cocktails\n\nFood Pairing\n\nBest enjoyed neat or on the rocks. Pairs beautifully with dark chocolate, aged cheeses, or as an after-dinner digestif. Also excellent in premium tequila cocktails.",
+    "description": "World's most awarded tequila, made with 100% blue agave. Aged in French and American oak barrels, this añejo tequila represents exceptional quality. Family recipe since 1800, crafted by Juan Beckmann, 10th generation.\n\nSpirit Profile\n\nAroma: Complex aromas of agave, vanilla, and oak\n\nPalate: Smooth and full-bodied with notes of caramel, spice, and toasted agave. Well-aged.\n\nFinish: Long and warming\n\nStyle: Añejo tequila; world's most awarded, aged in French and American oak\n\nBest For: Neat or on the rocks. Also excellent in premium tequila cocktails\n\nFood Pairing\n\nBest enjoyed neat or on the rocks. Pairs beautifully with dark chocolate, aged cheeses, or as an after-dinner digestif. Also excellent in premium tequila cocktails.",
     "producer": "1800 Tequila",
     "tasteProfile": "agave, vanilla, caramel, oak, full-bodied",
     "foodPairing": "Dark chocolate, aged cheeses, digestif",
@@ -930,7 +948,7 @@
   {
     "name": "Patrón Reposado Tequila",
     "category": "Spirit",
-    "price": 90.00,
+    "price": 90,
     "country": "Mexico",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nPremium tequila made with 100% blue agave. Patrón Reposado is aged in oak barrels, creating a smooth, mellow character with notes of agave, vanilla, and oak. Patrón represents the pinnacle of tequila craftsmanship, made with traditional methods and the finest ingredients.\n\nSpirit Profile\n\nAroma: Agave, vanilla, and oak\n\nPalate: Smooth and well-balanced with notes of caramel, spice, and toasted agave. Exceptionally smooth.\n\nFinish: Clean and satisfying\n\nStyle: Premium tequila; 100% blue agave, oak barrel aged\n\nBest For: Neat, on the rocks, or in premium tequila cocktails like a Margarita. Also excellent as a premium sipping tequila\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in premium tequila cocktails. Pairs well with Mexican cuisine, grilled meats, or citrus-based dishes. Excellent in a Margarita or served as a premium sipping tequila.\n\nAlso available: Patrón Añejo - prices differ.",
     "producer": "Patrón",
@@ -952,7 +970,7 @@
     "category": "Spirit",
     "price": 0,
     "country": "Mexico",
-    "description": "Description\n\nPremium añejo tequila made with 100% blue agave. Patrón Añejo is aged longer in oak barrels, creating a rich, complex character with notes of agave, vanilla, oak, and spice. Patrón represents the pinnacle of tequila craftsmanship, made with traditional methods and the finest ingredients.\n\nSpirit Profile\n\nAroma: Rich aromas of agave, vanilla, oak, and spice\n\nPalate: Smooth and complex with notes of caramel, toasted agave, and oak. Well-aged with exceptional depth.\n\nFinish: Long and warming\n\nStyle: Premium añejo tequila; 100% blue agave, extended oak barrel aging\n\nBest For: Neat or on the rocks. Also excellent as a premium sipping tequila\n\nFood Pairing\n\nBest enjoyed neat or on the rocks. Pairs beautifully with dark chocolate, aged cheeses, or as an after-dinner digestif. Also excellent as a premium sipping tequila.",
+    "description": "Premium añejo tequila made with 100% blue agave. Patrón Añejo is aged longer in oak barrels, creating a rich, complex character with notes of agave, vanilla, oak, and spice. Patrón represents the pinnacle of tequila craftsmanship, made with traditional methods and the finest ingredients.\n\nSpirit Profile\n\nAroma: Rich aromas of agave, vanilla, oak, and spice\n\nPalate: Smooth and complex with notes of caramel, toasted agave, and oak. Well-aged with exceptional depth.\n\nFinish: Long and warming\n\nStyle: Premium añejo tequila; 100% blue agave, extended oak barrel aging\n\nBest For: Neat or on the rocks. Also excellent as a premium sipping tequila\n\nFood Pairing\n\nBest enjoyed neat or on the rocks. Pairs beautifully with dark chocolate, aged cheeses, or as an after-dinner digestif. Also excellent as a premium sipping tequila.",
     "producer": "Patrón",
     "tasteProfile": "agave, vanilla, oak, caramel, complex",
     "foodPairing": "Dark chocolate, aged cheeses, digestif",
@@ -970,10 +988,10 @@
   {
     "name": "Jack Daniel's Gentleman Jack",
     "category": "Spirit",
-    "price": 53.50,
+    "price": 53.5,
     "country": "USA",
     "region": "Tennessee",
-    "description": "Description\n\nDouble mellowed Tennessee whiskey, mellowed twice through charcoal for exceptional smoothness. This unique process creates an exceptionally smooth and refined whiskey, perfect for sipping or mixing.\n\nSpirit Profile\n\nAroma: Vanilla, caramel, and oak\n\nPalate: Exceptionally smooth with notes of toffee, honey, and gentle spice. The double mellowing process creates unparalleled smoothness.\n\nFinish: Long and satisfying\n\nStyle: Double mellowed Tennessee whiskey; twice charcoal mellowed\n\nBest For: Neat for sipping, on the rocks, or in classic whiskey cocktails like an Old Fashioned\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic whiskey cocktails. Pairs well with barbecue, grilled meats, or dark chocolate. Excellent in an Old Fashioned or served neat for sipping.",
+    "description": "Double mellowed Tennessee whiskey, mellowed twice through charcoal for exceptional smoothness. This unique process creates an exceptionally smooth and refined whiskey, perfect for sipping or mixing.\n\nSpirit Profile\n\nAroma: Vanilla, caramel, and oak\n\nPalate: Exceptionally smooth with notes of toffee, honey, and gentle spice. The double mellowing process creates unparalleled smoothness.\n\nFinish: Long and satisfying\n\nStyle: Double mellowed Tennessee whiskey; twice charcoal mellowed\n\nBest For: Neat for sipping, on the rocks, or in classic whiskey cocktails like an Old Fashioned\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic whiskey cocktails. Pairs well with barbecue, grilled meats, or dark chocolate. Excellent in an Old Fashioned or served neat for sipping.",
     "producer": "Jack Daniel's",
     "tasteProfile": "vanilla, caramel, toffee, honey, exceptionally smooth",
     "foodPairing": "Barbecue, grilled meats, dark chocolate",
@@ -991,10 +1009,10 @@
   {
     "name": "Bulleit Bourbon Frontier Whiskey",
     "category": "Spirit",
-    "price": 43.00,
+    "price": 43,
     "country": "USA",
     "region": "Kentucky",
-    "description": "Description\n\nKentucky straight bourbon whiskey made in the Bulleit family tradition. Known for its high-rye mashbill, this bourbon offers bold flavor and character. Made with pure, Kentucky limestone-filtered water, creating a distinctive and flavorful bourbon.\n\nSpirit Profile\n\nAroma: Vanilla, spice, and oak\n\nPalate: Bold and flavorful with notes of toffee, rye spice, and toasted oak. Well-balanced.\n\nFinish: Long and warming\n\nStyle: Kentucky straight bourbon; high-rye mashbill for bold flavor\n\nBest For: Neat, on the rocks, or in classic bourbon cocktails like an Old Fashioned or Whiskey Sour\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic bourbon cocktails. Pairs well with barbecue, grilled meats, or spicy dishes. Excellent in an Old Fashioned or Whiskey Sour.",
+    "description": "Kentucky straight bourbon whiskey made in the Bulleit family tradition. Known for its high-rye mashbill, this bourbon offers bold flavor and character. Made with pure, Kentucky limestone-filtered water, creating a distinctive and flavorful bourbon.\n\nSpirit Profile\n\nAroma: Vanilla, spice, and oak\n\nPalate: Bold and flavorful with notes of toffee, rye spice, and toasted oak. Well-balanced.\n\nFinish: Long and warming\n\nStyle: Kentucky straight bourbon; high-rye mashbill for bold flavor\n\nBest For: Neat, on the rocks, or in classic bourbon cocktails like an Old Fashioned or Whiskey Sour\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic bourbon cocktails. Pairs well with barbecue, grilled meats, or spicy dishes. Excellent in an Old Fashioned or Whiskey Sour.",
     "producer": "Bulleit",
     "tasteProfile": "vanilla, spice, toffee, rye, bold",
     "foodPairing": "Barbecue, grilled meats, spicy dishes",
@@ -1027,14 +1045,16 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/powers-irish-whiskey.jpg",
-    "images": ["/spirits/powers-varieties.jpg"]
+    "images": [
+      "/spirits/powers-varieties.jpg"
+    ]
   },
   {
     "name": "Connemara Peated Single Malt Irish Whiskey",
     "category": "Spirit",
-    "price": 45.50,
+    "price": 45.5,
     "country": "Ireland",
-    "description": "Description\n\nPeated single malt Irish whiskey, distinctively Irish with a unique peated character. This original expression showcases the complexity of Irish single malt with a gentle peat smoke influence. A unique expression of Irish whiskey tradition.\n\nSpirit Profile\n\nAroma: Peat, smoke, and malt\n\nPalate: Smooth and well-balanced with notes of honey, vanilla, and gentle peat smoke. The peat adds complexity without overwhelming.\n\nFinish: Long and satisfying\n\nStyle: Peated single malt Irish whiskey; unique peated character\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water. Pairs beautifully with smoked salmon, oysters, or aged cheeses. A unique expression for those who appreciate peated whiskies.",
+    "description": "Peated single malt Irish whiskey, distinctively Irish with a unique peated character. This original expression showcases the complexity of Irish single malt with a gentle peat smoke influence. A unique expression of Irish whiskey tradition.\n\nSpirit Profile\n\nAroma: Peat, smoke, and malt\n\nPalate: Smooth and well-balanced with notes of honey, vanilla, and gentle peat smoke. The peat adds complexity without overwhelming.\n\nFinish: Long and satisfying\n\nStyle: Peated single malt Irish whiskey; unique peated character\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water. Pairs beautifully with smoked salmon, oysters, or aged cheeses. A unique expression for those who appreciate peated whiskies.",
     "producer": "Cooley Distillery",
     "tasteProfile": "peat, smoke, honey, vanilla, smooth",
     "foodPairing": "Smoked salmon, oysters, aged cheeses",
@@ -1052,10 +1072,10 @@
   {
     "name": "Chambord Black Raspberry Liqueur",
     "category": "Spirit",
-    "price": 29.00,
+    "price": 29,
     "country": "France",
     "region": "Loire Valley",
-    "description": "Description\n\nSuper premium black raspberry liqueur crafted in Cour-Cheverny, Loire Valley, the heart of France. An infusion of the world's finest raspberries and blackberries, blended with exotic flavours of black raspberry, blackcurrant, and Madagascan vanilla. Chambord's unique flavour makes it a magnifique fit for your favourite cocktail.\n\nSpirit Profile\n\nAroma: Intense aromas of raspberry, blackberry, and vanilla\n\nPalate: Rich and luxurious with notes of fresh berries, blackcurrant, and sweet vanilla. Well-balanced sweetness.\n\nFinish: Long and fruity\n\nStyle: Super premium black raspberry liqueur; finest raspberries and blackberries\n\nBest For: Cocktails, drizzled over desserts, over ice, in a French Martini or Kir Royale\n\nFood Pairing\n\nPerfect in cocktails, drizzled over desserts, or served over ice. Pairs beautifully with chocolate desserts, fresh berries, or vanilla ice cream. Also excellent in a French Martini or Kir Royale.",
+    "description": "Super premium black raspberry liqueur crafted in Cour-Cheverny, Loire Valley, the heart of France. An infusion of the world's finest raspberries and blackberries, blended with exotic flavours of black raspberry, blackcurrant, and Madagascan vanilla. Chambord's unique flavour makes it a magnifique fit for your favourite cocktail.\n\nSpirit Profile\n\nAroma: Intense aromas of raspberry, blackberry, and vanilla\n\nPalate: Rich and luxurious with notes of fresh berries, blackcurrant, and sweet vanilla. Well-balanced sweetness.\n\nFinish: Long and fruity\n\nStyle: Super premium black raspberry liqueur; finest raspberries and blackberries\n\nBest For: Cocktails, drizzled over desserts, over ice, in a French Martini or Kir Royale\n\nFood Pairing\n\nPerfect in cocktails, drizzled over desserts, or served over ice. Pairs beautifully with chocolate desserts, fresh berries, or vanilla ice cream. Also excellent in a French Martini or Kir Royale.",
     "producer": "Chambord",
     "tasteProfile": "raspberry, blackberry, vanilla, sweet, luxurious",
     "foodPairing": "Chocolate desserts, fresh berries, cocktails",
@@ -1073,9 +1093,9 @@
   {
     "name": "Gin Mare Mediterranean Gin",
     "category": "Spirit",
-    "price": 55.00,
+    "price": 55,
     "country": "Spain",
-    "description": "Description\n\nMediterranean gin distilled from olives, thyme, rosemary, and basil. Gin Mare captures the essence of the Mediterranean with its unique botanical blend, creating a distinctive and sophisticated gin that reflects the flavors of the region.\n\nSpirit Profile\n\nAroma: Complex Mediterranean botanical aromas\n\nPalate: Smooth and well-balanced with notes of olives, herbs, and coastal botanicals. Unique and elegant.\n\nFinish: Clean and refreshing\n\nStyle: Mediterranean gin; olives, thyme, rosemary, and basil\n\nBest For: Classic gin and tonic, martini, or cocktails. Served with a slice of orange\n\nFood Pairing\n\nPerfect in a classic gin and tonic or martini. Pairs beautifully with Mediterranean cuisine, fresh seafood, or tapas. Also excellent in cocktails or served with a slice of orange.",
+    "description": "Mediterranean gin distilled from olives, thyme, rosemary, and basil. Gin Mare captures the essence of the Mediterranean with its unique botanical blend, creating a distinctive and sophisticated gin that reflects the flavors of the region.\n\nSpirit Profile\n\nAroma: Complex Mediterranean botanical aromas\n\nPalate: Smooth and well-balanced with notes of olives, herbs, and coastal botanicals. Unique and elegant.\n\nFinish: Clean and refreshing\n\nStyle: Mediterranean gin; olives, thyme, rosemary, and basil\n\nBest For: Classic gin and tonic, martini, or cocktails. Served with a slice of orange\n\nFood Pairing\n\nPerfect in a classic gin and tonic or martini. Pairs beautifully with Mediterranean cuisine, fresh seafood, or tapas. Also excellent in cocktails or served with a slice of orange.",
     "producer": "Gin Mare",
     "tasteProfile": "olives, thyme, rosemary, basil, Mediterranean",
     "foodPairing": "Mediterranean cuisine, fresh seafood, tapas",
@@ -1093,7 +1113,7 @@
   {
     "name": "Johnnie Walker Double Black Blended Scotch Whisky",
     "category": "Spirit",
-    "price": 105.00,
+    "price": 105,
     "country": "Scotland",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nA rich, intense, smoky blend containing whisky matured in deep charred old oak casks. Johnnie Walker Double Black takes the iconic Black Label and intensifies the smoky character, creating a bolder expression of blended Scotch whisky.\n\nSpirit Profile\n\nAroma: Intense aromas of smoke, peat, and charred oak\n\nPalate: Full-bodied and bold with notes of vanilla, spice, and deep smoky character. Well-balanced.\n\nFinish: Long and warming\n\nStyle: Rich, intense, smoky blend; deep charred old oak casks\n\nBest For: Neat, on the rocks, or with a splash of water. Excellent in a Rob Roy or Whisky Sour\n\nFood Pairing\n\nEnjoy neat, on the rocks, or with a splash of water. Pairs well with smoked salmon, aged cheeses, or dark chocolate. Excellent in a Rob Roy or Whisky Sour.\n\nAlso available: Johnnie Walker Red Label, Johnnie Walker Black Label (12 Year Old), Johnnie Walker Gold Label Reserve, and other expressions - prices may differ.",
     "producer": "John Walker & Sons",
@@ -1108,12 +1128,14 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/johnnie-walker-double-black.jpg",
-    "images": ["/spirits/johnnie-walker-varieties.jpg"]
+    "images": [
+      "/spirits/johnnie-walker-varieties.jpg"
+    ]
   },
   {
     "name": "Johnnie Walker Gold Label Reserve Blended Scotch Whisky",
     "category": "Spirit",
-    "price": 95.00,
+    "price": 95,
     "country": "Scotland",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nMaster blender's reserve blended Scotch whisky made with the finest malt and grain whiskies. Johnnie Walker Gold Label Reserve represents exceptional quality and sophistication, crafted for those who appreciate premium whisky.\n\nSpirit Profile\n\nAroma: Complex aromas of honey, vanilla, and dried fruit\n\nPalate: Smooth and elegant with notes of toffee, spice, and dark chocolate. Exceptionally well-balanced.\n\nFinish: Long and luxurious\n\nStyle: Master blender's reserve; premium blended Scotch whisky\n\nBest For: Neat or with a single ice cube\n\nFood Pairing\n\nEnjoy neat or with a single ice cube. Pairs beautifully with dark chocolate, foie gras, or aged cheeses. A perfect after-dinner digestif or special occasion whiskey.\n\nAlso available: Johnnie Walker Red Label, Johnnie Walker Black Label (12 Year Old), Johnnie Walker Double Black, and other expressions - prices may differ.",
     "producer": "John Walker & Sons",
@@ -1128,7 +1150,9 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/johnnie-walker-gold-label-reserve.jpg",
-    "images": ["/spirits/johnnie-walker-varieties.jpg"]
+    "images": [
+      "/spirits/johnnie-walker-varieties.jpg"
+    ]
   },
   {
     "name": "Johnnie Walker Red Label Blended Scotch Whisky",
@@ -1148,12 +1172,14 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/johnnie-walker-red-label.jpg",
-    "images": ["/spirits/johnnie-walker-varieties.jpg"]
+    "images": [
+      "/spirits/johnnie-walker-varieties.jpg"
+    ]
   },
   {
     "name": "Jameson Original Irish Whiskey",
     "category": "Spirit",
-    "price": 30.50,
+    "price": 30.5,
     "country": "Ireland",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nTriple distilled Irish whiskey made the John Jameson way since 1780. The original Jameson is smooth, approachable, and perfect for any occasion. Made with a blend of pot still and grain whiskey, creating a balanced and versatile Irish whiskey.\n\nSpirit Profile\n\nAroma: Vanilla, honey, and gentle fruit\n\nPalate: Smooth and approachable with notes of apple, pear, and gentle spice. Well-balanced.\n\nFinish: Clean and satisfying\n\nStyle: Triple distilled Irish whiskey; made the John Jameson way since 1780\n\nBest For: Neat, on the rocks, or in classic whiskey cocktails like an Irish coffee or Whiskey Sour\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic whiskey cocktails. Pairs well with fresh seafood, Irish cheeses, or fruit desserts. Excellent in an Irish coffee or Whiskey Sour.\n\nAlso available: Jameson Crested, Jameson Black Barrel, Jameson Triple Triple, and other expressions - prices may differ.",
     "producer": "John Jameson & Son",
@@ -1168,12 +1194,14 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/jameson-original.jpg",
-    "images": ["/spirits/jameson-varieties.jpg"]
+    "images": [
+      "/spirits/jameson-varieties.jpg"
+    ]
   },
   {
     "name": "Bushmills The Original Irish Whiskey",
     "category": "Spirit",
-    "price": 32.50,
+    "price": 32.5,
     "country": "Ireland",
     "region": "County Antrim",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nTriple distilled finest blend from the world's oldest licensed whiskey distillery, established in 1608. Bushmills The Original is a signature Irish whiskey that represents over 400 years of whiskey-making tradition. A smooth, approachable blend perfect for any occasion.\n\nSpirit Profile\n\nAroma: Honey, vanilla, and gentle fruit\n\nPalate: Smooth and elegant with notes of apple, pear, and toasted oak. Well-balanced.\n\nFinish: Clean and satisfying\n\nStyle: Triple distilled finest blend; world's oldest licensed distillery since 1608\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nEnjoy neat or with a drop of water. Pairs beautifully with fresh seafood, Irish cheeses, or fruit desserts. A classic Irish whiskey that's perfect for any occasion.\n\nAlso available: Bushmills Black Bush (€39.95), Bushmills 10 Year Old Single Malt, Bushmills 16 Year Old, and other expressions - prices may differ.",
@@ -1189,7 +1217,9 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/bushmills-the-original.jpg",
-    "images": ["/spirits/bushmills-black-bush.jpg"]
+    "images": [
+      "/spirits/bushmills-black-bush.jpg"
+    ]
   },
   {
     "name": "Martini Extra Dry Vermouth",
@@ -1210,7 +1240,9 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/martini-extra-dry.jpg",
-    "images": ["/spirits/martini-varieties.jpg"]
+    "images": [
+      "/spirits/martini-varieties.jpg"
+    ]
   },
   {
     "name": "Jack Daniel's Old No. 7 Tennessee Whiskey",
@@ -1231,7 +1263,9 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/jack-daniels-old-no7.jpg",
-    "images": ["/spirits/jack-daniels-varieties.jpg"]
+    "images": [
+      "/spirits/jack-daniels-varieties.jpg"
+    ]
   },
   {
     "name": "Sandeman Porto",
@@ -1252,12 +1286,14 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/sandeman-ruby-porto.jpg",
-    "images": ["/spirits/sandeman-tawny-porto.jpg"]
+    "images": [
+      "/spirits/sandeman-tawny-porto.jpg"
+    ]
   },
   {
     "name": "Ocho Tequila Blanco",
     "category": "Spirit",
-    "price": 52.00,
+    "price": 52,
     "country": "Mexico",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nSingle estate tequila made with 100% pure agave. Ocho Tequila is made from agave grown on specific estates, creating unique terroir-driven expressions. This Blanco is unaged, showcasing the pure character of the agave.\n\nSpirit Profile\n\nAroma: Fresh agave aromas\n\nPalate: Clean and crisp with notes of citrus, herbs, and pure agave. Well-balanced.\n\nFinish: Smooth and refreshing\n\nStyle: Single estate tequila; 100% pure agave, unaged Blanco\n\nBest For: Neat, on the rocks, or in classic tequila cocktails like a Margarita or Tequila Sunrise\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic tequila cocktails. Pairs well with Mexican cuisine, grilled meats, or citrus-based dishes. Excellent in a Margarita or Tequila Sunrise.\n\nAlso available: Ocho Tequila Reposado - same price.",
     "producer": "Ocho",
@@ -1272,14 +1308,16 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/ocho-tequila-blanco.jpg",
-    "images": ["/spirits/ocho-tequila-varieties.jpg"]
+    "images": [
+      "/spirits/ocho-tequila-varieties.jpg"
+    ]
   },
   {
     "name": "Redbreast 21 Year Old Single Pot Still Irish Whiskey",
     "category": "Spirit",
-    "price": 275.00,
+    "price": 275,
     "country": "Ireland",
-    "description": "Description\n\nHighly awarded and critically acclaimed, Redbreast 21 is a single pot still Irish whiskey exclusively of Pot Still whiskey. Triple distilled and matured in the finest oak casks, this expression represents the pinnacle of Irish whiskey craftsmanship.\n\nSpirit Profile\n\nAroma: Expansive aromas from tropical notes to nuts to sun-dried fruit, soft vanilla, fleshy fruit, and sherried nuttiness\n\nPalate: A rewarding medley of spices with a final hint of barley. Complex and sophisticated with exceptional depth.\n\nFinish: Lingers endlessly\n\nStyle: Single pot still Irish whiskey; 21-year-old, triple distilled\n\nBest For: Neat or with a drop of water to release the aromas\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water to release the aromas. Pairs beautifully with dark chocolate, aged cheeses, or as an after-dinner digestif. A truly exceptional whiskey for connoisseurs.",
+    "description": "Highly awarded and critically acclaimed, Redbreast 21 is a single pot still Irish whiskey exclusively of Pot Still whiskey. Triple distilled and matured in the finest oak casks, this expression represents the pinnacle of Irish whiskey craftsmanship.\n\nSpirit Profile\n\nAroma: Expansive aromas from tropical notes to nuts to sun-dried fruit, soft vanilla, fleshy fruit, and sherried nuttiness\n\nPalate: A rewarding medley of spices with a final hint of barley. Complex and sophisticated with exceptional depth.\n\nFinish: Lingers endlessly\n\nStyle: Single pot still Irish whiskey; 21-year-old, triple distilled\n\nBest For: Neat or with a drop of water to release the aromas\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water to release the aromas. Pairs beautifully with dark chocolate, aged cheeses, or as an after-dinner digestif. A truly exceptional whiskey for connoisseurs.",
     "producer": "Irish Distillers",
     "tasteProfile": "tropical fruit, nuts, vanilla, spice, complex",
     "foodPairing": "Dark chocolate, aged cheeses, digestif",
@@ -1292,12 +1330,14 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/redbreast-21-year-old.jpg",
-    "images": ["/spirits/image00054.jpeg"]
+    "images": [
+      "/spirits/image00054.jpeg"
+    ]
   },
   {
     "name": "Disaronno Originale Amaretto Liqueur",
     "category": "Spirit",
-    "price": 34.50,
+    "price": 34.5,
     "country": "Italy",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nThe world's favourite Italian liqueur since 1525. Disaronno Originale is a smooth, almond-flavored liqueur with a rich history. Made with natural ingredients, this iconic liqueur is perfect for sipping or mixing in cocktails.\n\nSpirit Profile\n\nAroma: Almonds, vanilla, and sweet spices\n\nPalate: Smooth and luxurious with notes of marzipan, vanilla, and gentle spice. Well-balanced sweetness.\n\nFinish: Long and satisfying\n\nStyle: Italian amaretto liqueur; world's favourite since 1525\n\nBest For: Neat, on the rocks, in cocktails, in an Amaretto Sour, or mixed with coffee\n\nFood Pairing\n\nPerfect served neat, on the rocks, or in cocktails. Pairs beautifully with desserts, particularly chocolate or coffee-based treats. Also excellent in an Amaretto Sour or mixed with coffee.\n\nAlso available: Disaronno Velvet Liqueur - prices may differ.",
     "producer": "Illva Saronno",
@@ -1312,14 +1352,16 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/disaronno-originale.jpg",
-    "images": ["/spirits/disaronno-varieties.jpg"]
+    "images": [
+      "/spirits/disaronno-varieties.jpg"
+    ]
   },
   {
     "name": "Tequila Rose Strawberry Cream Liqueur",
     "category": "Spirit",
-    "price": 23.90,
+    "price": 23.9,
     "country": "Mexico",
-    "description": "Description\n\nStrawberry cream liqueur with tequila. Tequila Rose combines the smoothness of cream with the flavor of fresh strawberries and a hint of tequila, creating a delicious and indulgent liqueur perfect for sipping or mixing.\n\nSpirit Profile\n\nAroma: Fresh strawberries and cream\n\nPalate: Smooth and creamy with notes of strawberry, vanilla, and a hint of tequila. Well-balanced sweetness.\n\nFinish: Smooth and lingering\n\nStyle: Strawberry cream liqueur with tequila\n\nBest For: Chilled, on the rocks, or in cocktails\n\nFood Pairing\n\nPerfect served chilled, on the rocks, or in cocktails. Pairs beautifully with desserts, particularly chocolate or fruit-based treats. Also excellent in cocktails or as a dessert liqueur.",
+    "description": "Strawberry cream liqueur with tequila. Tequila Rose combines the smoothness of cream with the flavor of fresh strawberries and a hint of tequila, creating a delicious and indulgent liqueur perfect for sipping or mixing.\n\nSpirit Profile\n\nAroma: Fresh strawberries and cream\n\nPalate: Smooth and creamy with notes of strawberry, vanilla, and a hint of tequila. Well-balanced sweetness.\n\nFinish: Smooth and lingering\n\nStyle: Strawberry cream liqueur with tequila\n\nBest For: Chilled, on the rocks, or in cocktails\n\nFood Pairing\n\nPerfect served chilled, on the rocks, or in cocktails. Pairs beautifully with desserts, particularly chocolate or fruit-based treats. Also excellent in cocktails or as a dessert liqueur.",
     "producer": "Tequila Rose",
     "tasteProfile": "strawberry, cream, vanilla, sweet, smooth",
     "foodPairing": "Desserts, chocolate, fruit, cocktails",
@@ -1332,14 +1374,16 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/500.jpg",
-    "images": ["/spirits/tequila-rose-varieties.jpg"]
+    "images": [
+      "/spirits/tequila-rose-varieties.jpg"
+    ]
   },
   {
     "name": "Tequila Rose Strawberry Cream Liqueur",
     "category": "Spirit",
-    "price": 29.50,
+    "price": 29.5,
     "country": "Mexico",
-    "description": "Description\n\nStrawberry cream liqueur with tequila. Tequila Rose combines the smoothness of cream with the flavor of fresh strawberries and a hint of tequila, creating a delicious and indulgent liqueur perfect for sipping or mixing.\n\nSpirit Profile\n\nAroma: Fresh strawberries and cream\n\nPalate: Smooth and creamy with notes of strawberry, vanilla, and a hint of tequila. Well-balanced sweetness.\n\nFinish: Smooth and lingering\n\nStyle: Strawberry cream liqueur with tequila\n\nBest For: Chilled, on the rocks, or in cocktails\n\nFood Pairing\n\nPerfect served chilled, on the rocks, or in cocktails. Pairs beautifully with desserts, particularly chocolate or fruit-based treats. Also excellent in cocktails or as a dessert liqueur.\n\nAvailable in 500ml and 700ml sizes - prices may differ.",
+    "description": "Strawberry cream liqueur with tequila. Tequila Rose combines the smoothness of cream with the flavor of fresh strawberries and a hint of tequila, creating a delicious and indulgent liqueur perfect for sipping or mixing.\n\nSpirit Profile\n\nAroma: Fresh strawberries and cream\n\nPalate: Smooth and creamy with notes of strawberry, vanilla, and a hint of tequila. Well-balanced sweetness.\n\nFinish: Smooth and lingering\n\nStyle: Strawberry cream liqueur with tequila\n\nBest For: Chilled, on the rocks, or in cocktails\n\nFood Pairing\n\nPerfect served chilled, on the rocks, or in cocktails. Pairs beautifully with desserts, particularly chocolate or fruit-based treats. Also excellent in cocktails or as a dessert liqueur.\n\nAvailable in 500ml and 700ml sizes - prices may differ.",
     "producer": "Tequila Rose",
     "tasteProfile": "strawberry, cream, vanilla, sweet, smooth",
     "foodPairing": "Desserts, chocolate, fruit, cocktails",
@@ -1352,12 +1396,14 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/700.jpg",
-    "images": ["/spirits/image00026.jpeg"]
+    "images": [
+      "/spirits/image00026.jpeg"
+    ]
   },
   {
     "name": "Tails Cocktails Espresso Martini",
     "category": "Spirit",
-    "price": 24.00,
+    "price": 24,
     "country": "United Kingdom",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nReady-to-drink espresso martini cocktail crafted with 42 Below vodka. Tails Cocktails offers premium pre-mixed cocktails that are ready to shake with ice and serve. Perfect for convenience without compromising on quality.\n\nSpirit Profile\n\nAroma: Coffee and vanilla\n\nPalate: Rich and smooth with notes of espresso, coffee liqueur, and vodka. Well-balanced.\n\nFinish: Smooth and creamy\n\nStyle: Ready-to-drink espresso martini; premium pre-mixed cocktail\n\nBest For: Shaken with ice\n\nFood Pairing\n\nPerfect served shaken with ice. Pairs beautifully with desserts, particularly chocolate or coffee-based treats. Also excellent as an after-dinner drink.\n\nAlso available: Tails Passion Fruit Martini, Tails Rum Daiquiri, Tails Whisky Sour, and other cocktail varieties - prices may differ.",
     "producer": "Tails Cocktails",
@@ -1372,12 +1418,14 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/tails-espresso-martini.jpg",
-    "images": ["/spirits/tails-cocktails-varieties.jpg"]
+    "images": [
+      "/spirits/tails-cocktails-varieties.jpg"
+    ]
   },
   {
     "name": "Glendalough Wild Botanical Irish Gin",
     "category": "Spirit",
-    "price": 45.00,
+    "price": 45,
     "country": "Ireland",
     "region": "Wicklow Mountains",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nIrish gin made using fresh botanicals hand-picked in the Wicklow Mountains. Glendalough Wild Botanical Gin captures the essence of the Irish countryside with its unique botanical blend, creating a distinctive and flavorful gin.\n\nSpirit Profile\n\nAroma: Complex botanical aromas\n\nPalate: Smooth and well-balanced with notes of juniper, herbs, and wild botanicals. Clean and refreshing.\n\nFinish: Crisp\n\nStyle: Irish gin; fresh botanicals hand-picked in Wicklow Mountains\n\nBest For: Classic gin and tonic, martini, or citrus-based cocktails\n\nFood Pairing\n\nPerfect in a classic gin and tonic or martini. Pairs beautifully with fresh seafood, particularly oysters or smoked salmon. Also excellent with citrus-based cocktails or served with a slice of lemon.\n\nAlso available: Glendalough Wild Rose Irish Gin - same price.",
@@ -1393,12 +1441,14 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/glendalough-wild-botanical-gin.jpg",
-    "images": ["/spirits/glendalough-gin-varieties.jpg"]
+    "images": [
+      "/spirits/glendalough-gin-varieties.jpg"
+    ]
   },
   {
     "name": "Drumshanbo Gunpowder Irish Gin",
     "category": "Spirit",
-    "price": 47.00,
+    "price": 47,
     "country": "Ireland",
     "region": "Drumshanbo",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nSlow distilled by hand with oriental botanicals and gunpowder tea. Drumshanbo Gunpowder Irish Gin is crafted in Ireland with a unique blend of botanicals, creating a distinctive and flavorful gin. From the curious mind of PJ Rigney.\n\nSpirit Profile\n\nAroma: Complex botanical aromas including gunpowder tea and oriental botanicals\n\nPalate: Smooth and well-balanced with notes of juniper, tea, and exotic botanicals. Unique and elegant.\n\nFinish: Clean and crisp\n\nStyle: Irish gin; slow distilled by hand with gunpowder tea and oriental botanicals\n\nBest For: Classic gin and tonic, martini, or citrus-based cocktails\n\nFood Pairing\n\nPerfect in a classic gin and tonic or martini. Pairs beautifully with fresh seafood, particularly oysters or ceviche. Also excellent with citrus-based cocktails or served with a slice of lime.\n\nAlso available: Drumshanbo Gunpowder Gin with Italian Fig & Laurel - prices may differ.",
@@ -1414,12 +1464,14 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/drumshanbo-gunpowder-gin.jpg",
-    "images": ["/spirits/drumshanbo-gin-varieties.jpg"]
+    "images": [
+      "/spirits/drumshanbo-gin-varieties.jpg"
+    ]
   },
   {
     "name": "Redbreast Pedro Ximénez PX Edition Single Pot Still Irish Whiskey",
     "category": "Spirit",
-    "price": 105.00,
+    "price": 105,
     "country": "Ireland",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nUnique among the family, Redbreast Pedro Ximénez edition is a single pot still whiskey, triple distilled, initially matured in bourbon and Oloroso sherry casks before being re-casked in delectable Pedro Ximénez hogsheads for a sweet finish. Part of the Iberian Series.\n\nSpirit Profile\n\nAroma: Mixed fruit compote with a squeeze of orange zest, combined with liquorice and wood spices\n\nPalate: Notes of dried fruit, sherry, and sweet wine influence with exceptional complexity\n\nFinish: Long and warming with layers of flavor\n\nStyle: Single pot still Irish whiskey; Pedro Ximénez cask finish, part of Iberian Series\n\nBest For: Neat or with a drop of water\n\nFood Pairing\n\nBest enjoyed neat or with a drop of water. Pairs beautifully with dark chocolate, aged cheeses, or rich desserts. A truly exceptional whiskey for connoisseurs.\n\nAlso available: Redbreast 12 Year Old, Redbreast 15 Year Old, Redbreast 18 Year Old, Lustau Edition - prices may differ.",
     "producer": "Irish Distillers",
@@ -1434,12 +1486,14 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/redbreast-px-edition.jpg",
-    "images": ["/spirits/redbreast-varieties.jpg"]
+    "images": [
+      "/spirits/redbreast-varieties.jpg"
+    ]
   },
   {
     "name": "El Jimador Tequila Blanco",
     "category": "Spirit",
-    "price": 42.00,
+    "price": 42,
     "country": "Mexico",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nHand-harvested 100% blue agave tequila. El Jimador is made with agave harvested by hand using traditional methods, creating an authentic Mexican tequila. This Blanco expression showcases the pure character of the agave.\n\nSpirit Profile\n\nAroma: Fresh agave aromas\n\nPalate: Clean and crisp with notes of citrus, herbs, and pure agave. Well-balanced.\n\nFinish: Smooth and refreshing\n\nStyle: Hand-harvested 100% blue agave tequila; authentic Mexican tequila\n\nBest For: Neat, on the rocks, or in classic tequila cocktails like a Margarita or Tequila Sunrise\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic tequila cocktails. Pairs well with Mexican cuisine, grilled meats, or citrus-based dishes. Excellent in a Margarita or Tequila Sunrise.\n\nAlso available: El Jimador Tequila Reposado - same price.",
     "producer": "El Jimador",
@@ -1454,7 +1508,9 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/el-jimador-blanco.jpg",
-    "images": ["/spirits/el-jimador-varieties.jpg"]
+    "images": [
+      "/spirits/el-jimador-varieties.jpg"
+    ]
   },
   {
     "name": "Jameson Crested Irish Whiskey",
@@ -1474,12 +1530,14 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/jameson-crested.jpg",
-    "images": ["/spirits/jameson-varieties.jpg"]
+    "images": [
+      "/spirits/jameson-varieties.jpg"
+    ]
   },
   {
     "name": "KAH Tequila Reposado",
     "category": "Spirit",
-    "price": 77.00,
+    "price": 77,
     "country": "Mexico",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nAuthentic Mexican quality tequila made with 100% agave. KAH Tequila features distinctive sugar skull designs inspired by Día de los Muertos. This Reposado is cask aged in American oak for more than 2 months, creating a smooth, mellow character.\n\nSpirit Profile\n\nAroma: Agave, vanilla, and oak\n\nPalate: Smooth and mellow with notes of caramel, spice, and toasted agave. Well-balanced.\n\nFinish: Clean and satisfying\n\nStyle: Authentic Mexican tequila; 100% agave, American oak aged\n\nBest For: Neat, on the rocks, or in classic tequila cocktails like a Margarita. Also excellent as a premium sipping tequila\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic tequila cocktails. Pairs well with Mexican cuisine, grilled meats, or citrus-based dishes. Excellent in a Margarita or served as a premium sipping tequila.\n\nAlso available: KAH Tequila Blanco - same price.",
     "producer": "KAH",
@@ -1494,12 +1552,14 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/kah-tequila-reposado.jpg",
-    "images": ["/spirits/kah-tequila-varieties.jpg"]
+    "images": [
+      "/spirits/kah-tequila-varieties.jpg"
+    ]
   },
   {
     "name": "Glenfiddich 12 Year Old Single Malt Scotch Whisky",
     "category": "Spirit",
-    "price": 72.00,
+    "price": 72,
     "country": "Scotland",
     "region": "Speyside",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nThis bright and balanced single malt is matured for 12 years in Oloroso sherry and bourbon casks before mellowing in oak marrying tuns. Glenfiddich 12 Year Old is hand built by William Grant & Family, representing the pinnacle of Speyside whisky.\n\nSpirit Profile\n\nAroma: Vanilla, honey, and orchard fruits\n\nPalate: Smooth and well-balanced with notes of apple, pear, and gentle spice. Well-balanced.\n\nFinish: Long and satisfying\n\nStyle: Single malt Scotch whisky; 12-year-old, sherry and bourbon cask matured\n\nBest For: Neat, on the rocks, or with a splash of water. Excellent in a Rob Roy or Whisky Sour\n\nFood Pairing\n\nEnjoy neat, on the rocks, or with a splash of water. Pairs well with smoked salmon, aged cheeses, or dark chocolate. Excellent in a Rob Roy or Whisky Sour.\n\nAlso available: Glenfiddich 12 Triple Oak, Glenfiddich 15 Solera - prices may differ.",
@@ -1515,12 +1575,14 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/glenfiddich-12-year-old.jpg",
-    "images": ["/spirits/glenfiddich-varieties.jpg"]
+    "images": [
+      "/spirits/glenfiddich-varieties.jpg"
+    ]
   },
   {
     "name": "The Macallan 12 Year Old Double Cask Single Malt Scotch Whisky",
     "category": "Spirit",
-    "price": 120.00,
+    "price": 120,
     "country": "Scotland",
     "region": "Speyside",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nMatured in the perfect balance of exceptional sherry seasoned American and European oak casks. The Macallan 12 Year Old Double Cask offers tasting notes of fudge, citrus, and soft spice. Established in 1824, this expression represents the pinnacle of Speyside whisky.\n\nSpirit Profile\n\nAroma: Vanilla, fudge, and citrus\n\nPalate: Smooth and well-balanced with notes of toffee, spice, and oak. Well-balanced.\n\nFinish: Long and satisfying\n\nStyle: Single malt Scotch whisky; 12-year-old double cask (American and European oak)\n\nBest For: Neat, on the rocks, or with a splash of water. Excellent in a Rob Roy or served as a premium sipping whisky\n\nFood Pairing\n\nEnjoy neat, on the rocks, or with a splash of water. Pairs well with dark chocolate, aged cheeses, or foie gras. Excellent in a Rob Roy or served as a premium sipping whisky.\n\nAlso available: The Macallan 15 Year Old Double Cask - prices may differ.",
@@ -1536,12 +1598,14 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/macallan-12-double-cask.jpg",
-    "images": ["/spirits/macallan-varieties.jpg"]
+    "images": [
+      "/spirits/macallan-varieties.jpg"
+    ]
   },
   {
     "name": "Jägermeister Herbal Liqueur",
     "category": "Spirit",
-    "price": 32.00,
+    "price": 32,
     "country": "Germany",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nSelected 56 botanicals, cold macerated elixir matured in oak. Crafted by Mast-Jägermeister SE in Wolfenbüttel, Germany, since 1878. This iconic herbal liqueur is known for its complex botanical blend and distinctive character.\n\nSpirit Profile\n\nAroma: Complex herbal aromas\n\nPalate: Rich and full-bodied with notes of herbs, spices, and botanicals. Well-balanced.\n\nFinish: Long and warming\n\nStyle: Herbal liqueur; 56 botanicals, cold macerated, matured in oak\n\nBest For: Ice-cold as a shot, on the rocks, in cocktails, or mixed with energy drinks\n\nFood Pairing\n\nPerfect served ice-cold as a shot or on the rocks. Pairs well with dark chocolate or as an after-dinner digestif. Also excellent in cocktails or mixed with energy drinks.\n\nAlso available: Jägermeister Manifest (Double Barrel Matured) - prices may differ.",
     "producer": "Mast-Jägermeister",
@@ -1556,7 +1620,9 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/jagermeister.jpg",
-    "images": ["/spirits/jagermeister-varieties.jpg"]
+    "images": [
+      "/spirits/jagermeister-varieties.jpg"
+    ]
   },
   {
     "name": "Plantation 3 Stars White Rum",
@@ -1576,12 +1642,14 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/plantation-3-stars-rum.jpg",
-    "images": ["/spirits/plantation-rum-varieties.jpg"]
+    "images": [
+      "/spirits/plantation-rum-varieties.jpg"
+    ]
   },
   {
     "name": "Diplomatico Reserva Exclusiva Rum",
     "category": "Spirit",
-    "price": 60.00,
+    "price": 60,
     "country": "Venezuela",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nPremium rum from Venezuela, inspired by Don Juancho. This Reserva Exclusiva represents the finest quality in Venezuelan rum, crafted using traditional methods and aged to perfection. A truly exceptional rum for connoisseurs.\n\nSpirit Profile\n\nAroma: Complex aromas of caramel, vanilla, and tropical fruit\n\nPalate: Smooth and full-bodied with notes of toffee, spice, and dried fruit. Exceptionally well-balanced.\n\nFinish: Long and luxurious\n\nStyle: Premium Venezuelan rum; traditional methods, aged to perfection\n\nBest For: Neat or on the rocks. Also excellent in premium rum cocktails\n\nFood Pairing\n\nBest enjoyed neat or on the rocks. Pairs beautifully with dark chocolate, aged cheeses, or as an after-dinner digestif. Also excellent in premium rum cocktails.\n\nAlso available: Diplomatico Mantuano, and other expressions - prices may differ.",
     "producer": "Diplomatico",
@@ -1601,7 +1669,7 @@
   {
     "name": "Jameson Black Barrel Irish Whiskey",
     "category": "Spirit",
-    "price": 58.00,
+    "price": 58,
     "country": "Ireland",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nExpertly aged select batch whiskeys from the Reserve Series. Jameson Black Barrel is an exceptional blend, triple distilled for rich, smooth notes of vanilla, toasted oak, caramel, and spice. A premium expression that showcases the craftsmanship of John Jameson & Son.\n\nSpirit Profile\n\nAroma: Vanilla, caramel, and toasted oak\n\nPalate: Smooth and full-bodied with notes of toffee, spice, and oak. Well-balanced.\n\nFinish: Long and warming\n\nStyle: Triple distilled Irish whiskey; Reserve Series, expertly aged\n\nBest For: Neat, on the rocks, or in classic whiskey cocktails like an Irish coffee or Whiskey Sour\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic whiskey cocktails. Pairs well with fresh seafood, Irish cheeses, or dark chocolate. Excellent in an Irish coffee or Whiskey Sour.\n\nAlso available: Jameson Original, Jameson Crested, Jameson Triple Triple, and other expressions - prices may differ.",
     "producer": "John Jameson & Son",
@@ -1616,7 +1684,9 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/jameson-black-barrel.jpg",
-    "images": ["/spirits/jameson-varieties.jpg"]
+    "images": [
+      "/spirits/jameson-varieties.jpg"
+    ]
   },
   {
     "name": "Jameson Triple Triple Irish Whiskey",
@@ -1636,12 +1706,14 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/jameson-triple-triple.jpg",
-    "images": ["/spirits/jameson-varieties.jpg"]
+    "images": [
+      "/spirits/jameson-varieties.jpg"
+    ]
   },
   {
     "name": "Herradura Tequila Reposado",
     "category": "Spirit",
-    "price": 69.00,
+    "price": 69,
     "country": "Mexico",
     "description": "Available in different varieties - prices may differ\n\nDescription\n\nTequila 100% de agave del Valle de Amatitán, Jalisco, envasado de origen. Herradura has been established since 1870, creating premium tequila using traditional methods. This Reposado is aged in oak barrels, creating a smooth, mellow character.\n\nSpirit Profile\n\nAroma: Agave, vanilla, and oak\n\nPalate: Smooth and mellow with notes of caramel, spice, and toasted agave. Well-balanced.\n\nFinish: Clean and satisfying\n\nStyle: Premium tequila; 100% agave, traditional methods since 1870\n\nBest For: Neat, on the rocks, or in classic tequila cocktails like a Margarita. Also excellent as a premium sipping tequila\n\nFood Pairing\n\nEnjoy neat, on the rocks, or in classic tequila cocktails. Pairs well with Mexican cuisine, grilled meats, or citrus-based dishes. Excellent in a Margarita or served as a premium sipping tequila.\n\nAlso available: Herradura Tequila Plata (Silver/Blanco) - prices may differ.",
     "producer": "Herradura",
@@ -1656,15 +1728,17 @@
     "onSale": false,
     "christmasGift": false,
     "image": "/spirits/herradura-reposado.jpg",
-    "images": ["/spirits/herradura-varieties.jpg"]
+    "images": [
+      "/spirits/herradura-varieties.jpg"
+    ]
   },
   {
     "name": "Kopke 10 Year Old Tawny Porto",
     "category": "Wine",
-    "price": 35.00,
+    "price": 35,
     "country": "Portugal",
     "region": "Porto",
-    "description": "Description\n\nAged 10 years in wood, this tawny port from Kopke represents exceptional quality in Portuguese fortified wine. Matured in oak casks, this port develops rich, complex flavors with notes of dried fruit, nuts, and caramel. Kopke is one of the oldest port houses, established in 1638.\n\nLanguage of Wine\n\nRich amber-tawny color with aromas of dried fruit, nuts, and caramel. Smooth and elegant on the palate with notes of figs, raisins, and toasted almonds. Well-balanced sweetness with a long, satisfying finish.\n\nFood Pairing\n\nPerfect served slightly chilled or at room temperature. Pairs beautifully with blue cheese, dark chocolate, or nuts. Also excellent as a dessert wine or after-dinner digestif.",
+    "description": "Aged 10 years in wood, this tawny port from Kopke represents exceptional quality in Portuguese fortified wine. Matured in oak casks, this port develops rich, complex flavors with notes of dried fruit, nuts, and caramel. Kopke is one of the oldest port houses, established in 1638.\n\nLanguage of Wine\n\nRich amber-tawny color with aromas of dried fruit, nuts, and caramel. Smooth and elegant on the palate with notes of figs, raisins, and toasted almonds. Well-balanced sweetness with a long, satisfying finish.\n\nFood Pairing\n\nPerfect served slightly chilled or at room temperature. Pairs beautifully with blue cheese, dark chocolate, or nuts. Also excellent as a dessert wine or after-dinner digestif.",
     "producer": "Kopke",
     "tasteProfile": "dried fruit, nuts, caramel, figs, elegant",
     "foodPairing": "Blue cheese, dark chocolate, nuts, dessert",
@@ -1682,10 +1756,10 @@
   {
     "name": "A Winter's Tale Medium Sweet Sherry",
     "category": "Wine",
-    "price": 20.00,
+    "price": 20,
     "country": "Spain",
     "region": "Jerez-Xérès",
-    "description": "Description\n\nA distinctive blend of Palomino and Pedro Ximénez grapes aged in oak casks. A Winter's Tale by Williams & Humbert, established in 1877, offers a medium sweet sherry that's perfect for any season. This unique blend combines the best of both grape varieties, creating a balanced and flavorful sherry.\n\nLanguage of Wine\n\nRich amber color with aromas of dried fruit, nuts, and sweet spices. Medium sweet on the palate with notes of raisins, figs, and caramel. Well-balanced with a smooth, lingering finish.\n\nFood Pairing\n\nBest served chilled or on the rocks. Pairs beautifully with desserts, particularly chocolate or fruit-based treats. Also excellent as an aperitif or after-dinner drink.",
+    "description": "A distinctive blend of Palomino and Pedro Ximénez grapes aged in oak casks. A Winter's Tale by Williams & Humbert, established in 1877, offers a medium sweet sherry that's perfect for any season. This unique blend combines the best of both grape varieties, creating a balanced and flavorful sherry.\n\nLanguage of Wine\n\nRich amber color with aromas of dried fruit, nuts, and sweet spices. Medium sweet on the palate with notes of raisins, figs, and caramel. Well-balanced with a smooth, lingering finish.\n\nFood Pairing\n\nBest served chilled or on the rocks. Pairs beautifully with desserts, particularly chocolate or fruit-based treats. Also excellent as an aperitif or after-dinner drink.",
     "producer": "Williams & Humbert",
     "tasteProfile": "dried fruit, raisins, figs, caramel, medium sweet",
     "foodPairing": "Desserts, chocolate, fruit, aperitif",
@@ -1703,10 +1777,10 @@
   {
     "name": "Quinta Vale D. Maria Late Bottled Vintage Porto 2016",
     "category": "Wine",
-    "price": 38.50,
+    "price": 38.5,
     "country": "Portugal",
     "region": "Douro",
-    "description": "Description\n\nUnfiltered late bottled vintage port from the 2016 vintage, established in 1868. Quinta Vale D. Maria LBV Porto is bottled after aging in wood, preserving the character and complexity of the vintage. This unfiltered expression offers rich, full-bodied flavors with exceptional depth.\n\nLanguage of Wine\n\nDeep ruby red with aromas of dark fruit, spice, and chocolate. Full-bodied and rich on the palate with notes of blackberries, plums, and dark chocolate. Well-structured with firm tannins and a long, warming finish.\n\nFood Pairing\n\nPerfect served at room temperature or slightly chilled. Pairs beautifully with blue cheese, dark chocolate, or rich desserts. Also excellent on its own as an after-dinner digestif.",
+    "description": "Unfiltered late bottled vintage port from the 2016 vintage, established in 1868. Quinta Vale D. Maria LBV Porto is bottled after aging in wood, preserving the character and complexity of the vintage. This unfiltered expression offers rich, full-bodied flavors with exceptional depth.\n\nLanguage of Wine\n\nDeep ruby red with aromas of dark fruit, spice, and chocolate. Full-bodied and rich on the palate with notes of blackberries, plums, and dark chocolate. Well-structured with firm tannins and a long, warming finish.\n\nFood Pairing\n\nPerfect served at room temperature or slightly chilled. Pairs beautifully with blue cheese, dark chocolate, or rich desserts. Also excellent on its own as an after-dinner digestif.",
     "producer": "Quinta Vale D. Maria",
     "tasteProfile": "dark fruit, spice, chocolate, blackberries, full-bodied",
     "foodPairing": "Blue cheese, dark chocolate, rich desserts",
@@ -1722,4 +1796,3 @@
     "images": []
   }
 ]
-
