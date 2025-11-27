@@ -17,67 +17,131 @@ function ShopPageContent() {
 	const router = useRouter();
 	const [products, setProducts] = useState<Product[]>([]);
 	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
+	const fetchAbortControllerRef = useRef<AbortController | null>(null);
 
-			// Fetch products from database - use Supabase only, no local fallback in production
-			useEffect(() => {
-				const fetchProducts = async () => {
-					try {
-						// Check if there's a search query in URL
-						const searchQuery = searchParams.get("search") || searchParams.get("q");
-						const url = searchQuery ? `/api/products?search=${encodeURIComponent(searchQuery)}` : '/api/products';
-						
-						const response = await fetch(url);
-						if (response.ok) {
-							const data = await response.json();
-							// API returns array directly, not wrapped in {products}
-							const productsArray = Array.isArray(data) ? data : (data.products || []);
-							
-							// Only use Supabase data - no local fallback
-							// If API returns empty array, it means Supabase has no data (or not configured)
-							// Only fallback to local in development (localhost)
-							const isDevelopment = typeof window !== 'undefined' && 
-								(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-							
-							if (productsArray.length > 0) {
-								setProducts(productsArray);
-							} else if (isDevelopment) {
-								// Development fallback only
-								console.warn('No products from API, using local data (development mode)');
-								setProducts(localProducts);
-							} else {
-								// Production: show empty if no Supabase data
-								setProducts([]);
-							}
-						} else {
-							// API error - only fallback in development
-							const isDevelopment = typeof window !== 'undefined' && 
-								(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-							
-							if (isDevelopment) {
-								console.warn('API failed, using local data (development mode)');
-								setProducts(localProducts);
-							} else {
-								console.error('API failed in production mode');
-								setProducts([]);
-							}
-						}
-					} catch (err) {
-						console.error('Failed to fetch products:', err);
-						// Only fallback in development
-						const isDevelopment = typeof window !== 'undefined' && 
-							(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-						
-						if (isDevelopment) {
-							setProducts(localProducts);
-						} else {
-							setProducts([]);
-						}
-					} finally {
-						setLoading(false);
+	// Fetch products from database with retry logic and request deduplication
+	useEffect(() => {
+		// Cancel any pending requests
+		if (fetchAbortControllerRef.current) {
+			fetchAbortControllerRef.current.abort();
+		}
+
+		const fetchProducts = async (retryCount = 0) => {
+			const maxRetries = 2;
+			const abortController = new AbortController();
+			fetchAbortControllerRef.current = abortController;
+
+			try {
+				setError(null);
+				// Check if there's a search query in URL
+				const searchQuery = searchParams.get("search") || searchParams.get("q");
+				const url = searchQuery ? `/api/products?search=${encodeURIComponent(searchQuery)}` : '/api/products';
+				
+				// Add cache-busting only on retry, otherwise use cache
+				const cacheOption = retryCount > 0 ? { cache: 'no-store' } : { next: { revalidate: 60 } };
+				
+				const response = await fetch(url, {
+					signal: abortController.signal,
+					...cacheOption
+				});
+
+				if (response.ok) {
+					const data = await response.json();
+					
+					// Check for error response
+					if (data.error) {
+						throw new Error(data.error);
 					}
-				};
-				fetchProducts();
-			}, [searchParams]);
+					
+					// API returns array directly, not wrapped in {products}
+					const productsArray = Array.isArray(data) ? data : (data.products || []);
+					
+					// Only use Supabase data - no local fallback
+					// If API returns empty array, it means Supabase has no data (or not configured)
+					// Only fallback to local in development (localhost)
+					const isDevelopment = typeof window !== 'undefined' && 
+						(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+					
+					if (productsArray.length > 0) {
+						setProducts(productsArray);
+						setError(null);
+					} else if (isDevelopment) {
+						// Development fallback only
+						console.warn('No products from API, using local data (development mode)');
+						setProducts(localProducts);
+					} else {
+						// Production: retry if empty, otherwise show error
+						if (retryCount < maxRetries) {
+							console.warn(`No products found, retrying... (${retryCount + 1}/${maxRetries})`);
+							setTimeout(() => fetchProducts(retryCount + 1), 1000 * (retryCount + 1));
+							return;
+						}
+						setError('No products found. Please try refreshing the page.');
+						setProducts([]);
+					}
+				} else {
+					// API error - retry on 5xx errors
+					if (response.status >= 500 && retryCount < maxRetries) {
+						console.warn(`API error ${response.status}, retrying... (${retryCount + 1}/${maxRetries})`);
+						setTimeout(() => fetchProducts(retryCount + 1), 1000 * (retryCount + 1));
+						return;
+					}
+					
+					const isDevelopment = typeof window !== 'undefined' && 
+						(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+					
+					if (isDevelopment) {
+						console.warn('API failed, using local data (development mode)');
+						setProducts(localProducts);
+					} else {
+						const errorText = `API error: ${response.status} ${response.statusText}`;
+						console.error(errorText);
+						setError(errorText);
+						setProducts([]);
+					}
+				}
+			} catch (err: any) {
+				// Ignore abort errors
+				if (err.name === 'AbortError') {
+					return;
+				}
+				
+				console.error('Failed to fetch products:', err);
+				
+				// Retry on network errors
+				if (retryCount < maxRetries && !err.message?.includes('Supabase')) {
+					console.warn(`Network error, retrying... (${retryCount + 1}/${maxRetries})`);
+					setTimeout(() => fetchProducts(retryCount + 1), 1000 * (retryCount + 1));
+					return;
+				}
+				
+				// Only fallback in development
+				const isDevelopment = typeof window !== 'undefined' && 
+					(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+				
+				if (isDevelopment) {
+					setProducts(localProducts);
+				} else {
+					setError(err.message || 'Failed to fetch products. Please try refreshing the page.');
+					setProducts([]);
+				}
+			} finally {
+				if (!abortController.signal.aborted) {
+					setLoading(false);
+				}
+			}
+		};
+		
+		fetchProducts();
+		
+		// Cleanup: abort request on unmount or dependency change
+		return () => {
+			if (fetchAbortControllerRef.current) {
+				fetchAbortControllerRef.current.abort();
+			}
+		};
+	}, [searchParams]);
 
 	// Memoize regions, countries, and price calculations
 	const regions = useMemo(() => Array.from(new Set(products.map((p) => p.region).filter(Boolean))) as string[], [products]);
@@ -357,7 +421,31 @@ function ShopPageContent() {
 		return (
 			<Container className="py-12">
 				<SectionHeading>Shop</SectionHeading>
-				<div className="mt-8 text-center text-maroon/60">Loading products...</div>
+				<div className="mt-8 text-center text-maroon/60">
+					<div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-maroon border-r-transparent"></div>
+					<p className="mt-4">Loading products...</p>
+				</div>
+			</Container>
+		);
+	}
+
+	if (error) {
+		return (
+			<Container className="py-12">
+				<SectionHeading>Shop</SectionHeading>
+				<div className="mt-8 text-center">
+					<p className="text-red-600 mb-4">{error}</p>
+					<button
+						onClick={() => {
+							setLoading(true);
+							setError(null);
+							window.location.reload();
+						}}
+						className="rounded-md bg-maroon px-6 py-2 text-white hover:bg-maroon/90 transition-colors"
+					>
+						Retry
+					</button>
+				</div>
 			</Container>
 		);
 	}

@@ -88,7 +88,7 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
         // This improves performance, especially with many products
         let query = supabase
           .from('products')
-          .select('slug, category, name, price, description, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at');
+          .select('slug, category, name, price, description, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at', { count: 'exact' });
 
         // Add search filter if provided
         // Search across multiple fields to match shop page behavior
@@ -103,6 +103,7 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
           );
         }
 
+        // Optimize query: order by created_at with index, limit results
         // Add a reasonable limit to prevent fetching too much data at once
         // This improves performance and reduces memory usage
         const { data, error } = await query
