@@ -6,6 +6,9 @@ import { useCart } from "@/contexts/CartContext";
 import { X, ShoppingCart, Wine, UtensilsCrossed, Sparkles } from "lucide-react";
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
+import { useAllProducts } from "@/hooks/useAllProducts";
+import { hasMultipleVarieties, findProductVarieties } from "@/lib/utils/varieties";
+import { VarietySelectionModal } from "./VarietySelectionModal";
 
 type QuickViewModalProps = {
 	product: Product | null;
@@ -25,6 +28,8 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 	const [zoomOrigin, setZoomOrigin] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
 	const lastUpdateRef = useRef<number>(0);
 	const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
+	const [showVarietyModal, setShowVarietyModal] = useState(false);
+	const allProducts = useAllProducts();
 
 	// Detect mobile/tablet
 	useEffect(() => {
@@ -58,6 +63,9 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 
 	if (!product) return null;
 
+	const hasVarieties = hasMultipleVarieties(product, allProducts);
+	const varieties = hasVarieties ? findProductVarieties(product, allProducts) : [];
+
 	const discountPercentage = product.onSale && product.salePrice 
 		? calculateDiscountPercentage(product.price, product.salePrice)
 		: null;
@@ -68,10 +76,21 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 			: [product.image];
 
 	const handleAddToCart = () => {
-		// Add the product with the specified quantity
+		// If product has multiple varieties, show modal instead
+		if (hasVarieties) {
+			setShowVarietyModal(true);
+			return;
+		}
+		
+		// Otherwise, add the product with the specified quantity
 		for (let i = 0; i < quantity; i++) {
 			addItem(product);
 		}
+		onClose();
+	};
+	
+	const handleVarietySelected = (selectedProduct: Product) => {
+		// Product is already added in the modal
 		onClose();
 	};
 
@@ -114,9 +133,14 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 												-{discountPercentage}%
 											</span>
 										)}
-										{product.new && (
+										{product.new && !product.christmasGift && (
 											<span className="rounded-md bg-gold px-3 py-1.5 text-sm font-bold text-maroon shadow-lg uppercase tracking-wide">
 												NEW
+											</span>
+										)}
+										{product.christmasGift && (
+											<span className="rounded-md bg-green-600 px-3 py-1.5 text-sm font-bold text-white shadow-lg uppercase tracking-wide">
+												🎁 GIFT
 											</span>
 										)}
 									</div>
@@ -191,6 +215,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 										{product.spiritType ? ` • ${product.spiritType}` : ""}
 										{product.beerStyle ? ` • ${product.beerStyle}` : ""} • {product.country}
 										{product.region ? ` • ${product.region}` : ""}
+										{product.volumeMl ? ` • ${product.volumeMl}ml` : ""}
 									</p>
 
 									{/* Price */}
@@ -204,6 +229,9 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 														-{discountPercentage}% OFF
 													</span>
 												)}
+												<span className="text-base font-semibold text-red-600">
+													Save €{(product.price - product.salePrice).toFixed(2)}
+												</span>
 											</div>
 										) : (
 											<span className="text-3xl font-semibold text-maroon">€{product.price.toFixed(2)}</span>
@@ -211,12 +239,14 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 									</div>
 
 									{/* Product Details */}
-									{product.abv != null && (
-										<p className="text-sm text-maroon/70 mb-2">ABV: {product.abv}%</p>
-									)}
-									{product.volumeMl && (
-										<p className="text-sm text-maroon/70 mb-4">Volume: {product.volumeMl} ml</p>
-									)}
+									<div className="mb-6 flex items-center gap-4 text-sm text-maroon/70">
+										{product.abv != null && (
+											<p>ABV: {product.abv}%</p>
+										)}
+										{product.volumeMl && (
+											<p>Volume: {product.volumeMl} ml</p>
+										)}
+									</div>
 
 									{/* Basic profiles */}
 									{(product.producer || product.tasteProfile || product.foodPairing) && (
@@ -298,6 +328,15 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 						</motion.div>
 					</div>
 				</>
+			)}
+			{product && (
+				<VarietySelectionModal
+					isOpen={showVarietyModal}
+					onClose={() => setShowVarietyModal(false)}
+					product={product}
+					varieties={varieties}
+					onSelect={handleVarietySelected}
+				/>
 			)}
 		</AnimatePresence>
 	);

@@ -7,6 +7,9 @@ import { useCart } from "@/contexts/CartContext";
 import { ShoppingCart, Eye } from "lucide-react";
 import { useState } from "react";
 import { QuickViewModal } from "./QuickViewModal";
+import { useAllProducts } from "@/hooks/useAllProducts";
+import { hasMultipleVarieties, findProductVarieties } from "@/lib/utils/varieties";
+import { VarietySelectionModal } from "./VarietySelectionModal";
 
 type ProductCardProps = {
 	product: Product;
@@ -27,6 +30,11 @@ export function ProductCard({ product }: ProductCardProps) {
 	const { addItem } = useCart();
 	const [isHovered, setIsHovered] = useState(false);
 	const [showQuickView, setShowQuickView] = useState(false);
+	const [showVarietyModal, setShowVarietyModal] = useState(false);
+	const allProducts = useAllProducts();
+	
+	const hasVarieties = hasMultipleVarieties(product, allProducts);
+	const varieties = hasVarieties ? findProductVarieties(product, allProducts) : [];
 
 	const discountPercentage = product.onSale && product.salePrice 
 		? calculateDiscountPercentage(product.price, product.salePrice)
@@ -35,7 +43,19 @@ export function ProductCard({ product }: ProductCardProps) {
 	const handleAddToCart = (e: React.MouseEvent | React.TouchEvent) => {
 		e.preventDefault();
 		e.stopPropagation();
+		
+		// If product has multiple varieties, show modal instead
+		if (hasVarieties) {
+			setShowVarietyModal(true);
+			return;
+		}
+		
+		// Otherwise, add directly to cart
 		addItem(product);
+	};
+	
+	const handleVarietySelected = (selectedProduct: Product) => {
+		// Product is already added in the modal
 	};
 
 	const handleQuickView = (e: React.MouseEvent | React.TouchEvent) => {
@@ -97,7 +117,7 @@ export function ProductCard({ product }: ProductCardProps) {
 									-{discountPercentage}%
 								</motion.span>
 							)}
-							{product.new && (
+							{product.new && !product.christmasGift && (
 								<motion.span 
 									initial={{ scale: 0, rotate: -12 }}
 									animate={{ scale: 1, rotate: -12 }}
@@ -111,6 +131,22 @@ export function ProductCard({ product }: ProductCardProps) {
 									className="rounded-md bg-gold px-3 py-1.5 text-[11px] font-bold text-maroon shadow-lg uppercase tracking-wide border-2 border-maroon/20"
 								>
 									NEW
+								</motion.span>
+							)}
+							{product.christmasGift && (
+								<motion.span 
+									initial={{ scale: 0, rotate: 12 }}
+									animate={{ scale: 1, rotate: 12 }}
+									transition={{ 
+										type: "spring", 
+										stiffness: 500, 
+										damping: 15,
+										duration: 0.5
+									}}
+									whileHover={{ scale: 1.1, rotate: 10 }}
+									className="rounded-md bg-green-600 px-3 py-1.5 text-[11px] font-bold text-white shadow-lg uppercase tracking-wide border-2 border-white/20"
+								>
+									🎁 GIFT
 								</motion.span>
 							)}
 						</div>
@@ -174,12 +210,16 @@ export function ProductCard({ product }: ProductCardProps) {
 						<h3 className="mt-1.5 text-sm font-semibold text-maroon line-clamp-2">{product.name}</h3>
 						<p className="mt-1 text-xs text-maroon/70 line-clamp-1">
 							{formatBadge(product)}
+							{product.volumeMl && ` • ${product.volumeMl}ml`}
 						</p>
-						<div className="mt-3 flex items-center gap-2">
+						<div className="mt-3 flex items-center gap-2 flex-wrap">
 							{product.onSale && product.salePrice ? (
 								<>
 									<span className="text-base font-bold text-red-600">€{product.salePrice.toFixed(2)}</span>
 									<span className="text-xs text-maroon/50 line-through">€{product.price.toFixed(2)}</span>
+									<span className="text-xs font-semibold text-red-600">
+										Save €{(product.price - product.salePrice).toFixed(2)}
+									</span>
 								</>
 							) : (
 								<span className="text-base font-bold text-maroon">€{product.price.toFixed(2)}</span>
@@ -192,6 +232,13 @@ export function ProductCard({ product }: ProductCardProps) {
 				product={product}
 				isOpen={showQuickView}
 				onClose={() => setShowQuickView(false)}
+			/>
+			<VarietySelectionModal
+				isOpen={showVarietyModal}
+				onClose={() => setShowVarietyModal(false)}
+				product={product}
+				varieties={varieties}
+				onSelect={handleVarietySelected}
 			/>
 		</motion.div>
 	);

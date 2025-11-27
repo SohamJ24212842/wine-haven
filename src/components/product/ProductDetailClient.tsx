@@ -63,13 +63,22 @@ export function ProductDetailClient({ product, discountPercentage }: ProductDeta
 									-{discountPercentage}%
 								</motion.span>
 							)}
-							{product.new && (
+							{product.new && !product.christmasGift && (
 								<motion.span
 									initial={{ scale: 0, rotate: -12 }}
 									animate={{ scale: 1, rotate: -12 }}
 									className="rounded-md bg-gold px-3 py-1.5 text-sm font-bold text-maroon shadow-lg uppercase tracking-wide border-2 border-maroon/20"
 								>
 									NEW
+								</motion.span>
+							)}
+							{product.christmasGift && (
+								<motion.span
+									initial={{ scale: 0, rotate: 12 }}
+									animate={{ scale: 1, rotate: 12 }}
+									className="rounded-md bg-green-600 px-3 py-1.5 text-sm font-bold text-white shadow-lg uppercase tracking-wide border-2 border-white/20"
+								>
+									🎁 GIFT
 								</motion.span>
 							)}
 						</div>
@@ -191,7 +200,7 @@ export function ProductDetailClient({ product, discountPercentage }: ProductDeta
 						{product.country ? ` • ${product.country}` : ""}
 						{product.region ? ` • ${product.region}` : ""}
 					</p>
-					<div className="mt-4 flex items-center gap-3">
+					<div className="mt-4 flex items-center gap-3 flex-wrap">
 						{product.onSale && product.salePrice ? (
 							<>
 								<span className="text-3xl font-bold text-red-600">€{product.salePrice.toFixed(2)}</span>
@@ -201,22 +210,27 @@ export function ProductDetailClient({ product, discountPercentage }: ProductDeta
 										-{discountPercentage}% OFF
 									</span>
 								)}
+								<span className="text-base font-semibold text-red-600">
+									Save €{(product.price - product.salePrice).toFixed(2)}
+								</span>
 							</>
 						) : (
 							<span className="text-3xl font-bold text-maroon">€{product.price.toFixed(2)}</span>
 						)}
 					</div>
 					
-					{product.abv != null && (
-						<p className="mt-4 text-sm text-maroon/70">
-							<strong>ABV:</strong> {product.abv}%
-						</p>
-					)}
-					{product.volumeMl && (
-						<p className="text-sm text-maroon/70">
-							<strong>Volume:</strong> {product.volumeMl} ml
-						</p>
-					)}
+					<div className="mt-4 flex items-center gap-4 text-sm text-maroon/70">
+						{product.abv != null && (
+							<p>
+								<strong>ABV:</strong> {product.abv}%
+							</p>
+						)}
+						{product.volumeMl && (
+							<p>
+								<strong>Volume:</strong> {product.volumeMl} ml
+							</p>
+						)}
+					</div>
 					
 					<p className="mt-6 text-maroon/90 leading-relaxed text-lg whitespace-pre-line">
 						{product.description}
