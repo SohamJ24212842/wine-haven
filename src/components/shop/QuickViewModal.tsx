@@ -7,7 +7,7 @@ import { X, ShoppingCart, Wine, UtensilsCrossed, Sparkles } from "lucide-react";
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { useAllProducts } from "@/hooks/useAllProducts";
-import { hasMultipleVarieties, findProductVarieties } from "@/lib/utils/varieties";
+import { hasMultipleVarietiesEnhanced, findProductVarietiesEnhanced } from "@/lib/utils/varieties";
 import { VarietySelectionModal } from "./VarietySelectionModal";
 
 type QuickViewModalProps = {
@@ -63,8 +63,8 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 
 	if (!product) return null;
 
-	const hasVarieties = hasMultipleVarieties(product, allProducts);
-	const varieties = hasVarieties ? findProductVarieties(product, allProducts) : [];
+	const hasVarieties = hasMultipleVarietiesEnhanced(product, allProducts);
+	const varieties = hasVarieties ? findProductVarietiesEnhanced(product, allProducts) : [];
 
 	const discountPercentage = product.onSale && product.salePrice 
 		? calculateDiscountPercentage(product.price, product.salePrice)

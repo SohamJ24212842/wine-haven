@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getProductBySlug } from "@/lib/db/products";
+import { getProductBySlug, getAllProducts } from "@/lib/db/products";
 import { Metadata } from "next";
 import { ProductDetailClient } from "@/components/product/ProductDetailClient";
 
@@ -19,14 +19,24 @@ function calculateDiscountPercentage(originalPrice: number, salePrice: number): 
 
 export default async function ProductDetailPage({ params }: { params: Params }) {
 	const { slug } = await params;
-	const product = await getProductBySlug(slug);
+	
+	// Fetch product and all products in parallel for better performance
+	const [product, allProducts] = await Promise.all([
+		getProductBySlug(slug),
+		getAllProducts()
+	]);
+	
 	if (!product) return notFound();
 
 	const discountPercentage = product.onSale && product.salePrice 
 		? calculateDiscountPercentage(product.price, product.salePrice)
 		: null;
 
-	return <ProductDetailClient product={product} discountPercentage={discountPercentage} />;
+	return <ProductDetailClient 
+		product={product} 
+		discountPercentage={discountPercentage}
+		allProducts={allProducts}
+	/>;
 }
 
 

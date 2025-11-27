@@ -4,7 +4,7 @@ import { useCart } from "@/contexts/CartContext";
 import { Product } from "@/types/product";
 import { ShoppingCart } from "lucide-react";
 import { useAllProducts } from "@/hooks/useAllProducts";
-import { hasMultipleVarieties, findProductVarieties } from "@/lib/utils/varieties";
+import { hasMultipleVarietiesEnhanced, findProductVarietiesEnhanced } from "@/lib/utils/varieties";
 import { VarietySelectionModal } from "./VarietySelectionModal";
 
 type AddToCartButtonProps = {
@@ -19,8 +19,8 @@ export function AddToCartButton({ product, variant = "default" }: AddToCartButto
 	const [showVarietyModal, setShowVarietyModal] = useState(false);
 	const allProducts = useAllProducts();
 	
-	const hasVarieties = hasMultipleVarieties(product, allProducts);
-	const varieties = hasVarieties ? findProductVarieties(product, allProducts) : [];
+	const hasVarieties = hasMultipleVarietiesEnhanced(product, allProducts);
+	const varieties = hasVarieties ? findProductVarietiesEnhanced(product, allProducts) : [];
 
 	const handleAddToCart = () => {
 		// If product has multiple varieties, show modal instead

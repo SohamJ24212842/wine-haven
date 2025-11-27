@@ -8,7 +8,7 @@ import { ShoppingCart, Eye } from "lucide-react";
 import { useState } from "react";
 import { QuickViewModal } from "./QuickViewModal";
 import { useAllProducts } from "@/hooks/useAllProducts";
-import { hasMultipleVarieties, findProductVarieties } from "@/lib/utils/varieties";
+import { hasMultipleVarietiesEnhanced, findProductVarietiesEnhanced } from "@/lib/utils/varieties";
 import { VarietySelectionModal } from "./VarietySelectionModal";
 
 type ProductCardProps = {
@@ -33,8 +33,8 @@ export function ProductCard({ product }: ProductCardProps) {
 	const [showVarietyModal, setShowVarietyModal] = useState(false);
 	const allProducts = useAllProducts();
 	
-	const hasVarieties = hasMultipleVarieties(product, allProducts);
-	const varieties = hasVarieties ? findProductVarieties(product, allProducts) : [];
+	const hasVarieties = hasMultipleVarietiesEnhanced(product, allProducts);
+	const varieties = hasVarieties ? findProductVarietiesEnhanced(product, allProducts) : [];
 
 	const discountPercentage = product.onSale && product.salePrice 
 		? calculateDiscountPercentage(product.price, product.salePrice)

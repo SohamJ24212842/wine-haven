@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/Footer";
 import { PromoBanner } from "@/components/layout/PromoBanner";
 import { CartProvider } from "@/contexts/CartContext";
 import { AddedToCartNotification } from "@/components/cart/AddedToCartNotification";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -33,15 +34,17 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${playfair.variable} antialiased bg-cream text-maroon`}
       >
-        <CartProvider>
-          <div className="flex min-h-screen flex-col">
-            <PromoBanner />
-            <DynamicNavbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-            <AddedToCartNotification />
-          </div>
-        </CartProvider>
+        <ErrorBoundary>
+          <CartProvider>
+            <div className="flex min-h-screen flex-col">
+              <PromoBanner />
+              <DynamicNavbar />
+              <main className="flex-1">{children}</main>
+              <Footer />
+              <AddedToCartNotification />
+            </div>
+          </CartProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

@@ -235,7 +235,7 @@ function ShopPageContent() {
 		const beer = products.filter((p) => p.category === "Beer").length;
 		const spirit = products.filter((p) => p.category === "Spirit").length;
 		return { all, wine, beer, spirit };
-	}, []);
+	}, [products]);
 
 	const filteredSorted = useMemo(() => {
 		const normalize = (s?: string) =>

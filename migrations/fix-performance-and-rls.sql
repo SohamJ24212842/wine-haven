@@ -66,7 +66,13 @@ WHERE on_sale = true;
 -- CREATE INDEX IF NOT EXISTS idx_products_region_trgm ON public.products USING gin(region gin_trgm_ops);
 -- CREATE INDEX IF NOT EXISTS idx_products_producer_trgm ON public.products USING gin(producer gin_trgm_ops);
 
--- 4. Analyze tables to update statistics (helps query planner)
+-- 4. Verify index is being used (run this separately to check)
+-- EXPLAIN ANALYZE SELECT * FROM public.products ORDER BY created_at DESC LIMIT 100;
+
+-- 5. Analyze tables to update statistics (helps query planner)
 ANALYZE public.products;
 ANALYZE public.promotional_media;
+
+-- 6. Force index usage hint (if needed, but Postgres usually picks the right index)
+-- VACUUM ANALYZE public.products;
 

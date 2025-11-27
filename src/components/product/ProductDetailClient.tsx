@@ -7,13 +7,15 @@ import { AddToCartButton } from "@/components/shop/AddToCartButton";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Wine, UtensilsCrossed, Sparkles } from "lucide-react";
+import { hasMultipleVarietiesEnhanced, findProductVarietiesEnhanced } from "@/lib/utils/varieties";
 
 type ProductDetailClientProps = {
 	product: Product;
 	discountPercentage: number | null;
+	allProducts?: Product[]; // Passed from server to avoid client-side fetch
 };
 
-export function ProductDetailClient({ product, discountPercentage }: ProductDetailClientProps) {
+export function ProductDetailClient({ product, discountPercentage, allProducts: serverProducts }: ProductDetailClientProps) {
 	const [selectedImage, setSelectedImage] = useState(0);
 	const images =
 		product.images && product.images.length
@@ -22,6 +24,39 @@ export function ProductDetailClient({ product, discountPercentage }: ProductDeta
 	const [zoom, setZoom] = useState(false);
 	const [zoomOrigin, setZoomOrigin] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
 	const lastUpdateRef = useRef<number | null>(null);
+	
+	// Use server-provided products or fetch on client as fallback
+	const [clientProducts, setClientProducts] = useState<Product[]>(serverProducts || []);
+	
+	useEffect(() => {
+		// Only fetch if server didn't provide products
+		if (!serverProducts || serverProducts.length === 0) {
+			fetch('/api/products')
+				.then(r => r.json())
+				.then(data => {
+					const productsArray = Array.isArray(data) ? data : (data.products || []);
+					setClientProducts(productsArray);
+				})
+				.catch(() => {
+					// Silently fail, keep empty array
+				});
+		}
+	}, [serverProducts]);
+	
+	const allProducts = (serverProducts && serverProducts.length > 0) ? serverProducts : clientProducts;
+	
+	// Check for varieties using enhanced detection
+	const hasVarieties = hasMultipleVarietiesEnhanced(product, allProducts);
+	const varieties = hasVarieties ? findProductVarietiesEnhanced(product, allProducts) : [];
+	const allVarieties = hasVarieties ? [product, ...varieties] : [product];
+	
+	// Sort varieties by volume or price
+	const sortedVarieties = [...allVarieties].sort((a, b) => {
+		if (a.volumeMl && b.volumeMl) {
+			return a.volumeMl - b.volumeMl;
+		}
+		return a.price - b.price;
+	});
 
 	// Prevent page scroll when zoomed
 	useEffect(() => {
@@ -218,6 +253,48 @@ export function ProductDetailClient({ product, discountPercentage }: ProductDeta
 							<span className="text-3xl font-bold text-maroon">€{product.price.toFixed(2)}</span>
 						)}
 					</div>
+					
+					{/* Variety Information - Show other sizes/prices */}
+					{hasVarieties && sortedVarieties.length > 1 && (
+						<div className="mt-4 rounded-lg border border-maroon/20 bg-maroon/5 p-4">
+							<p className="text-sm font-semibold text-maroon mb-3">Also Available In:</p>
+							<div className="space-y-2">
+								{sortedVarieties.map((variety) => {
+									const isCurrent = variety.slug === product.slug;
+									const isOnSale = variety.onSale && variety.salePrice;
+									const displayPrice = isOnSale ? variety.salePrice! : variety.price;
+									
+									return (
+										<div
+											key={variety.slug}
+											className={`flex items-center justify-between rounded-md px-3 py-2 ${
+												isCurrent 
+													? "bg-gold/20 border border-gold/40" 
+													: "bg-white/60"
+											}`}
+										>
+											<div className="flex items-center gap-2">
+												<span className="text-sm text-maroon/80">
+													{variety.volumeMl ? `${variety.volumeMl}ml` : variety.name}
+													{isCurrent && <span className="ml-2 text-xs text-maroon/60">(Current)</span>}
+												</span>
+											</div>
+											<div className="flex items-center gap-2">
+												{isOnSale && (
+													<span className="text-xs text-maroon/50 line-through">
+														€{variety.price.toFixed(2)}
+													</span>
+												)}
+												<span className={`text-sm font-semibold ${isCurrent ? "text-maroon" : "text-maroon/70"}`}>
+													€{displayPrice.toFixed(2)}
+												</span>
+											</div>
+										</div>
+									);
+								})}
+							</div>
+						</div>
+					)}
 					
 					<div className="mt-4 flex items-center gap-4 text-sm text-maroon/70">
 						{product.abv != null && (

@@ -15,11 +15,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/slane-irish-whiskey.jpg",
-    "images": [],
-    "salePrice": 37.8
+    "images": []
   },
   {
     "name": "Giffard Limoncello",
@@ -36,13 +35,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/giffard-limoncello.jpg",
     "images": [
-      "/spirits/image00018.jpeg"
-    ],
-    "salePrice": 31.5
+      "/spirits/giffard-varieties.jpg"
+    ]
   },
   {
     "name": "Giffard Crème de Cacao 1885",
@@ -59,13 +57,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
-    "image": "/spirits/image00019.jpeg",
+    "image": "/spirits/giffard-creme-de-cacao.jpg",
     "images": [
       "/spirits/giffard-apricot-liqueur.jpg"
-    ],
-    "salePrice": 0
+    ]
   },
   {
     "name": "Absolut Vodka",
@@ -83,13 +80,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/absolut-vodka.jpg",
     "images": [
       "/spirits/absolut-varieties.jpg"
-    ],
-    "salePrice": 33.75
+    ]
   },
   {
     "name": "Clonakilty Galley Head Irish Whiskey",
@@ -107,13 +103,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/clonakilty-galley-head-irish-whiskey.jpg",
     "images": [
       "/spirits/clonakilty-varieties.jpg"
-    ],
-    "salePrice": 38.7
+    ]
   },
   {
     "name": "Maker's Mark Kentucky Straight Bourbon Whisky",
@@ -131,11 +126,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/makers-mark-bourbon.jpg",
-    "images": [],
-    "salePrice": 49.5
+    "images": []
   },
   {
     "name": "Rémy Martin Cognac Fine Champagne V.S.O.P",
@@ -153,11 +147,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/remy-martin-vsop-cognac.jpg",
-    "images": [],
-    "salePrice": 71.96
+    "images": []
   },
   {
     "name": "Teeling Small Batch Irish Whiskey",
@@ -175,13 +168,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/teeling-small-batch-irish-whiskey.jpg",
     "images": [
       "/spirits/teeling-varieties.jpg"
-    ],
-    "salePrice": 37.8
+    ]
   },
   {
     "name": "Chivas Regal 12 Year Old Blended Scotch Whisky",
@@ -198,11 +190,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/chivas-regal-12-year-old.jpg",
-    "images": [],
-    "salePrice": 44.96
+    "images": []
   },
   {
     "name": "Minke Irish Vodka",
@@ -220,11 +211,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/minke-irish-vodka.jpg",
-    "images": [],
-    "salePrice": 31.5
+    "images": []
   },
   {
     "name": "Smirnoff No. 21 Vodka",
@@ -241,13 +231,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/smirnoff-no21-vodka.jpg",
     "images": [
       "/spirits/smirnoff-varieties.jpg"
-    ],
-    "salePrice": 21.6
+    ]
   },
   {
     "name": "Jim Beam Kentucky Straight Bourbon Whiskey",
@@ -265,11 +254,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/jim-beam-bourbon.jpg",
-    "images": [],
-    "salePrice": 32.4
+    "images": []
   },
   {
     "name": "Dingle Original Gin",
@@ -287,11 +275,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/dingle-original-gin.jpg",
-    "images": [],
-    "salePrice": 35.55
+    "images": []
   },
   {
     "name": "Heaven's Door Tennessee Bourbon",
@@ -309,11 +296,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/heavens-door-tennessee-bourbon.jpg",
-    "images": [],
-    "salePrice": 80.1
+    "images": []
   },
   {
     "name": "Blue Spot Single Pot Still Irish Whiskey",
@@ -331,11 +317,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/blue-spot-irish-whiskey.jpg",
-    "images": [],
-    "salePrice": 103.5
+    "images": []
   },
   {
     "name": "Red Spot Single Pot Still Irish Whiskey",
@@ -353,11 +338,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/red-spot-irish-whiskey.jpg",
-    "images": [],
-    "salePrice": 135
+    "images": []
   },
   {
     "name": "Red Spot Single Pot Still 19 Year Old Irish Whiskey",
@@ -375,11 +359,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/red-spot-19-year-old.jpg",
-    "images": [],
-    "salePrice": 625.5
+    "images": []
   },
   {
     "name": "Chivas Regal 18 Year Old Blended Scotch Whisky",
@@ -396,11 +379,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/chivas-regal-18-year-old.jpg",
-    "images": [],
-    "salePrice": 89.1
+    "images": []
   },
   {
     "name": "Yellow Spot Single Pot Still Irish Whiskey",
@@ -418,11 +400,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/yellow-spot-irish-whiskey.jpg",
-    "images": [],
-    "salePrice": 86.36
+    "images": []
   },
   {
     "name": "Minke Irish Gin",
@@ -440,11 +421,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/minke-irish-gin.jpg",
-    "images": [],
-    "salePrice": 40.5
+    "images": []
   },
   {
     "name": "Teacher's Highland Cream Blended Scotch Whisky",
@@ -461,11 +441,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/teachers-highland-cream.jpg",
-    "images": [],
-    "salePrice": 26.91
+    "images": []
   },
   {
     "name": "Green Spot Single Pot Still Irish Whiskey",
@@ -483,11 +462,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/green-spot-irish-whiskey.jpg",
-    "images": [],
-    "salePrice": 58.5
+    "images": []
   },
   {
     "name": "Green Spot 10 Year Old Single Pot Still Irish Whiskey",
@@ -505,11 +483,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/green-spot-10-year-old.jpg",
-    "images": [],
-    "salePrice": 0
+    "images": []
   },
   {
     "name": "The Balvenie Caribbean Cask Aged 14 Years",
@@ -527,11 +504,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/balvenie-caribbean-cask-14.jpg",
-    "images": [],
-    "salePrice": 112.5
+    "images": []
   },
   {
     "name": "Mars Maltage Cosmo Blended Malt Whisky",
@@ -548,11 +524,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/mars-maltage-cosmo.jpg",
-    "images": [],
-    "salePrice": 80.1
+    "images": []
   },
   {
     "name": "Bushmills Single Malt 10 Year Old Irish Whiskey",
@@ -570,13 +545,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/bushmills-single-malt.jpg",
     "images": [
       "/spirits/bushmills-varieties.jpg"
-    ],
-    "salePrice": 53.96
+    ]
   },
   {
     "name": "Bushmills 16 Year Old Single Malt Irish Whiskey",
@@ -594,11 +568,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/bushmills-16-year-old.jpg",
-    "images": [],
-    "salePrice": 115.2
+    "images": []
   },
   {
     "name": "Bushmills 2011 The Causeway Collection Irish Whiskey",
@@ -616,11 +589,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
-    "image": "/spirits/image00074.jpg",
-    "images": [],
-    "salePrice": 103.5
+    "image": "/spirits/bushmills-2011-causeway-collection.jpg",
+    "images": []
   },
   {
     "name": "Hendrick's Gin",
@@ -637,11 +609,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/hendricks-gin.jpg",
-    "images": [],
-    "salePrice": 44.1
+    "images": []
   },
   {
     "name": "Glendalough Porter Cask Single Malt Irish Whiskey",
@@ -659,11 +630,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/glendalough-porter-cask.jpg",
-    "images": [],
-    "salePrice": 80.1
+    "images": []
   },
   {
     "name": "Diplomatico Mantuano Rum",
@@ -680,11 +650,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/diplomatico-mantuano-rum.jpg",
-    "images": [],
-    "salePrice": 44.1
+    "images": []
   },
   {
     "name": "Glendalough Double Barrel Irish Whiskey",
@@ -702,13 +671,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/glendalough-double-barrel.jpg",
     "images": [
       "/spirits/glendalough-varieties.jpg"
-    ],
-    "salePrice": 59.4
+    ]
   },
   {
     "name": "Glendalough Pot Still Triple Casked Irish Whiskey",
@@ -726,11 +694,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/glendalough-pot-still-triple-casked.jpg",
-    "images": [],
-    "salePrice": 59.4
+    "images": []
   },
   {
     "name": "Brockmans Intensely Smooth Gin",
@@ -747,11 +714,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/brockmans-gin.jpg",
-    "images": [],
-    "salePrice": 45
+    "images": []
   },
   {
     "name": "Jack Daniel's Single Barrel Select Tennessee Whiskey",
@@ -769,13 +735,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/jack-daniels-single-barrel-select.jpg",
     "images": [
       "/spirits/jack-daniels-varieties.jpg"
-    ],
-    "salePrice": 62.55
+    ]
   },
   {
     "name": "Duppy Share Spiced Rum",
@@ -792,11 +757,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/duppy-share-spiced-rum.jpg",
-    "images": [],
-    "salePrice": 40.05
+    "images": []
   },
   {
     "name": "Buffalo Trace Kentucky Straight Bourbon Whiskey",
@@ -814,11 +778,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/buffalo-trace-bourbon.jpg",
-    "images": [],
-    "salePrice": 45
+    "images": []
   },
   {
     "name": "Bumbu Rum",
@@ -835,11 +798,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/bumbu-rum.jpg",
-    "images": [],
-    "salePrice": 34.2
+    "images": []
   },
   {
     "name": "Olmeca Tequila Reposado",
@@ -856,11 +818,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/olmeca-tequila-reposado.jpg",
-    "images": [],
-    "salePrice": 32.39
+    "images": []
   },
   {
     "name": "Five Farms Single Batch Irish Cream Liqueur",
@@ -878,11 +839,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/five-farms-irish-cream.jpg",
-    "images": [],
-    "salePrice": 34.16
+    "images": []
   },
   {
     "name": "William Lawson's Blended Scotch Whisky",
@@ -899,11 +859,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/william-lawsons-scotch.jpg",
-    "images": [],
-    "salePrice": 28.35
+    "images": []
   },
   {
     "name": "Tanqueray No. Ten Gin",
@@ -920,11 +879,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/tanqueray-no10-gin.jpg",
-    "images": [],
-    "salePrice": 44.96
+    "images": []
   },
   {
     "name": "Woodford Reserve Kentucky Straight Bourbon Whiskey",
@@ -942,11 +900,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/woodford-reserve-bourbon.jpg",
-    "images": [],
-    "salePrice": 52.2
+    "images": []
   },
   {
     "name": "Jose Cuervo Especial Reposado Tequila",
@@ -963,11 +920,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/jose-cuervo-especial-reposado.jpg",
-    "images": [],
-    "salePrice": 35.96
+    "images": []
   },
   {
     "name": "1800 Añejo Tequila",
@@ -984,11 +940,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/1800-anejo-tequila.jpg",
-    "images": [],
-    "salePrice": 58.5
+    "images": []
   },
   {
     "name": "Patrón Reposado Tequila",
@@ -1005,11 +960,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/patron-tequila.jpg",
-    "images": [],
-    "salePrice": 81
+    "images": []
   },
   {
     "name": "Patrón Añejo Tequila",
@@ -1026,11 +980,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/patron-anejo-tequila.jpg",
-    "images": [],
-    "salePrice": 0
+    "images": []
   },
   {
     "name": "Jack Daniel's Gentleman Jack",
@@ -1048,11 +1001,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/jack-daniels-gentleman-jack.jpg",
-    "images": [],
-    "salePrice": 48.15
+    "images": []
   },
   {
     "name": "Bulleit Bourbon Frontier Whiskey",
@@ -1070,11 +1022,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/bulleit-bourbon.jpg",
-    "images": [],
-    "salePrice": 38.7
+    "images": []
   },
   {
     "name": "Powers Gold Label Irish Whiskey",
@@ -1091,13 +1042,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
-    "image": "/spirits/image00013.jpeg",
+    "image": "/spirits/powers-irish-whiskey.jpg",
     "images": [
       "/spirits/powers-varieties.jpg"
-    ],
-    "salePrice": 33.26
+    ]
   },
   {
     "name": "Connemara Peated Single Malt Irish Whiskey",
@@ -1114,11 +1064,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/connemara-peated-single-malt.jpg",
-    "images": [],
-    "salePrice": 40.95
+    "images": []
   },
   {
     "name": "Chambord Black Raspberry Liqueur",
@@ -1136,11 +1085,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/chambord-black-raspberry-liqueur.jpg",
-    "images": [],
-    "salePrice": 26.1
+    "images": []
   },
   {
     "name": "Gin Mare Mediterranean Gin",
@@ -1157,11 +1105,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/gin-mare.jpg",
-    "images": [],
-    "salePrice": 49.5
+    "images": []
   },
   {
     "name": "Johnnie Walker Double Black Blended Scotch Whisky",
@@ -1178,13 +1125,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/johnnie-walker-double-black.jpg",
     "images": [
       "/spirits/johnnie-walker-varieties.jpg"
-    ],
-    "salePrice": 94.5
+    ]
   },
   {
     "name": "Johnnie Walker Gold Label Reserve Blended Scotch Whisky",
@@ -1201,13 +1147,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
-    "image": "/spirits/image00014.jpeg",
+    "image": "/spirits/johnnie-walker-gold-label-reserve.jpg",
     "images": [
       "/spirits/johnnie-walker-varieties.jpg"
-    ],
-    "salePrice": 85.5
+    ]
   },
   {
     "name": "Johnnie Walker Red Label Blended Scotch Whisky",
@@ -1224,13 +1169,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/johnnie-walker-red-label.jpg",
     "images": [
       "/spirits/johnnie-walker-varieties.jpg"
-    ],
-    "salePrice": 31.46
+    ]
   },
   {
     "name": "Jameson Original Irish Whiskey",
@@ -1247,13 +1191,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/jameson-original.jpg",
     "images": [
       "/spirits/jameson-varieties.jpg"
-    ],
-    "salePrice": 27.45
+    ]
   },
   {
     "name": "Bushmills The Original Irish Whiskey",
@@ -1271,13 +1214,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/bushmills-the-original.jpg",
     "images": [
       "/spirits/bushmills-black-bush.jpg"
-    ],
-    "salePrice": 29.25
+    ]
   },
   {
     "name": "Martini Extra Dry Vermouth",
@@ -1295,13 +1237,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/martini-extra-dry.jpg",
     "images": [
       "/spirits/martini-varieties.jpg"
-    ],
-    "salePrice": 15.26
+    ]
   },
   {
     "name": "Jack Daniel's Old No. 7 Tennessee Whiskey",
@@ -1319,13 +1260,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
-    "image": "/spirits/image00016.jpeg",
+    "image": "/spirits/jack-daniels-old-no7.jpg",
     "images": [
       "/spirits/jack-daniels-varieties.jpg"
-    ],
-    "salePrice": 35.06
+    ]
   },
   {
     "name": "Sandeman Porto",
@@ -1343,13 +1283,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
-    "image": "/spirits/image00015.jpeg",
+    "image": "/spirits/sandeman-ruby-porto.jpg",
     "images": [
       "/spirits/sandeman-tawny-porto.jpg"
-    ],
-    "salePrice": 26.09
+    ]
   },
   {
     "name": "Ocho Tequila Blanco",
@@ -1366,13 +1305,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
-    "image": "/spirits/image00011.jpeg",
+    "image": "/spirits/ocho-tequila-blanco.jpg",
     "images": [
       "/spirits/ocho-tequila-varieties.jpg"
-    ],
-    "salePrice": 46.8
+    ]
   },
   {
     "name": "Redbreast 21 Year Old Single Pot Still Irish Whiskey",
@@ -1389,13 +1327,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/redbreast-21-year-old.jpg",
     "images": [
       "/spirits/image00054.jpeg"
-    ],
-    "salePrice": 247.5
+    ]
   },
   {
     "name": "Disaronno Originale Amaretto Liqueur",
@@ -1412,13 +1349,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
-    "image": "/spirits/image00012.jpeg",
+    "image": "/spirits/disaronno-originale.jpg",
     "images": [
       "/spirits/disaronno-varieties.jpg"
-    ],
-    "salePrice": 31.05
+    ]
   },
   {
     "name": "Tequila Rose Strawberry Cream Liqueur",
@@ -1435,13 +1371,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/500.jpg",
     "images": [
-      "/spirits/image00026.jpeg"
-    ],
-    "salePrice": 21.51
+      "/spirits/tequila-rose-varieties.jpg"
+    ]
   },
   {
     "name": "Tequila Rose Strawberry Cream Liqueur",
@@ -1458,13 +1393,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/700.jpg",
     "images": [
       "/spirits/image00026.jpeg"
-    ],
-    "salePrice": 26.55
+    ]
   },
   {
     "name": "Tails Cocktails Espresso Martini",
@@ -1481,13 +1415,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
-    "image": "/spirits/image00010.jpeg",
+    "image": "/spirits/tails-espresso-martini.jpg",
     "images": [
       "/spirits/tails-cocktails-varieties.jpg"
-    ],
-    "salePrice": 21.6
+    ]
   },
   {
     "name": "Glendalough Wild Botanical Irish Gin",
@@ -1505,13 +1438,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
-    "image": "/spirits/image00009.jpeg",
+    "image": "/spirits/glendalough-wild-botanical-gin.jpg",
     "images": [
       "/spirits/glendalough-gin-varieties.jpg"
-    ],
-    "salePrice": 40.5
+    ]
   },
   {
     "name": "Drumshanbo Gunpowder Irish Gin",
@@ -1529,13 +1461,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
-    "image": "/spirits/image00008.jpeg",
+    "image": "/spirits/drumshanbo-gunpowder-gin.jpg",
     "images": [
       "/spirits/drumshanbo-gin-varieties.jpg"
-    ],
-    "salePrice": 42.3
+    ]
   },
   {
     "name": "Redbreast Pedro Ximénez PX Edition Single Pot Still Irish Whiskey",
@@ -1552,13 +1483,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/redbreast-px-edition.jpg",
     "images": [
       "/spirits/redbreast-varieties.jpg"
-    ],
-    "salePrice": 94.5
+    ]
   },
   {
     "name": "El Jimador Tequila Blanco",
@@ -1575,13 +1505,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
-    "image": "/spirits/image00007.jpeg",
+    "image": "/spirits/el-jimador-blanco.jpg",
     "images": [
       "/spirits/el-jimador-varieties.jpg"
-    ],
-    "salePrice": 37.8
+    ]
   },
   {
     "name": "Jameson Crested Irish Whiskey",
@@ -1598,13 +1527,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
-    "image": "/spirits/image00006.jpeg",
+    "image": "/spirits/jameson-crested.jpg",
     "images": [
       "/spirits/jameson-varieties.jpg"
-    ],
-    "salePrice": 41.36
+    ]
   },
   {
     "name": "KAH Tequila Reposado",
@@ -1621,13 +1549,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
-    "image": "/spirits/image00001.jpeg",
+    "image": "/spirits/kah-tequila-reposado.jpg",
     "images": [
       "/spirits/kah-tequila-varieties.jpg"
-    ],
-    "salePrice": 69.3
+    ]
   },
   {
     "name": "Glenfiddich 12 Year Old Single Malt Scotch Whisky",
@@ -1645,13 +1572,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/glenfiddich-12-year-old.jpg",
     "images": [
       "/spirits/glenfiddich-varieties.jpg"
-    ],
-    "salePrice": 64.8
+    ]
   },
   {
     "name": "The Macallan 12 Year Old Double Cask Single Malt Scotch Whisky",
@@ -1669,13 +1595,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
-    "image": "/spirits/image00005.jpeg",
+    "image": "/spirits/macallan-12-double-cask.jpg",
     "images": [
       "/spirits/macallan-varieties.jpg"
-    ],
-    "salePrice": 108
+    ]
   },
   {
     "name": "Jägermeister Herbal Liqueur",
@@ -1692,13 +1617,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
-    "image": "/spirits/image00004.jpeg",
+    "image": "/spirits/jagermeister.jpg",
     "images": [
       "/spirits/jagermeister-varieties.jpg"
-    ],
-    "salePrice": 28.8
+    ]
   },
   {
     "name": "Plantation 3 Stars White Rum",
@@ -1715,13 +1639,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
-    "image": "/spirits/image00003.jpeg",
+    "image": "/spirits/plantation-3-stars-rum.jpg",
     "images": [
       "/spirits/plantation-rum-varieties.jpg"
-    ],
-    "salePrice": 38.66
+    ]
   },
   {
     "name": "Diplomatico Reserva Exclusiva Rum",
@@ -1738,11 +1661,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/diplomatico-reserva-exclusiva.jpg",
-    "images": [],
-    "salePrice": 54
+    "images": []
   },
   {
     "name": "Jameson Black Barrel Irish Whiskey",
@@ -1759,13 +1681,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
-    "image": "/spirits/bb.jpg",
+    "image": "/spirits/jameson-black-barrel.jpg",
     "images": [
       "/spirits/jameson-varieties.jpg"
-    ],
-    "salePrice": 52.2
+    ]
   },
   {
     "name": "Jameson Triple Triple Irish Whiskey",
@@ -1782,13 +1703,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
-    "image": "/spirits/tt.jpg",
+    "image": "/spirits/jameson-triple-triple.jpg",
     "images": [
       "/spirits/jameson-varieties.jpg"
-    ],
-    "salePrice": 0
+    ]
   },
   {
     "name": "Herradura Tequila Reposado",
@@ -1805,13 +1725,12 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
-    "image": "/spirits/image00002.jpeg",
+    "image": "/spirits/herradura-reposado.jpg",
     "images": [
       "/spirits/herradura-varieties.jpg"
-    ],
-    "salePrice": 62.1
+    ]
   },
   {
     "name": "Kopke 10 Year Old Tawny Porto",
@@ -1829,11 +1748,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/kopke-10-year-tawny-porto.jpg",
-    "images": [],
-    "salePrice": 31.5
+    "images": []
   },
   {
     "name": "A Winter's Tale Medium Sweet Sherry",
@@ -1851,11 +1769,10 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/winters-tale-sherry.jpg",
-    "images": [],
-    "salePrice": 18
+    "images": []
   },
   {
     "name": "Quinta Vale D. Maria Late Bottled Vintage Porto 2016",
@@ -1873,10 +1790,9 @@
     "stock": 0,
     "featured": false,
     "new": false,
-    "onSale": true,
+    "onSale": false,
     "christmasGift": false,
     "image": "/spirits/quinta-vale-d-maria-lbv-2016.jpg",
-    "images": [],
-    "salePrice": 34.65
+    "images": []
   }
 ]

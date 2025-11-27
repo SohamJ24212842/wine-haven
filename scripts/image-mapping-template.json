@@ -1,0 +1,30 @@
+{
+  "instructions": "Map missing image filenames to actual image files in spirits_list folder",
+  "format": "JSON filename in spirits-list.json -> actual filename in spirits_list folder",
+  "mappings": {
+    "bushmills-2011-causeway-collection.jpg": "image00074.jpg",
+    "giffard-creme-de-cacao.jpg": "",
+    "powers-irish-whiskey.jpg": "",
+    "johnnie-walker-gold-label-reserve.jpg": "",
+    "jack-daniels-old-no7.jpg": "",
+    "sandeman-ruby-porto.jpg": "",
+    "ocho-tequila-blanco.jpg": "",
+    "disaronno-originale.jpg": "",
+    "tails-espresso-martini.jpg": "",
+    "glendalough-wild-botanical-gin.jpg": "",
+    "drumshanbo-gunpowder-gin.jpg": "",
+    "el-jimador-blanco.jpg": "",
+    "jameson-crested.jpg": "",
+    "kah-tequila-reposado.jpg": "",
+    "macallan-12-double-cask.jpg": "",
+    "jagermeister.jpg": "",
+    "plantation-3-stars-rum.jpg": "",
+    "jameson-black-barrel.jpg": "",
+    "jameson-triple-triple.jpg": "",
+    "herradura-reposado.jpg": "",
+    "giffard-varieties.jpg": "",
+    "tequila-rose-varieties.jpg": ""
+  },
+  "note": "Fill in the actual filenames from spirits_list folder. Leave empty if image doesn't exist."
+}
+

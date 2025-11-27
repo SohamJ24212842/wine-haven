@@ -84,9 +84,11 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
     const supabase = createServerClient();
     if (supabase) {
       try {
+        // Select only needed columns to reduce data transfer
+        // This improves performance, especially with many products
         let query = supabase
           .from('products')
-          .select('*');
+          .select('slug, category, name, price, description, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at');
 
         // Add search filter if provided
         // Search across multiple fields to match shop page behavior
@@ -101,7 +103,11 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
           );
         }
 
-        const { data, error } = await query.order('created_at', { ascending: false });
+        // Add a reasonable limit to prevent fetching too much data at once
+        // This improves performance and reduces memory usage
+        const { data, error } = await query
+          .order('created_at', { ascending: false })
+          .limit(1000); // Reasonable limit - adjust if you have more products
 
         if (error) {
           console.error('Supabase query error:', error);
@@ -232,29 +238,36 @@ export async function getProductBySlug(slugParam: string): Promise<Product | nul
     const supabase = createServerClient();
     if (supabase) {
       try {
-        // First try exact match
+        // First try exact match - select only needed columns
         let { data, error } = await supabase
           .from('products')
-          .select('*')
+          .select('slug, category, name, price, description, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at')
           .eq('slug', slugParam)
           .single();
 
-        // If not found, try normalized match
+        // If not found, try normalized match with a more targeted search
         if (error || !data) {
-          // Get all products and filter client-side for normalized matching
-          const { data: allProducts } = await supabase
-            .from('products')
-            .select('*');
-          
-          if (allProducts) {
-            const matched = allProducts.find(p => {
-              const productSlugNormalized = normalizeText(p.slug || '');
-              return productSlugNormalized === normalizedSlug;
-            });
-            
-            if (matched) {
-              data = matched;
-              error = null;
+          // Use a more targeted search instead of fetching all products
+          // Try to match by slug containing parts of the search term
+          const slugParts = slugParam.split('-').filter(p => p.length > 2);
+          if (slugParts.length > 0) {
+            // Search for products where slug contains any of the parts
+            const { data: potentialMatches } = await supabase
+              .from('products')
+              .select('slug, category, name, price, description, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at')
+              .ilike('slug', `%${slugParts[0]}%`)
+              .limit(20); // Limit to 20 results for performance
+              
+            if (potentialMatches && potentialMatches.length > 0) {
+              const matched = potentialMatches.find(p => {
+                const productSlugNormalized = normalizeText(p.slug || '');
+                return productSlugNormalized === normalizedSlug;
+              });
+              
+              if (matched) {
+                data = matched;
+                error = null;
+              }
             }
           }
         }
