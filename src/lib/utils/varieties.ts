@@ -58,3 +58,7 @@ export function getAllVarieties(product: Product, allProducts: Product[]): Produ
 	return allProducts.filter(p => normalizeProductName(p.name) === normalizedName);
 }
 
+
+
+
+

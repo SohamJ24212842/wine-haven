@@ -26,3 +26,7 @@ console.log(`Extracted ${products.length} products to products-list.txt`);
 fs.writeFileSync('products-list.json', JSON.stringify(products, null, 2));
 console.log(`Also created products-list.json`);
 
+
+
+
+

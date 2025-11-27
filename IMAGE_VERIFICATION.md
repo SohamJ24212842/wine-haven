@@ -145,3 +145,7 @@ These products have empty `images` array:
 The spirits_list folder contains:
 - image00001.jpeg through image00098.jpeg (98 files total)
 
+
+
+
+

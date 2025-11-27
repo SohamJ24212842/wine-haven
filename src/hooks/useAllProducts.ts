@@ -33,3 +33,7 @@ export function useAllProducts(): Product[] {
 	return products;
 }
 
+
+
+
+
