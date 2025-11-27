@@ -1,9 +1,6 @@
--- Optimize products table queries
+-- Simplified version: Optimize products table queries (without GIN indexes)
+-- Use this if pg_trgm extension cannot be enabled
 -- Run this migration to improve query performance
-
--- IMPORTANT: Enable pg_trgm extension FIRST (required for GIN text search indexes)
--- This must be run before creating GIN indexes
-CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
 -- 1. Add index on created_at for ordering (if not exists)
 CREATE INDEX IF NOT EXISTS idx_products_created_at ON products(created_at DESC);
@@ -26,25 +23,21 @@ CREATE INDEX IF NOT EXISTS idx_products_christmas_gift ON products(christmas_gif
 -- 7. Add index on on_sale flag
 CREATE INDEX IF NOT EXISTS idx_products_on_sale ON products(on_sale) WHERE on_sale = true;
 
--- 8. Add GIN index for text search on name (for ilike queries)
--- This significantly speeds up text search operations
--- Note: Requires pg_trgm extension (enabled above)
-CREATE INDEX IF NOT EXISTS idx_products_name_gin ON products USING gin(name gin_trgm_ops);
-
--- 9. Add GIN index for text search on description
--- Note: This index can be large if descriptions are long - consider if needed
--- You can skip this if description searches are not critical
-CREATE INDEX IF NOT EXISTS idx_products_description_gin ON products USING gin(description gin_trgm_ops);
-
--- 10. Add index on slug for faster lookups (if not exists)
+-- 8. Add index on slug for faster lookups (if not exists)
 CREATE INDEX IF NOT EXISTS idx_products_slug ON products(slug);
 
--- 11. Analyze table to update statistics
+-- 9. Add standard B-tree indexes for text search (slower than GIN but works without extensions)
+-- These help with ILIKE queries, though not as fast as GIN indexes
+CREATE INDEX IF NOT EXISTS idx_products_name_btree ON products(name text_pattern_ops);
+CREATE INDEX IF NOT EXISTS idx_products_country_btree ON products(country);
+CREATE INDEX IF NOT EXISTS idx_products_producer_btree ON products(producer);
+
+-- 10. Analyze table to update statistics
 ANALYZE products;
 
 -- Notes:
--- - The GIN indexes (pg_trgm) significantly speed up ILIKE queries
+-- - This version doesn't require pg_trgm extension
+-- - B-tree indexes with text_pattern_ops help with ILIKE queries starting with a pattern
 -- - Partial indexes (WHERE condition) are smaller and faster for boolean flags
 -- - Composite indexes help with multi-column filters
--- - Run ANALYZE after creating indexes to update query planner statistics
 
