@@ -5,9 +5,16 @@ import { Resend } from 'resend';
 
 const STORE_EMAIL = 'mahajanwinehaven24@gmail.com';
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 const USE_SUPABASE = !!process.env.NEXT_PUBLIC_SUPABASE_URL;
+
+// Initialize Resend lazily to avoid build-time errors
+function getResend() {
+  if (!process.env.RESEND_API_KEY) {
+    return null;
+  }
+  return new Resend(process.env.RESEND_API_KEY);
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -96,7 +103,8 @@ export async function POST(request: NextRequest) {
 
           // Send email notification directly (non-blocking)
           // We send emails directly here instead of making HTTP requests for better reliability
-          if (process.env.RESEND_API_KEY) {
+          const resend = getResend();
+          if (resend) {
             try {
               // Format order email for store
               const emailSubject = `New Click & Collect Order #${order.id.substring(0, 8)}`;
