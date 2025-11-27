@@ -39,12 +39,16 @@ function ShopPageContent() {
 				const url = searchQuery ? `/api/products?search=${encodeURIComponent(searchQuery)}` : '/api/products';
 				
 				// Add cache-busting only on retry, otherwise use cache
-				const cacheOption = retryCount > 0 ? { cache: 'no-store' } : { next: { revalidate: 60 } };
-				
-				const response = await fetch(url, {
+				const fetchOptions: RequestInit = {
 					signal: abortController.signal,
-					...cacheOption
-				});
+				};
+				
+				// On retry, bypass cache
+				if (retryCount > 0) {
+					fetchOptions.cache = 'no-store';
+				}
+				
+				const response = await fetch(url, fetchOptions);
 
 				if (response.ok) {
 					const data = await response.json();
