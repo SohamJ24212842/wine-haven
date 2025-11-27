@@ -103,7 +103,15 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
 
         const { data, error } = await query.order('created_at', { ascending: false });
 
-        if (!error && data) {
+        if (error) {
+          console.error('Supabase query error:', error);
+          // If Supabase is enabled, don't fall back to local - return empty array
+          // This ensures production always uses Supabase when configured
+          throw new Error(`Supabase query failed: ${error.message}`);
+        }
+
+        // If data exists (even if empty), use it
+        if (data !== null && data !== undefined) {
           let results = data.map(mapRowToProduct);
           
           // Client-side normalization filter as fallback for diacritics
@@ -152,12 +160,21 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
           return results;
         }
       } catch (error) {
-        console.error('Error fetching from Supabase, falling back to local data:', error);
+        console.error('Error fetching from Supabase:', error);
+        // When Supabase is enabled, don't silently fall back to local data
+        // Return empty array instead - this forces the issue to be visible
+        // Only fall back to local if Supabase is explicitly disabled
+        throw error;
       }
+    } else {
+      // Supabase is enabled but client creation failed
+      console.error('Supabase is enabled but client creation failed. Check environment variables.');
+      throw new Error('Supabase client creation failed');
     }
   }
 
-  // Fallback to local data
+  // Only fall back to local data if Supabase is NOT enabled
+  console.log('Using local data fallback (Supabase not enabled)');
   const { products } = await import('@/data/products');
   
   // Filter local data if search query provided

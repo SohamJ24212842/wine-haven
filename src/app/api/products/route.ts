@@ -4,17 +4,39 @@ import { revalidatePath } from 'next/cache';
 import { getAllProducts, createProduct } from '@/lib/db/products';
 import { Product } from '@/types/product';
 
+// Cache products for 60 seconds, allow stale-while-revalidate for 120 seconds
+// This reduces database load significantly
+export const revalidate = 60;
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const search = searchParams.get('search') || undefined;
     
     const products = await getAllProducts(search);
-    return NextResponse.json(products);
-  } catch (error) {
+    
+    // Add cache headers for better performance
+    const response = NextResponse.json(products);
+    response.headers.set(
+      'Cache-Control',
+      'public, s-maxage=60, stale-while-revalidate=120'
+    );
+    
+    return response;
+  } catch (error: any) {
     console.error('Error fetching products:', error);
+    
+    // Provide more detailed error information
+    const errorMessage = error?.message || 'Failed to fetch products';
+    const isSupabaseError = errorMessage.includes('Supabase');
+    
     return NextResponse.json(
-      { error: 'Failed to fetch products' },
+      { 
+        error: errorMessage,
+        details: isSupabaseError 
+          ? 'Supabase is enabled but query failed. Check your database connection and environment variables.'
+          : 'Failed to fetch products from database'
+      },
       { status: 500 }
     );
   }
