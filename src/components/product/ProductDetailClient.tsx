@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { Product } from "@/types/product";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/typography/SectionHeading";
