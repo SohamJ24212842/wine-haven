@@ -17,14 +17,23 @@ type PromotionalMedia = {
 	active: boolean;
 };
 
-export function PromotionalMedia() {
-	const [media, setMedia] = useState<PromotionalMedia[]>([]);
-	const [loading, setLoading] = useState(true);
+type PromotionalMediaProps = {
+	initialMedia?: PromotionalMedia[];
+};
+
+export function PromotionalMedia({ initialMedia = [] }: PromotionalMediaProps) {
+	const [media, setMedia] = useState<PromotionalMedia[]>(initialMedia);
+	const [loading, setLoading] = useState(initialMedia.length === 0);
 	const [activeIndex, setActiveIndex] = useState(0);
 	const [selectedMedia, setSelectedMedia] = useState<PromotionalMedia | null>(null);
 
-	// Fetch media once
+	// Only fetch if not provided server-side (fallback)
 	useEffect(() => {
+		if (initialMedia.length > 0) {
+			setLoading(false);
+			return;
+		}
+		
 		fetch("/api/promotional-media")
 			.then((res) => res.json())
 			.then((data) => {
@@ -36,8 +45,7 @@ export function PromotionalMedia() {
 			})
 			.catch((error) => console.error("Failed to fetch promotional media:", error))
 			.finally(() => setLoading(false));
-
-	}, []);
+	}, [initialMedia]);
 
 	const nextSlide = useCallback(() => {
 		setActiveIndex((prev) => {

@@ -2,6 +2,9 @@
 import { NextResponse } from 'next/server';
 import { getAllProducts } from '@/lib/db/products';
 
+// Cache menu data for 1 hour - it doesn't change frequently
+export const revalidate = 3600;
+
 export async function GET() {
   try {
     const products = await getAllProducts();
@@ -21,7 +24,7 @@ export async function GET() {
     const onSaleCount = products.filter(p => p.onSale).length;
     const sparklingCount = products.filter(p => p.wineType === 'Sparkling' || p.wineType === 'Prosecco').length;
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       countries,
       regions,
       wineTypes,
@@ -36,6 +39,14 @@ export async function GET() {
         sparkling: sparklingCount,
       },
     });
+    
+    // Add cache headers
+    response.headers.set(
+      'Cache-Control',
+      'public, s-maxage=3600, stale-while-revalidate=86400, max-age=3600'
+    );
+    
+    return response;
   } catch (error: any) {
     console.error('Error fetching menu data:', error);
     return NextResponse.json(

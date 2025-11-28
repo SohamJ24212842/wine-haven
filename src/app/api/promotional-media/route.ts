@@ -2,10 +2,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAllPromotionalMedia, createPromotionalMedia } from '@/lib/db/promotional-media';
 
+// Cache promotional media for 1 hour
+export const revalidate = 3600;
+
 export async function GET() {
   try {
     const media = await getAllPromotionalMedia();
-    return NextResponse.json(media);
+    const response = NextResponse.json(media);
+    
+    // Add cache headers
+    response.headers.set(
+      'Cache-Control',
+      'public, s-maxage=3600, stale-while-revalidate=86400, max-age=3600'
+    );
+    
+    return response;
   } catch (error) {
     console.error('Error fetching promotional media:', error);
     return NextResponse.json(

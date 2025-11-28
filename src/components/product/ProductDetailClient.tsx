@@ -254,47 +254,6 @@ export function ProductDetailClient({ product, discountPercentage, allProducts: 
 						)}
 					</div>
 					
-					{/* Variety Information - Show other sizes/prices */}
-					{hasVarieties && sortedVarieties.length > 1 && (
-						<div className="mt-4 rounded-lg border border-maroon/20 bg-maroon/5 p-4">
-							<p className="text-sm font-semibold text-maroon mb-3">Also Available In:</p>
-							<div className="space-y-2">
-								{sortedVarieties.map((variety) => {
-									const isCurrent = variety.slug === product.slug;
-									const isOnSale = variety.onSale && variety.salePrice;
-									const displayPrice = isOnSale ? variety.salePrice! : variety.price;
-									
-									return (
-										<div
-											key={variety.slug}
-											className={`flex items-center justify-between rounded-md px-3 py-2 ${
-												isCurrent 
-													? "bg-gold/20 border border-gold/40" 
-													: "bg-white/60"
-											}`}
-										>
-											<div className="flex items-center gap-2">
-												<span className="text-sm text-maroon/80">
-													{variety.volumeMl ? `${variety.volumeMl}ml` : variety.name}
-													{isCurrent && <span className="ml-2 text-xs text-maroon/60">(Current)</span>}
-												</span>
-											</div>
-											<div className="flex items-center gap-2">
-												{isOnSale && (
-													<span className="text-xs text-maroon/50 line-through">
-														€{variety.price.toFixed(2)}
-													</span>
-												)}
-												<span className={`text-sm font-semibold ${isCurrent ? "text-maroon" : "text-maroon/70"}`}>
-													€{displayPrice.toFixed(2)}
-												</span>
-											</div>
-										</div>
-									);
-								})}
-							</div>
-						</div>
-					)}
 					
 					<div className="mt-4 flex items-center gap-4 text-sm text-maroon/70">
 						{product.abv != null && (
@@ -312,6 +271,32 @@ export function ProductDetailClient({ product, discountPercentage, allProducts: 
 					<p className="mt-6 text-maroon/90 leading-relaxed text-lg whitespace-pre-line">
 						{product.description}
 					</p>
+					
+					{/* Show related products at bottom if available */}
+					{hasVarieties && sortedVarieties.length > 1 && (
+						<div className="mt-6 pt-6 border-t border-maroon/10">
+							<p className="text-sm font-semibold text-maroon mb-3">Also available:</p>
+							<div className="flex flex-wrap gap-2">
+								{sortedVarieties
+									.filter(v => v.slug !== product.slug)
+									.slice(0, 4) // Show max 4 related products
+									.map((variety) => (
+										<Link
+											key={variety.slug}
+											href={`/product/${variety.slug}`}
+											className="text-sm text-maroon/70 hover:text-maroon hover:underline"
+										>
+											{variety.name}
+										</Link>
+									))}
+								{sortedVarieties.length > 5 && (
+									<span className="text-sm text-maroon/60">
+										— prices may differ
+									</span>
+								)}
+							</div>
+						</div>
+					)}
 					
 					{/* Producer / Tasting info */}
 					{(product.producer || product.tasteProfile || product.foodPairing) && (
