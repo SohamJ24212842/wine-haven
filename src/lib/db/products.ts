@@ -11,6 +11,46 @@ const USE_SUPABASE =
   process.env.NEXT_PUBLIC_USE_SUPABASE === 'true' &&
   !!process.env.NEXT_PUBLIC_SUPABASE_URL;
 
+// Simple in-memory cache to reduce database calls within the same request
+// Cache expires after 30 seconds
+interface CacheEntry<T> {
+  data: T;
+  timestamp: number;
+}
+
+const cache = new Map<string, CacheEntry<any>>();
+const CACHE_TTL = 30000; // 30 seconds
+
+function getCached<T>(key: string): T | null {
+  const entry = cache.get(key);
+  if (!entry) return null;
+  
+  const now = Date.now();
+  if (now - entry.timestamp > CACHE_TTL) {
+    cache.delete(key);
+    return null;
+  }
+  
+  return entry.data as T;
+}
+
+function setCached<T>(key: string, data: T): void {
+  // Clean up old entries before adding new one (limit cache size)
+  if (cache.size > 100) {
+    const now = Date.now();
+    for (const [key, entry] of cache.entries()) {
+      if (now - entry.timestamp > CACHE_TTL) {
+        cache.delete(key);
+      }
+    }
+  }
+  
+  cache.set(key, {
+    data,
+    timestamp: Date.now(),
+  });
+}
+
 // Map database row to Product type (for Supabase)
 function mapRowToProduct(row: any): Product {
   return {
@@ -79,6 +119,13 @@ function mapProductToRow(product: Product): any {
 
 // Get all products
 export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
+  // Check cache first
+  const cacheKey = `all_products_${searchQuery || 'all'}`;
+  const cached = getCached<Product[]>(cacheKey);
+  if (cached) {
+    return cached;
+  }
+
   // Try Supabase if configured
   if (USE_SUPABASE) {
     const supabase = createServerClient();
@@ -86,9 +133,10 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
       try {
         // Select only needed columns to reduce data transfer
         // This improves performance, especially with many products
+        // Remove count: 'exact' to reduce query overhead
         let query = supabase
           .from('products')
-          .select('slug, category, name, price, description, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at', { count: 'exact' });
+          .select('slug, category, name, price, description, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at');
 
         // Add search filter if provided
         // Search across multiple fields to match shop page behavior
@@ -164,6 +212,8 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
             });
           }
           
+          // Cache the results
+          setCached(cacheKey, results);
           return results;
         }
       } catch (error) {
@@ -225,6 +275,8 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
     });
   }
   
+  // Cache local data results too
+  setCached(cacheKey, products);
   return products;
 }
 
@@ -366,6 +418,124 @@ export async function updateProduct(slug: string, product: Partial<Product>): Pr
   }
 
   throw new Error('Supabase not configured. Please set up Supabase to update products.');
+}
+
+// Optimized query functions for homepage sections
+// These fetch only what's needed, reducing database load
+
+export async function getFeaturedProducts(category: 'Wine' | 'Spirit' | 'Beer', limit: number = 10): Promise<Product[]> {
+  // Check cache
+  const cacheKey = `featured_${category}_${limit}`;
+  const cached = getCached<Product[]>(cacheKey);
+  if (cached) return cached;
+
+  if (USE_SUPABASE) {
+    const supabase = createServerClient();
+    if (supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('products')
+          .select('slug, category, name, price, description, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at')
+          .eq('category', category)
+          .eq('featured', true)
+          .order('created_at', { ascending: false })
+          .limit(limit);
+
+        if (error) throw error;
+        if (data) {
+          const result = data.map(mapRowToProduct);
+          setCached(cacheKey, result);
+          return result;
+        }
+      } catch (error) {
+        console.error(`Error fetching featured ${category}:`, error);
+      }
+    }
+  }
+  
+  // Fallback to local data
+  const { products } = await import('@/data/products');
+  const result = products
+    .filter(p => p.category === category && p.featured === true)
+    .slice(0, limit);
+  setCached(cacheKey, result);
+  return result;
+}
+
+export async function getNewProducts(limit: number = 10): Promise<Product[]> {
+  // Check cache
+  const cacheKey = `new_products_${limit}`;
+  const cached = getCached<Product[]>(cacheKey);
+  if (cached) return cached;
+
+  if (USE_SUPABASE) {
+    const supabase = createServerClient();
+    if (supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('products')
+          .select('slug, category, name, price, description, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at')
+          .eq('new', true)
+          .order('created_at', { ascending: false })
+          .limit(limit);
+
+        if (error) throw error;
+        if (data) {
+          const result = data.map(mapRowToProduct);
+          setCached(cacheKey, result);
+          return result;
+        }
+      } catch (error) {
+        console.error('Error fetching new products:', error);
+      }
+    }
+  }
+  
+  // Fallback to local data
+  const { products } = await import('@/data/products');
+  const result = products
+    .filter(p => p.new === true)
+    .slice(0, limit);
+  setCached(cacheKey, result);
+  return result;
+}
+
+export async function getChristmasGifts(limit: number = 10): Promise<Product[]> {
+  // Check cache
+  const cacheKey = `christmas_gifts_${limit}`;
+  const cached = getCached<Product[]>(cacheKey);
+  if (cached) return cached;
+
+  if (USE_SUPABASE) {
+    const supabase = createServerClient();
+    if (supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('products')
+          .select('slug, category, name, price, description, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at')
+          .eq('christmas_gift', true)
+          .order('created_at', { ascending: false })
+          .limit(limit);
+
+        if (error) throw error;
+        if (data) {
+          const result = data.map(mapRowToProduct);
+          setCached(cacheKey, result);
+          return result;
+        }
+      } catch (error) {
+        console.error('Error fetching christmas gifts:', error);
+      }
+    }
+  }
+  
+  // Fallback to local data
+  const { products } = await import('@/data/products');
+  const result = products
+    .filter(p => p.christmasGift === true)
+    .slice(0, limit);
+  setCached(cacheKey, result);
+  return result;
 }
 
 // Delete product (admin only)

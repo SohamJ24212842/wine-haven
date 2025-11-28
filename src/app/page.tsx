@@ -3,18 +3,21 @@ import { HorizontalScrollSection } from "@/components/home/HorizontalScrollSecti
 import { ShopByOccasion } from "@/components/home/ShopByOccasion";
 import { PromotionalMedia } from "@/components/home/PromotionalMedia";
 import { SectionDivider } from "@/components/ui/SectionDivider";
-import { getAllProducts } from "@/lib/db/products";
+import { getFeaturedProducts, getNewProducts, getChristmasGifts } from "@/lib/db/products";
 
-// Force dynamic rendering to ensure homepage always shows latest data
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// Enable caching to reduce database load
+// Revalidate every 5 minutes (300 seconds) - products don't change that frequently
+export const revalidate = 300;
 
 export default async function Home() {
-  const products = await getAllProducts();
-  const featuredWines = products.filter((p) => p.category === "Wine" && p.featured === true).slice(0, 10);
-  const featuredSpirits = products.filter((p) => p.category === "Spirit" && p.featured === true).slice(0, 10);
-  const newArrivals = products.filter((p) => p.new === true).slice(0, 10);
-  const christmasGifts = products.filter((p) => p.christmasGift === true).slice(0, 10);
+  // Fetch only what we need with optimized queries
+  // This reduces database load significantly
+  const [featuredWines, featuredSpirits, newArrivals, christmasGifts] = await Promise.all([
+    getFeaturedProducts("Wine", 10),
+    getFeaturedProducts("Spirit", 10),
+    getNewProducts(10),
+    getChristmasGifts(10),
+  ]);
 
   return (
     <div>
