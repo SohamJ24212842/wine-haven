@@ -3,7 +3,7 @@ import { HorizontalScrollSection } from "@/components/home/HorizontalScrollSecti
 import { ShopByOccasion } from "@/components/home/ShopByOccasion";
 import { PromotionalMedia } from "@/components/home/PromotionalMedia";
 import { SectionDivider } from "@/components/ui/SectionDivider";
-import { getFeaturedProducts, getNewProducts, getChristmasGifts, getAllProducts } from "@/lib/db/products";
+import { getFeaturedProducts, getNewProducts, getChristmasGifts } from "@/lib/db/products";
 
 // Aggressive caching to reduce database load and egress
 // Revalidate every 1 hour (3600 seconds) - products don't change frequently
@@ -16,13 +16,12 @@ export default async function Home() {
   // Use Promise.allSettled to prevent one slow query from blocking the page
   // Note: Promotional media is fetched client-side to avoid bloating the static page
   // (videos/images would make the page too large for Vercel's 19MB limit)
-  // Also fetch all products once for variety detection in ProductCards
+  // Note: allProducts for variety detection is fetched client-side to keep page size under 19MB
   const results = await Promise.allSettled([
     getFeaturedProducts("Wine", 10),
     getFeaturedProducts("Spirit", 10),
     getNewProducts(10),
     getChristmasGifts(10),
-    getAllProducts(), // Fetch all products for variety detection
   ]);
 
   // Extract results, defaulting to empty arrays if any query fails
@@ -30,7 +29,10 @@ export default async function Home() {
   const featuredSpirits = results[1].status === 'fulfilled' ? results[1].value : [];
   const newArrivals = results[2].status === 'fulfilled' ? results[2].value : [];
   const christmasGifts = results[3].status === 'fulfilled' ? results[3].value : [];
-  const allProducts = results[4].status === 'fulfilled' ? results[4].value : [];
+  
+  // Don't fetch allProducts server-side - it makes the page too large (20MB+)
+  // ProductCards will fetch it client-side if needed (cached API, so still fast)
+  // Pass undefined to let ProductCards handle their own fetching
 
   return (
     <div>
@@ -44,7 +46,6 @@ export default async function Home() {
             subtitle="Latest additions to our collection"
             products={newArrivals}
             filterUrl="new=true"
-            allProducts={allProducts}
           />
           <SectionDivider variant="subtle" />
         </>
@@ -56,7 +57,6 @@ export default async function Home() {
             subtitle="Perfect presents for the wine lovers in your life"
             products={christmasGifts}
             filterUrl="christmasGift=true"
-            allProducts={allProducts}
           />
           <SectionDivider variant="subtle" />
         </>
@@ -68,7 +68,6 @@ export default async function Home() {
             subtitle="Hand-picked favourites from our shelves"
             products={featuredWines}
             filterUrl="category=Wine&featured=true"
-            allProducts={allProducts}
           />
           <SectionDivider variant="subtle" />
         </>
@@ -80,7 +79,6 @@ export default async function Home() {
             subtitle="Premium selection of gins, vodkas, and more"
             products={featuredSpirits}
             filterUrl="category=Spirit"
-            allProducts={allProducts}
           />
           <SectionDivider variant="subtle" />
         </>

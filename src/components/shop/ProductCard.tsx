@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Product } from "@/types/product";
 import { useCart } from "@/contexts/CartContext";
 import { ShoppingCart, Eye } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { QuickViewModal } from "./QuickViewModal";
 import { hasMultipleVarietiesEnhanced, findProductVarietiesEnhanced } from "@/lib/utils/varieties";
 import { VarietySelectionModal } from "./VarietySelectionModal";
@@ -34,14 +34,32 @@ export function ProductCard({ product, allProducts = [] }: ProductCardProps) {
 	const [showVarietyModal, setShowVarietyModal] = useState(false);
 	
 	// Memoize variety detection to avoid recalculating on every render
+	// If allProducts not provided, fetch client-side (only for variety detection)
+	const [clientAllProducts, setClientAllProducts] = useState<Product[]>(allProducts);
+	
+	useEffect(() => {
+		if (allProducts.length === 0 && clientAllProducts.length === 0) {
+			// Fetch all products client-side for variety detection (API is cached, so fast)
+			fetch('/api/products')
+				.then(r => r.json())
+				.then(data => {
+					const productsArray = Array.isArray(data) ? data : (data.products || []);
+					setClientAllProducts(productsArray);
+				})
+				.catch(() => {}); // Silently fail, varieties just won't show
+		}
+	}, [allProducts.length, clientAllProducts.length]);
+	
+	const productsForVarieties = allProducts.length > 0 ? allProducts : clientAllProducts;
+	
 	const { hasVarieties, varieties } = useMemo(() => {
-		if (allProducts.length === 0) {
+		if (productsForVarieties.length === 0) {
 			return { hasVarieties: false, varieties: [] };
 		}
-		const has = hasMultipleVarietiesEnhanced(product, allProducts);
-		const vars = has ? findProductVarietiesEnhanced(product, allProducts) : [];
+		const has = hasMultipleVarietiesEnhanced(product, productsForVarieties);
+		const vars = has ? findProductVarietiesEnhanced(product, productsForVarieties) : [];
 		return { hasVarieties: has, varieties: vars };
-	}, [product, allProducts]);
+	}, [product, productsForVarieties]);
 
 	const discountPercentage = product.onSale && product.salePrice 
 		? calculateDiscountPercentage(product.price, product.salePrice)
