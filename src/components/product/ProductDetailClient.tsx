@@ -280,7 +280,7 @@ export function ProductDetailClient({ product, discountPercentage, allProducts: 
 					{/* Show related products at bottom if available */}
 					{hasVarieties && sortedVarieties.length > 1 && (
 						<div className="mt-6 pt-6 border-t border-maroon/10">
-							<p className="text-sm font-semibold text-maroon mb-3">Also available:</p>
+							<p className="text-sm font-semibold text-maroon mb-3">You may also like:</p>
 							<div className="flex flex-wrap gap-2">
 								{sortedVarieties
 									.filter(v => v.slug !== product.slug)
