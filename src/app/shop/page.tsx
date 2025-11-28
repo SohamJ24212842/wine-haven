@@ -70,6 +70,11 @@ function ShopPageContent() {
 					
 					if (productsArray.length > 0) {
 						setProducts(productsArray);
+						// If no search query, use same products for variety detection
+						const searchQuery = searchParams.get("search") || searchParams.get("q");
+						if (!searchQuery && allProducts.length === 0) {
+							setAllProducts(productsArray);
+						}
 						setError(null);
 					} else if (isDevelopment) {
 						// Development fallback only
@@ -148,10 +153,18 @@ function ShopPageContent() {
 		};
 	}, [searchParams]);
 
-	// Fetch all products ONCE for variety detection (only if not already fetched)
+	// Fetch all products ONCE for variety detection (only if not already fetched and not using filtered products)
 	useEffect(() => {
 		if (allProducts.length > 0) return; // Already fetched
 		
+		// If we have products and no search query, use those (they're the full list)
+		const searchQuery = searchParams.get("search") || searchParams.get("q");
+		if (products.length > 0 && !searchQuery) {
+			setAllProducts(products);
+			return;
+		}
+		
+		// Otherwise, fetch all products for variety detection
 		const fetchAllProducts = async () => {
 			try {
 				const response = await fetch('/api/products');
@@ -168,7 +181,7 @@ function ShopPageContent() {
 		};
 		
 		fetchAllProducts();
-	}, [allProducts.length]);
+	}, [allProducts.length, products.length, searchParams]);
 
 	// Memoize regions, countries, and price calculations
 	const regions = useMemo(() => Array.from(new Set(products.map((p) => p.region).filter(Boolean))) as string[], [products]);
