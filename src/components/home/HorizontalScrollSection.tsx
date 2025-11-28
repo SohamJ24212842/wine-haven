@@ -12,9 +12,10 @@ type HorizontalScrollSectionProps = {
 	subtitle?: string;
 	products: Product[];
 	filterUrl?: string; // URL params for filtering shop page
+	allProducts?: Product[]; // For variety detection in ProductCard
 };
 
-export function HorizontalScrollSection({ title, subtitle, products, filterUrl }: HorizontalScrollSectionProps) {
+export function HorizontalScrollSection({ title, subtitle, products, filterUrl, allProducts = [] }: HorizontalScrollSectionProps) {
 	const scrollRef = useRef<HTMLDivElement>(null);
 	const [canScrollLeft, setCanScrollLeft] = useState(false);
 	const [canScrollRight, setCanScrollRight] = useState(true);
@@ -117,10 +118,10 @@ export function HorizontalScrollSection({ title, subtitle, products, filterUrl }
 							>
 								{/* Only load first 4 products immediately, lazy load rest */}
 								{index < 4 ? (
-									<ProductCard product={product} />
+									<ProductCard product={product} allProducts={allProducts} />
 								) : (
 									<div style={{ minHeight: '400px' }}>
-										<ProductCard product={product} />
+										<ProductCard product={product} allProducts={allProducts} />
 									</div>
 								)}
 							</div>
