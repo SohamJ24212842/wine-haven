@@ -12,12 +12,19 @@ export const revalidate = 300;
 export default async function Home() {
   // Fetch only what we need with optimized queries
   // This reduces database load significantly
-  const [featuredWines, featuredSpirits, newArrivals, christmasGifts] = await Promise.all([
+  // Use Promise.allSettled to prevent one slow query from blocking the page
+  const results = await Promise.allSettled([
     getFeaturedProducts("Wine", 10),
     getFeaturedProducts("Spirit", 10),
     getNewProducts(10),
     getChristmasGifts(10),
   ]);
+
+  // Extract results, defaulting to empty arrays if any query fails
+  const featuredWines = results[0].status === 'fulfilled' ? results[0].value : [];
+  const featuredSpirits = results[1].status === 'fulfilled' ? results[1].value : [];
+  const newArrivals = results[2].status === 'fulfilled' ? results[2].value : [];
+  const christmasGifts = results[3].status === 'fulfilled' ? results[3].value : [];
 
   return (
     <div>

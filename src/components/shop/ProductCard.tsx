@@ -165,6 +165,8 @@ export function ProductCard({ product }: ProductCardProps) {
 								fill
 								className="object-contain p-4"
 								sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
+								loading="lazy"
+								quality={85}
 							/>
 							{/* Subtle overlay on hover */}
 							<div className={`absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent transition-opacity duration-300 ${

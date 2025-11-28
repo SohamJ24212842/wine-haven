@@ -110,12 +110,19 @@ export function HorizontalScrollSection({ title, subtitle, products, filterUrl }
 						ref={scrollRef}
 						className="flex gap-3 sm:gap-4 overflow-x-auto pb-3 scrollbar-hide"
 					>
-						{products.map((product) => (
+						{products.map((product, index) => (
 							<div
 								key={product.slug}
 								className="flex-shrink-0 w-[240px] sm:w-[280px] md:w-[300px]"
 							>
-								<ProductCard product={product} />
+								{/* Only load first 4 products immediately, lazy load rest */}
+								{index < 4 ? (
+									<ProductCard product={product} />
+								) : (
+									<div style={{ minHeight: '400px' }}>
+										<ProductCard product={product} />
+									</div>
+								)}
 							</div>
 						))}
 					</div>
