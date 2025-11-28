@@ -337,7 +337,7 @@ export function ProductDetailClient({ product, discountPercentage, allProducts: 
 					)}
 					
 					<div className="mt-8">
-						<AddToCartButton product={product} variant="large" />
+						<AddToCartButton product={product} variant="large" allProducts={allProducts} />
 					</div>
 				</div>
 			</div>

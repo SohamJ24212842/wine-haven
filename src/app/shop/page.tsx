@@ -16,6 +16,7 @@ function ShopPageContent() {
 	const searchParams = useSearchParams();
 	const router = useRouter();
 	const [products, setProducts] = useState<Product[]>([]);
+	const [allProducts, setAllProducts] = useState<Product[]>([]); // For variety detection - fetch once
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const fetchAbortControllerRef = useRef<AbortController | null>(null);
@@ -146,6 +147,28 @@ function ShopPageContent() {
 			}
 		};
 	}, [searchParams]);
+
+	// Fetch all products ONCE for variety detection (only if not already fetched)
+	useEffect(() => {
+		if (allProducts.length > 0) return; // Already fetched
+		
+		const fetchAllProducts = async () => {
+			try {
+				const response = await fetch('/api/products');
+				if (response.ok) {
+					const data = await response.json();
+					const productsArray = Array.isArray(data) ? data : (data.products || []);
+					if (productsArray.length > 0) {
+						setAllProducts(productsArray);
+					}
+				}
+			} catch (err) {
+				console.error('Failed to fetch all products for variety detection:', err);
+			}
+		};
+		
+		fetchAllProducts();
+	}, [allProducts.length]);
 
 	// Memoize regions, countries, and price calculations
 	const regions = useMemo(() => Array.from(new Set(products.map((p) => p.region).filter(Boolean))) as string[], [products]);
@@ -676,7 +699,7 @@ function ShopPageContent() {
 				transition={{ duration: 0.35 }}
 			>
 				{filteredSorted.map((product) => (
-					<ProductCard key={product.slug} product={product} />
+					<ProductCard key={product.slug} product={product} allProducts={allProducts} />
 				))}
 			</motion.div>
 			</Container>

@@ -3,24 +3,31 @@ import { useState } from "react";
 import { useCart } from "@/contexts/CartContext";
 import { Product } from "@/types/product";
 import { ShoppingCart } from "lucide-react";
-import { useAllProducts } from "@/hooks/useAllProducts";
 import { hasMultipleVarietiesEnhanced, findProductVarietiesEnhanced } from "@/lib/utils/varieties";
 import { VarietySelectionModal } from "./VarietySelectionModal";
+import { useMemo } from "react";
 
 type AddToCartButtonProps = {
 	product: Product;
 	variant?: "default" | "large";
+	allProducts?: Product[]; // Pass from parent to avoid multiple API calls
 };
 
-export function AddToCartButton({ product, variant = "default" }: AddToCartButtonProps) {
+export function AddToCartButton({ product, variant = "default", allProducts = [] }: AddToCartButtonProps) {
 	const { addItem } = useCart();
 	const [quantity, setQuantity] = useState(1);
 	const [added, setAdded] = useState(false);
 	const [showVarietyModal, setShowVarietyModal] = useState(false);
-	const allProducts = useAllProducts();
 	
-	const hasVarieties = hasMultipleVarietiesEnhanced(product, allProducts);
-	const varieties = hasVarieties ? findProductVarietiesEnhanced(product, allProducts) : [];
+	// Memoize variety detection to avoid recalculating on every render
+	const { hasVarieties, varieties } = useMemo(() => {
+		if (allProducts.length === 0) {
+			return { hasVarieties: false, varieties: [] };
+		}
+		const has = hasMultipleVarietiesEnhanced(product, allProducts);
+		const vars = has ? findProductVarietiesEnhanced(product, allProducts) : [];
+		return { hasVarieties: has, varieties: vars };
+	}, [product, allProducts]);
 
 	const handleAddToCart = () => {
 		// If product has multiple varieties, show modal instead

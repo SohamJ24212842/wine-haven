@@ -6,21 +6,22 @@ import { useCart } from "@/contexts/CartContext";
 import { X, ShoppingCart, Wine, UtensilsCrossed, Sparkles } from "lucide-react";
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
-import { useAllProducts } from "@/hooks/useAllProducts";
 import { hasMultipleVarietiesEnhanced, findProductVarietiesEnhanced } from "@/lib/utils/varieties";
 import { VarietySelectionModal } from "./VarietySelectionModal";
+import { useMemo } from "react";
 
 type QuickViewModalProps = {
 	product: Product | null;
 	isOpen: boolean;
 	onClose: () => void;
+	allProducts?: Product[]; // Pass from parent to avoid multiple API calls
 };
 
 function calculateDiscountPercentage(originalPrice: number, salePrice: number): number {
 	return Math.round(((originalPrice - salePrice) / originalPrice) * 100);
 }
 
-export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps) {
+export function QuickViewModal({ product, isOpen, onClose, allProducts = [] }: QuickViewModalProps) {
 	const { addItem } = useCart();
 	const [quantity, setQuantity] = useState(1);
 	const [selectedImage, setSelectedImage] = useState(0);
@@ -29,7 +30,6 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 	const lastUpdateRef = useRef<number>(0);
 	const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
 	const [showVarietyModal, setShowVarietyModal] = useState(false);
-	const allProducts = useAllProducts();
 
 	// Detect mobile/tablet
 	useEffect(() => {
@@ -63,8 +63,15 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 
 	if (!product) return null;
 
-	const hasVarieties = hasMultipleVarietiesEnhanced(product, allProducts);
-	const varieties = hasVarieties ? findProductVarietiesEnhanced(product, allProducts) : [];
+	// Memoize variety detection to avoid recalculating on every render
+	const { hasVarieties, varieties } = useMemo(() => {
+		if (allProducts.length === 0) {
+			return { hasVarieties: false, varieties: [] };
+		}
+		const has = hasMultipleVarietiesEnhanced(product, allProducts);
+		const vars = has ? findProductVarietiesEnhanced(product, allProducts) : [];
+		return { hasVarieties: has, varieties: vars };
+	}, [product, allProducts]);
 
 	const discountPercentage = product.onSale && product.salePrice 
 		? calculateDiscountPercentage(product.price, product.salePrice)
