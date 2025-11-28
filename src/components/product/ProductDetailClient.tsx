@@ -5,7 +5,7 @@ import { Product } from "@/types/product";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/typography/SectionHeading";
 import { AddToCartButton } from "@/components/shop/AddToCartButton";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Wine, UtensilsCrossed, Sparkles } from "lucide-react";
 import { hasMultipleVarietiesEnhanced, findProductVarietiesEnhanced } from "@/lib/utils/varieties";
@@ -46,18 +46,22 @@ export function ProductDetailClient({ product, discountPercentage, allProducts: 
 	
 	const allProducts = (serverProducts && serverProducts.length > 0) ? serverProducts : clientProducts;
 	
-	// Check for varieties using enhanced detection
-	const hasVarieties = hasMultipleVarietiesEnhanced(product, allProducts);
-	const varieties = hasVarieties ? findProductVarietiesEnhanced(product, allProducts) : [];
-	const allVarieties = hasVarieties ? [product, ...varieties] : [product];
-	
-	// Sort varieties by volume or price
-	const sortedVarieties = [...allVarieties].sort((a, b) => {
-		if (a.volumeMl && b.volumeMl) {
-			return a.volumeMl - b.volumeMl;
+	// Memoize variety detection to avoid recalculating on every render
+	const { hasVarieties, varieties, sortedVarieties } = useMemo(() => {
+		if (allProducts.length === 0) {
+			return { hasVarieties: false, varieties: [], sortedVarieties: [product] };
 		}
-		return a.price - b.price;
-	});
+		const has = hasMultipleVarietiesEnhanced(product, allProducts);
+		const vars = has ? findProductVarietiesEnhanced(product, allProducts) : [];
+		const allVars = has ? [product, ...vars] : [product];
+		const sorted = [...allVars].sort((a, b) => {
+			if (a.volumeMl && b.volumeMl) {
+				return a.volumeMl - b.volumeMl;
+			}
+			return a.price - b.price;
+		});
+		return { hasVarieties: has, varieties: vars, sortedVarieties: sorted };
+	}, [product, allProducts]);
 
 	// Prevent page scroll when zoomed
 	useEffect(() => {
