@@ -87,29 +87,29 @@ export function parseVarietiesFromDescription(description: string): string[] {
 /**
  * Finds varieties by matching product names with the same brand/base name
  * e.g., "Clonakilty" matches "Clonakilty Single Pot Still", "Clonakilty Port Cask", etc.
+ * Also matches across different alcohol types (e.g., Glendalough whiskey and Glendalough gin)
  */
 export function findVarietiesByName(product: Product, allProducts: Product[]): Product[] {
 	// Extract base name (first word, typically the brand)
 	const productNameWords = product.name.split(' ');
 	if (productNameWords.length < 2) return [];
 	
-	const productNameBase = productNameWords[0]; // e.g., "Clonakilty"
+	const productNameBase = productNameWords[0]; // e.g., "Glendalough", "Clonakilty"
 	const normalizedBase = normalizeText(productNameBase.toLowerCase());
 	
 	return allProducts.filter(p => {
-		// Must be same category
-		if (p.category !== product.category) return false;
-		
 		// Must be different product
 		if (p.slug === product.slug) return false;
 		
-		// Check if product name starts with the same base
+		// Check if product name starts with the same base (brand name)
 		const pNameWords = p.name.split(' ');
 		if (pNameWords.length < 2) return false;
 		
 		const pNameBase = pNameWords[0];
 		const pNormalizedBase = normalizeText(pNameBase.toLowerCase());
 		
+		// Match if same brand name (even if different category/alcohol type)
+		// e.g., "Glendalough" whiskey matches "Glendalough" gin
 		return pNormalizedBase === normalizedBase;
 	});
 }
@@ -142,9 +142,10 @@ export function findProductVarietiesEnhanced(product: Product, allProducts: Prod
 	if (describedVarieties.length > 0) {
 		describedVarieties.forEach(varietyName => {
 			// Try to find products that match this variety name EXACTLY
+			// Allow matching across categories (e.g., whiskey and gin from same brand)
 			const matchedProducts = allProducts.filter(p => {
 				if (p.slug === product.slug || existingSlugs.has(p.slug)) return false;
-				if (p.category !== product.category) return false;
+				// Removed category check - allow cross-category matches for "Also available"
 				
 				// STRICT MATCHING: Product name must contain the variety name
 				// e.g., "Clonakilty Single Pot Still" matches "Clonakilty Single Pot Still"
@@ -183,26 +184,19 @@ export function findProductVarietiesEnhanced(product: Product, allProducts: Prod
 		});
 	}
 	
-	// Method 3: Name-based (same brand, different expressions) - FALLBACK ONLY
+	// Method 3: Name-based (same brand, different expressions/alcohol types) - FALLBACK ONLY
 	// Only use this if we haven't found any varieties yet (to avoid showing unrelated products)
-	// AND only if the product name suggests it's part of a series (has multiple words)
+	// This matches products with the same brand name, even across different categories
+	// e.g., "Glendalough" whiskey will show "Glendalough" gin
 	if (varieties.length === 0) {
 		const productNameWords = product.name.split(' ').filter(w => w.length > 0);
-		// Only use name-based matching if product name has 3+ words (suggests it's part of a series)
-		// e.g., "Clonakilty Galley Head" (3 words) vs "Jameson" (1 word)
-		if (productNameWords.length >= 3) {
+		// Use name-based matching if product name has 2+ words (has a brand name)
+		// e.g., "Glendalough Whiskey" (2 words) or "Clonakilty Galley Head" (3 words)
+		if (productNameWords.length >= 2) {
 			const nameVarieties = findVarietiesByName(product, allProducts);
-			// Further filter: only include if they share at least 2 words (not just brand)
-			const filteredNameVarieties = nameVarieties.filter(v => {
-				const vWords = v.name.split(' ').filter(w => w.length > 0);
-				const sharedWords = productNameWords.filter(pw => 
-					vWords.some(vw => normalizeText(pw.toLowerCase()) === normalizeText(vw.toLowerCase()))
-				);
-				// Must share at least 2 words (brand + at least one other word)
-				return sharedWords.length >= 2;
-			});
-			
-			filteredNameVarieties.forEach(v => {
+			// Include all products with same brand name (even different categories)
+			// This allows whiskey to show gin, etc. from the same brand
+			nameVarieties.forEach(v => {
 				if (!existingSlugs.has(v.slug)) {
 					varieties.push(v);
 					existingSlugs.add(v.slug);
