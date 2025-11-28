@@ -132,10 +132,12 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
     if (supabase) {
       try {
         // Select only needed columns to reduce data transfer
-        // IMPORTANT: For list views (shop/homepage), skip description field - it's huge!
+        // IMPORTANT: For list views, skip description field - it's huge!
         // Descriptions can be 1-5KB each, and with 186 products that's 186KB-930KB per request
-        // Only fetch description when explicitly needed (product detail page)
-        const selectFields = 'slug, category, name, price, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at';
+        // Only include description if searching (needed for search functionality)
+        const selectFields = searchQuery && searchQuery.trim()
+          ? 'slug, category, name, price, description, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at'
+          : 'slug, category, name, price, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at';
         
         let query = supabase
           .from('products')
