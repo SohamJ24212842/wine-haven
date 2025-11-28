@@ -4,7 +4,6 @@ import { ShopByOccasion } from "@/components/home/ShopByOccasion";
 import { PromotionalMedia } from "@/components/home/PromotionalMedia";
 import { SectionDivider } from "@/components/ui/SectionDivider";
 import { getFeaturedProducts, getNewProducts, getChristmasGifts } from "@/lib/db/products";
-import { getAllPromotionalMedia } from "@/lib/db/promotional-media";
 
 // Aggressive caching to reduce database load and egress
 // Revalidate every 1 hour (3600 seconds) - products don't change frequently
@@ -15,13 +14,13 @@ export default async function Home() {
   // Fetch only what we need with optimized queries
   // This reduces database load significantly
   // Use Promise.allSettled to prevent one slow query from blocking the page
-  // Also fetch promotional media server-side to avoid client-side delay
+  // Note: Promotional media is fetched client-side to avoid bloating the static page
+  // (videos/images would make the page too large for Vercel's 19MB limit)
   const results = await Promise.allSettled([
     getFeaturedProducts("Wine", 10),
     getFeaturedProducts("Spirit", 10),
     getNewProducts(10),
     getChristmasGifts(10),
-    getAllPromotionalMedia(),
   ]);
 
   // Extract results, defaulting to empty arrays if any query fails
@@ -29,9 +28,6 @@ export default async function Home() {
   const featuredSpirits = results[1].status === 'fulfilled' ? results[1].value : [];
   const newArrivals = results[2].status === 'fulfilled' ? results[2].value : [];
   const christmasGifts = results[3].status === 'fulfilled' ? results[3].value : [];
-  const promotionalMedia = results[4].status === 'fulfilled' 
-    ? results[4].value.filter((item: any) => item.active).sort((a: any, b: any) => a.order - b.order)
-    : [];
 
   return (
     <div>
@@ -82,7 +78,7 @@ export default async function Home() {
           <SectionDivider variant="subtle" />
         </>
       )}
-      <PromotionalMedia initialMedia={promotionalMedia} />
+      <PromotionalMedia />
     </div>
   );
 }
