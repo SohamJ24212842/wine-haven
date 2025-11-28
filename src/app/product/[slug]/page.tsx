@@ -20,11 +20,9 @@ function calculateDiscountPercentage(originalPrice: number, salePrice: number): 
 export default async function ProductDetailPage({ params }: { params: Params }) {
 	const { slug } = await params;
 	
-	// Fetch product and all products in parallel for better performance
-	const [product, allProducts] = await Promise.all([
-		getProductBySlug(slug),
-		getAllProducts()
-	]);
+	// Fetch product first - we only need all products if we need to find varieties
+	// This reduces database load for most product pages
+	const product = await getProductBySlug(slug);
 	
 	if (!product) return notFound();
 
@@ -32,10 +30,12 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
 		? calculateDiscountPercentage(product.price, product.salePrice)
 		: null;
 
+	// Only fetch all products if needed for variety detection
+	// This is done lazily in the client component to reduce server load
 	return <ProductDetailClient 
 		product={product} 
 		discountPercentage={discountPercentage}
-		allProducts={allProducts}
+		allProducts={undefined} // Let client fetch if needed
 	/>;
 }
 
