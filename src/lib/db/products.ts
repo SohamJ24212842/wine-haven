@@ -290,6 +290,11 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
 
 // Get product by slug
 export async function getProductBySlug(slugParam: string): Promise<Product | null> {
+	// Check cache first - this significantly reduces database queries
+	const cacheKey = `product:${slugParam}`;
+	const cached = getCached<Product | null>(cacheKey);
+	if (cached !== null) return cached; // null means not found, so check !== null
+	
 	// Normalize the slug parameter for comparison - remove diacritics
 	const { normalizeText } = await import('@/lib/utils/text');
 	const normalizedSlug = normalizeText(slugParam);
@@ -334,7 +339,9 @@ export async function getProductBySlug(slugParam: string): Promise<Product | nul
         }
 
         if (!error && data) {
-          return mapRowToProduct(data);
+          const product = mapRowToProduct(data);
+          setCached(cacheKey, product); // Cache the result
+          return product;
         }
       } catch (error) {
         console.error('Error fetching from Supabase:', error);
@@ -344,7 +351,9 @@ export async function getProductBySlug(slugParam: string): Promise<Product | nul
 
   // Fallback to local data - normalized comparison
   const { products } = await import('@/data/products');
-  return products.find(p => normalizeText(p.slug) === normalizedSlug) || null;
+  const product = products.find(p => normalizeText(p.slug) === normalizedSlug) || null;
+  setCached(cacheKey, product); // Cache even if null (not found)
+  return product;
 }
 
 // Create product (admin only)

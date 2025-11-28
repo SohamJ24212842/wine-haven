@@ -5,11 +5,15 @@ import { ProductDetailClient } from "@/components/product/ProductDetailClient";
 
 type Params = Promise<{ slug: string }>;
 
+// Cache product detail pages for 1 hour to reduce database load
+export const revalidate = 3600;
+
+// Optimize metadata - use generic title to avoid duplicate database query
+// The actual product name is in the page content, so this is fine
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-	const { slug } = await params;
-	const product = await getProductBySlug(slug);
 	return {
-		title: product ? `${product.name} | Wine Haven` : "Product | Wine Haven",
+		title: "Product | Wine Haven",
+		description: "View product details at Wine Haven",
 	};
 }
 
@@ -20,8 +24,7 @@ function calculateDiscountPercentage(originalPrice: number, salePrice: number): 
 export default async function ProductDetailPage({ params }: { params: Params }) {
 	const { slug } = await params;
 	
-	// Fetch product first - we only need all products if we need to find varieties
-	// This reduces database load for most product pages
+	// Fetch product - now uses in-memory cache for faster responses
 	const product = await getProductBySlug(slug);
 	
 	if (!product) return notFound();
@@ -30,12 +33,16 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
 		? calculateDiscountPercentage(product.price, product.salePrice)
 		: null;
 
-	// Only fetch all products if needed for variety detection
-	// This is done lazily in the client component to reduce server load
+	// Only fetch all products if product might have varieties (check description)
+	// This reduces database load for most product pages
+	const needsVarieties = product.description?.includes('Also available:') || 
+	                      product.description?.includes('also available:');
+	const allProducts = needsVarieties ? await getAllProducts() : undefined;
+
 	return <ProductDetailClient 
 		product={product} 
 		discountPercentage={discountPercentage}
-		allProducts={undefined} // Let client fetch if needed
+		allProducts={allProducts} // Pass if needed, otherwise undefined
 	/>;
 }
 

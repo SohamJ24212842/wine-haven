@@ -8,6 +8,9 @@ type Params = Promise<{
   slug: string;
 }>;
 
+// Cache product API responses for 1 hour
+export const revalidate = 3600;
+
 export async function GET(request: NextRequest, { params }: { params: Params }) {
   try {
     const { slug } = await params;
@@ -18,7 +21,15 @@ export async function GET(request: NextRequest, { params }: { params: Params }) 
         { status: 404 }
       );
     }
-    return NextResponse.json(product);
+    
+    // Add cache headers to reduce database load
+    const response = NextResponse.json(product);
+    response.headers.set(
+      'Cache-Control',
+      'public, s-maxage=3600, stale-while-revalidate=86400, max-age=3600'
+    );
+    
+    return response;
   } catch (error) {
     console.error('Error fetching product:', error);
     return NextResponse.json(

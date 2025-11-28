@@ -169,7 +169,11 @@ function AdminPageContent() {
 	const fetchProducts = async () => {
 		setLoading(true);
 		try {
-			const response = await fetch("/api/products");
+			// Use cache: 'no-cache' for admin to ensure fresh data when needed
+			// But API itself is cached, so this is still fast
+			const response = await fetch("/api/products", {
+				cache: 'no-cache', // Admin needs fresh data, but API cache still helps
+			});
 			if (response.ok) {
 				const data = await response.json();
 				setProductsList(data);

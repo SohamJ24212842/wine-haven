@@ -2,23 +2,50 @@
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/typography/SectionHeading";
 import { TrendingUp, Package, Users, Euro, LayoutDashboard, ShoppingCart, Settings } from "lucide-react";
-import { products } from "@/data/products";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 
 export default function DashboardPage() {
 	const pathname = usePathname();
-	
-	// TODO: Fetch real data from database
-	const stats = {
-		totalProducts: products.length,
-		featuredProducts: products.filter((p) => p.featured).length,
-		onSaleProducts: products.filter((p) => p.onSale).length,
-		newProducts: products.filter((p) => p.new).length,
-		totalRevenue: 0, // TODO: Calculate from orders
-		totalOrders: 0, // TODO: Fetch from database
-		totalCustomers: 0, // TODO: Fetch from database
-	};
+	const [stats, setStats] = useState({
+		totalProducts: 0,
+		featuredProducts: 0,
+		onSaleProducts: 0,
+		newProducts: 0,
+		totalRevenue: 0,
+		totalOrders: 0,
+		totalCustomers: 0,
+	});
+	const [loading, setLoading] = useState(true);
+
+	// Fetch stats from API (cached for performance)
+	useEffect(() => {
+		const fetchStats = async () => {
+			try {
+				const response = await fetch("/api/products", {
+					cache: 'no-cache', // Admin needs fresh data
+				});
+				if (response.ok) {
+					const products = await response.json();
+					setStats({
+						totalProducts: products.length,
+						featuredProducts: products.filter((p: any) => p.featured).length,
+						onSaleProducts: products.filter((p: any) => p.onSale).length,
+						newProducts: products.filter((p: any) => p.new).length,
+						totalRevenue: 0, // TODO: Calculate from orders
+						totalOrders: 0, // TODO: Fetch from database
+						totalCustomers: 0, // TODO: Fetch from database
+					});
+				}
+			} catch (error) {
+				console.error("Error fetching stats:", error);
+			} finally {
+				setLoading(false);
+			}
+		};
+		fetchStats();
+	}, []);
 
 	return (
 		<Container className="py-12">
@@ -32,32 +59,36 @@ export default function DashboardPage() {
 				<AdminNavLink href="/admin/settings" icon={<Settings size={18} />} label="Settings" pathname={pathname} />
 			</div>
 
-			<div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-				<StatCard
-					title="Total Products"
-					value={stats.totalProducts}
-					icon={<Package size={24} />}
-					color="bg-blue-100 text-blue-600"
-				/>
-				<StatCard
-					title="Featured Products"
-					value={stats.featuredProducts}
-					icon={<TrendingUp size={24} />}
-					color="bg-gold/20 text-gold"
-				/>
-				<StatCard
-					title="On Sale"
-					value={stats.onSaleProducts}
-					icon={<Euro size={24} />}
-					color="bg-red-100 text-red-600"
-				/>
-				<StatCard
-					title="New Arrivals"
-					value={stats.newProducts}
-					icon={<Users size={24} />}
-					color="bg-green-100 text-green-600"
-				/>
-			</div>
+			{loading ? (
+				<div className="mt-8 text-center text-maroon/60">Loading stats...</div>
+			) : (
+				<div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+					<StatCard
+						title="Total Products"
+						value={stats.totalProducts}
+						icon={<Package size={24} />}
+						color="bg-blue-100 text-blue-600"
+					/>
+					<StatCard
+						title="Featured Products"
+						value={stats.featuredProducts}
+						icon={<TrendingUp size={24} />}
+						color="bg-gold/20 text-gold"
+					/>
+					<StatCard
+						title="On Sale"
+						value={stats.onSaleProducts}
+						icon={<Euro size={24} />}
+						color="bg-red-100 text-red-600"
+					/>
+					<StatCard
+						title="New Arrivals"
+						value={stats.newProducts}
+						icon={<Users size={24} />}
+						color="bg-green-100 text-green-600"
+					/>
+				</div>
+			)}
 
 			{/* TODO: Add charts, recent orders, top products */}
 			<div className="mt-8 rounded-lg border border-maroon/20 bg-soft-gray p-8 text-center">
