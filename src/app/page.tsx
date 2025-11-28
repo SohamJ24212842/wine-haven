@@ -5,9 +5,10 @@ import { PromotionalMedia } from "@/components/home/PromotionalMedia";
 import { SectionDivider } from "@/components/ui/SectionDivider";
 import { getFeaturedProducts, getNewProducts, getChristmasGifts } from "@/lib/db/products";
 
-// Enable caching to reduce database load
-// Revalidate every 5 minutes (300 seconds) - products don't change that frequently
-export const revalidate = 300;
+// Aggressive caching to reduce database load and egress
+// Revalidate every 1 hour (3600 seconds) - products don't change frequently
+// This significantly reduces database queries and data transfer
+export const revalidate = 3600;
 
 export default async function Home() {
   // Fetch only what we need with optimized queries

@@ -4,10 +4,10 @@ import { revalidatePath } from 'next/cache';
 import { getAllProducts, createProduct } from '@/lib/db/products';
 import { Product } from '@/types/product';
 
-// Increase cache time to reduce database load
-// Products don't change frequently, so we can cache longer
-// Cache for 5 minutes (300 seconds), allow stale-while-revalidate for 10 minutes (600 seconds)
-export const revalidate = 300;
+// Aggressive caching to reduce database load and egress
+// Products don't change frequently, so we can cache much longer
+// Cache for 1 hour (3600 seconds), allow stale-while-revalidate for 24 hours
+export const revalidate = 3600;
 
 export async function GET(request: NextRequest) {
   try {
@@ -16,12 +16,12 @@ export async function GET(request: NextRequest) {
     
     const products = await getAllProducts(search);
     
-    // Add cache headers for better performance
-    // Increased cache times to reduce database load
+    // Aggressive cache headers to reduce egress
+    // Cache for 1 hour, allow stale for 24 hours
     const response = NextResponse.json(products);
     response.headers.set(
       'Cache-Control',
-      'public, s-maxage=300, stale-while-revalidate=600'
+      'public, s-maxage=3600, stale-while-revalidate=86400, max-age=3600'
     );
     
     return response;

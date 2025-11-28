@@ -12,14 +12,14 @@ const USE_SUPABASE =
   !!process.env.NEXT_PUBLIC_SUPABASE_URL;
 
 // Simple in-memory cache to reduce database calls within the same request
-// Cache expires after 30 seconds
+// Increased cache time to reduce database load - products don't change frequently
 interface CacheEntry<T> {
   data: T;
   timestamp: number;
 }
 
 const cache = new Map<string, CacheEntry<any>>();
-const CACHE_TTL = 30000; // 30 seconds
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes (increased from 30 seconds)
 
 function getCached<T>(key: string): T | null {
   const entry = cache.get(key);
@@ -438,9 +438,10 @@ export async function getFeaturedProducts(category: 'Wine' | 'Spirit' | 'Beer', 
     const supabase = createServerClient();
     if (supabase) {
       try {
+        // Don't fetch description for homepage sections - huge data savings!
         const { data, error } = await supabase
           .from('products')
-          .select('slug, category, name, price, description, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at')
+          .select('slug, category, name, price, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at')
           .eq('category', category)
           .eq('featured', true)
           .order('created_at', { ascending: false })
@@ -477,9 +478,10 @@ export async function getNewProducts(limit: number = 10): Promise<Product[]> {
     const supabase = createServerClient();
     if (supabase) {
       try {
+        // Don't fetch description for homepage sections - huge data savings!
         const { data, error } = await supabase
           .from('products')
-          .select('slug, category, name, price, description, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at')
+          .select('slug, category, name, price, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at')
           .eq('new', true)
           .order('created_at', { ascending: false })
           .limit(limit);
@@ -515,9 +517,10 @@ export async function getChristmasGifts(limit: number = 10): Promise<Product[]> 
     const supabase = createServerClient();
     if (supabase) {
       try {
+        // Don't fetch description for homepage sections - huge data savings!
         const { data, error } = await supabase
           .from('products')
-          .select('slug, category, name, price, description, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at')
+          .select('slug, category, name, price, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at')
           .eq('christmas_gift', true)
           .order('created_at', { ascending: false })
           .limit(limit);
