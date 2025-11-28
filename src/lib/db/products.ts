@@ -135,13 +135,15 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
         // IMPORTANT: For list views, skip description field - it's huge!
         // Descriptions can be 1-5KB each, and with 186 products that's 186KB-930KB per request
         // Only include description if searching (needed for search functionality)
-        const selectFields = searchQuery && searchQuery.trim()
-          ? 'slug, category, name, price, description, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at'
-          : 'slug, category, name, price, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at';
+        let query = supabase.from('products');
         
-        let query = supabase
-          .from('products')
-          .select(selectFields);
+        if (searchQuery && searchQuery.trim()) {
+          // Include description for search queries
+          query = query.select('slug, category, name, price, description, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at');
+        } else {
+          // Skip description for list views to reduce data transfer
+          query = query.select('slug, category, name, price, image, images, country, region, producer, taste_profile, food_pairing, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at');
+        }
 
         // Add search filter if provided
         // Search across multiple fields to match shop page behavior
