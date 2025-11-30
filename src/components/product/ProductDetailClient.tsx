@@ -9,6 +9,7 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Wine, UtensilsCrossed, Sparkles } from "lucide-react";
 import { hasMultipleVarietiesEnhanced, findProductVarietiesEnhanced } from "@/lib/utils/varieties";
+import { shouldShowEachForBeer } from "@/lib/utils/beer-pricing";
 
 type ProductDetailClientProps = {
 	product: Product;
@@ -243,7 +244,9 @@ export function ProductDetailClient({ product, discountPercentage, allProducts: 
 					<div className="mt-4 flex items-center gap-3 flex-wrap">
 						{product.onSale && product.salePrice ? (
 							<>
-								<span className="text-3xl font-bold text-red-600">€{product.salePrice.toFixed(2)}</span>
+								<span className="text-3xl font-bold text-red-600">
+									{shouldShowEachForBeer(product) ? "each " : ""}€{product.salePrice.toFixed(2)}
+								</span>
 								<span className="text-xl text-maroon/50 line-through">€{product.price.toFixed(2)}</span>
 								{discountPercentage && (
 									<span className="rounded-full bg-red-100 px-3 py-1 text-sm font-bold text-red-700">
@@ -255,7 +258,9 @@ export function ProductDetailClient({ product, discountPercentage, allProducts: 
 								</span>
 							</>
 						) : (
-							<span className="text-3xl font-bold text-maroon">€{product.price.toFixed(2)}</span>
+							<span className="text-3xl font-bold text-maroon">
+								{shouldShowEachForBeer(product) ? "each " : ""}€{product.price.toFixed(2)}
+							</span>
 						)}
 					</div>
 					

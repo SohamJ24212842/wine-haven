@@ -10,6 +10,7 @@ import { QuickViewModal } from "./QuickViewModal";
 import { hasMultipleVarietiesEnhanced, findProductVarietiesEnhanced } from "@/lib/utils/varieties";
 import { VarietySelectionModal } from "./VarietySelectionModal";
 import { useMemo } from "react";
+import { shouldShowEachForBeer } from "@/lib/utils/beer-pricing";
 
 type ProductCardProps = {
 	product: Product;
@@ -240,16 +241,24 @@ export function ProductCard({ product, allProducts = [] }: ProductCardProps) {
 							{product.volumeMl && ` • ${product.volumeMl}ml`}
 						</p>
 						<div className="mt-3 flex items-center gap-2 flex-wrap">
-							{product.onSale && product.salePrice ? (
+							{product.onSale && product.salePrice && product.salePrice > 0 ? (
 								<>
-									<span className="text-base font-bold text-red-600">€{product.salePrice.toFixed(2)}</span>
-									<span className="text-xs text-maroon/50 line-through">€{product.price.toFixed(2)}</span>
-									<span className="text-xs font-semibold text-red-600">
-										Save €{(product.price - product.salePrice).toFixed(2)}
+									<span className="text-base font-bold text-red-600">
+										{shouldShowEachForBeer(product) ? "each " : ""}€{product.salePrice.toFixed(2)}
 									</span>
+									{product.price && product.price > 0 && (
+										<span className="text-xs text-maroon/50 line-through">€{product.price.toFixed(2)}</span>
+									)}
+									{product.price && product.price > product.salePrice && (
+										<span className="text-xs font-semibold text-red-600">
+											Save €{(product.price - product.salePrice).toFixed(2)}
+										</span>
+									)}
 								</>
 							) : (
-								<span className="text-base font-bold text-maroon">€{product.price.toFixed(2)}</span>
+								<span className="text-base font-bold text-maroon">
+									{shouldShowEachForBeer(product) ? "each " : ""}€{(product.price && product.price > 0) ? product.price.toFixed(2) : "0.00"}
+								</span>
 							)}
 						</div>
 					</div>

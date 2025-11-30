@@ -9,6 +9,7 @@ import Link from "next/link";
 import { hasMultipleVarietiesEnhanced, findProductVarietiesEnhanced } from "@/lib/utils/varieties";
 import { VarietySelectionModal } from "./VarietySelectionModal";
 import { useMemo } from "react";
+import { shouldShowEachForBeer } from "@/lib/utils/beer-pricing";
 
 type QuickViewModalProps = {
 	product: Product | null;
@@ -229,7 +230,9 @@ export function QuickViewModal({ product, isOpen, onClose, allProducts = [] }: Q
 									<div className="mb-6">
 										{product.onSale && product.salePrice ? (
 											<div className="flex items-center gap-3 flex-wrap">
-												<span className="text-3xl font-semibold text-red-600">€{product.salePrice.toFixed(2)}</span>
+												<span className="text-3xl font-semibold text-red-600">
+													{shouldShowEachForBeer(product) ? "each " : ""}€{product.salePrice.toFixed(2)}
+												</span>
 												<span className="text-lg text-maroon/50 line-through">€{product.price.toFixed(2)}</span>
 												{discountPercentage && (
 													<span className="rounded-md bg-red-100 px-2 py-1 text-sm font-bold text-red-700">
@@ -241,7 +244,9 @@ export function QuickViewModal({ product, isOpen, onClose, allProducts = [] }: Q
 												</span>
 											</div>
 										) : (
-											<span className="text-3xl font-semibold text-maroon">€{product.price.toFixed(2)}</span>
+											<span className="text-3xl font-semibold text-maroon">
+												{shouldShowEachForBeer(product) ? "each " : ""}€{product.price.toFixed(2)}
+											</span>
 										)}
 									</div>
 

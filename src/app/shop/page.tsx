@@ -80,7 +80,7 @@ function ShopPageContent() {
 						// Development fallback only
 						console.warn('No products from API, using local data (development mode)');
 						setProducts(localProducts);
-					} else {
+				} else {
 						// Production: retry if empty, otherwise show error
 						if (retryCount < maxRetries) {
 							console.warn(`No products found, retrying... (${retryCount + 1}/${maxRetries})`);
@@ -103,7 +103,7 @@ function ShopPageContent() {
 					
 					if (isDevelopment) {
 						console.warn('API failed, using local data (development mode)');
-						setProducts(localProducts);
+					setProducts(localProducts);
 					} else {
 						const errorText = `API error: ${response.status} ${response.statusText}`;
 						console.error(errorText);
@@ -131,14 +131,14 @@ function ShopPageContent() {
 					(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 				
 				if (isDevelopment) {
-					setProducts(localProducts);
+				setProducts(localProducts);
 				} else {
 					setError(err.message || 'Failed to fetch products. Please try refreshing the page.');
 					setProducts([]);
 				}
 			} finally {
 				if (!abortController.signal.aborted) {
-					setLoading(false);
+				setLoading(false);
 				}
 			}
 		};
@@ -183,26 +183,8 @@ function ShopPageContent() {
 		fetchAllProducts();
 	}, [allProducts.length, products.length, searchParams]);
 
-	// Memoize regions, countries, and price calculations
-	const regions = useMemo(() => Array.from(new Set(products.map((p) => p.region).filter(Boolean))) as string[], [products]);
-	const countries = useMemo(() => Array.from(new Set(products.map((p) => p.country).filter(Boolean))) as string[], [products]);
-	const wineTypes = useMemo(() => {
-		const base = Array.from(
-			new Set(products.filter((p) => p.wineType).map((p) => p.wineType!))
-		) as WineType[];
-
-		// Always show Prosecco first as a quick filter, even if there are
-		// currently no Prosecco products (it will just show 0 results).
-		if (base.includes("Prosecco")) {
-			return (["Prosecco", ...base.filter((t) => t !== "Prosecco")] as WineType[]);
-		}
-		return (["Prosecco", ...base] as WineType[]);
-	}, [products]);
-	const spiritTypes = useMemo(() => Array.from(new Set(products.filter(p => p.spiritType).map(p => p.spiritType!))) as SpiritType[], [products]);
-	const beerStyles = useMemo(() => Array.from(new Set(products.filter(p => p.beerStyle).map(p => p.beerStyle!))) as BeerStyle[], [products]);
-	
 	// Memoize price calculations to keep dependency array stable
-	const prices = useMemo(() => products.map((p) => p.onSale && p.salePrice ? p.salePrice : p.price), [products]);
+	const prices = useMemo(() => products.map((p) => (p.onSale && p.salePrice ? p.salePrice : (p.price || 0))).filter(p => p > 0), [products]);
 	const minAvailable = useMemo(() => prices.length > 0 ? Math.floor(Math.min(...prices)) : 0, [prices]);
 	const maxAvailable = useMemo(() => prices.length > 0 ? Math.ceil(Math.max(...prices)) : 1000, [prices]);
 
@@ -331,6 +313,154 @@ function ShopPageContent() {
 
 		return () => clearTimeout(timeoutId);
 	}, [query, selectedWineTypes, selectedSpiritTypes, selectedBeerStyles, selectedRegions, selectedCountries, minPrice, maxPrice, sortBy, activeCategoryTab, christmasGift, onSale, newOnly, featuredOnly, router, minAvailable, maxAvailable]);
+
+	// Helper function to get products matching current filters (excluding specific filter types)
+	// This is used to compute available filter options based on current filter state
+	const getFilteredProductsForOptions = useMemo(() => {
+		return (excludeWineType = false, excludeSpiritType = false, excludeBeerStyle = false, excludeRegion = false) => {
+			const normalize = (s?: string) =>
+				(s || "")
+					.toLowerCase()
+					.normalize("NFD")
+					.replace(/\p{Diacritic}/gu, "");
+
+			return products.filter((p) => {
+				// Category filter
+				if (activeCategoryTab !== "All" && p.category !== activeCategoryTab) return false;
+
+				// Christmas Gift filter
+				if (christmasGift && !p.christmasGift) return false;
+
+				// On Sale filter
+				if (onSale && !p.onSale) return false;
+
+				// New filter
+				if (newOnly && !p.new) return false;
+
+				// Featured filter
+				if (featuredOnly && !p.featured) return false;
+
+				// Country filter
+				if (selectedCountries.length > 0 && !selectedCountries.includes(p.country)) return false;
+
+				const q = normalize(query.trim());
+				const matchesQuery =
+					q.length === 0 ||
+					normalize(p.name).includes(q) ||
+					normalize(p.slug).includes(q) ||
+					normalize(p.country).includes(q) ||
+					normalize(p.region).includes(q) ||
+					normalize(p.description).includes(q) ||
+					normalize(p.producer).includes(q) ||
+					normalize(p.tasteProfile).includes(q) ||
+					normalize(p.foodPairing).includes(q) ||
+					normalize((p.grapes || []).join(", ")).includes(q);
+
+				// Apply filters, but exclude the ones we're computing options for
+				const matchesWineType =
+					excludeWineType || p.category !== "Wine" || selectedWineTypes.length === 0 || (p.wineType ? selectedWineTypes.includes(p.wineType) : false);
+				const matchesSpiritType =
+					excludeSpiritType || p.category !== "Spirit" || selectedSpiritTypes.length === 0 || (p.spiritType ? selectedSpiritTypes.includes(p.spiritType) : false);
+				const matchesBeerStyle =
+					excludeBeerStyle || p.category !== "Beer" || selectedBeerStyles.length === 0 || (p.beerStyle ? selectedBeerStyles.includes(p.beerStyle) : false);
+
+				const matchesRegion = excludeRegion || selectedRegions.length === 0 || (p.region ? selectedRegions.includes(p.region) : false);
+				
+				// Price filter
+				const productPrice = p.onSale && p.salePrice ? p.salePrice : (p.price || 0);
+				const matchesPrice = productPrice >= minPrice && productPrice <= maxPrice;
+
+				return (
+					matchesQuery &&
+					matchesWineType &&
+					matchesSpiritType &&
+					matchesBeerStyle &&
+					matchesRegion &&
+					matchesPrice
+				);
+			});
+		};
+	}, [products, activeCategoryTab, christmasGift, onSale, newOnly, featuredOnly, selectedCountries, query, selectedWineTypes, selectedSpiritTypes, selectedBeerStyles, selectedRegions, minPrice, maxPrice]);
+
+	// Get ALL possible filter options from all products
+	// Zepto/Zomato style: show all options with counts, disable if count is 0
+	const allWineTypes = useMemo(() => {
+		const base = Array.from(
+			new Set(products.filter((p) => p.wineType).map((p) => p.wineType!))
+		) as WineType[];
+		if (base.includes("Prosecco")) {
+			return (["Prosecco", ...base.filter((t) => t !== "Prosecco")] as WineType[]);
+		}
+		return (["Prosecco", ...base] as WineType[]);
+	}, [products]);
+	
+	const allSpiritTypes = useMemo(() => 
+		Array.from(new Set(products.filter(p => p.spiritType).map(p => p.spiritType!))) as SpiritType[], 
+		[products]
+	);
+	
+	const allBeerStyles = useMemo(() => 
+		Array.from(new Set(products.filter(p => p.beerStyle).map(p => p.beerStyle!))) as BeerStyle[], 
+		[products]
+	);
+	
+	const allRegions = useMemo(() => 
+		Array.from(new Set(products.map((p) => p.region).filter(Boolean))) as string[], 
+		[products]
+	);
+	
+	const countries = useMemo(() => 
+		Array.from(new Set(products.map((p) => p.country).filter(Boolean))) as string[], 
+		[products]
+	);
+
+	// Calculate counts for each filter option (how many products would match if selected)
+	// Zepto/Zomato style: show count next to each option, disable if count is 0
+	const wineTypeCounts = useMemo(() => {
+		const counts = new Map<WineType, number>();
+		allWineTypes.forEach(wineType => {
+			const filtered = getFilteredProductsForOptions(true, false, false, false);
+			const count = filtered.filter(p => 
+				p.category === "Wine" && p.wineType === wineType
+			).length;
+			counts.set(wineType, count);
+		});
+		return counts;
+	}, [allWineTypes, getFilteredProductsForOptions]);
+	
+	const spiritTypeCounts = useMemo(() => {
+		const counts = new Map<SpiritType, number>();
+		allSpiritTypes.forEach(spiritType => {
+			const filtered = getFilteredProductsForOptions(false, true, false, false);
+			const count = filtered.filter(p => 
+				p.category === "Spirit" && p.spiritType === spiritType
+			).length;
+			counts.set(spiritType, count);
+		});
+		return counts;
+	}, [allSpiritTypes, getFilteredProductsForOptions]);
+	
+	const beerStyleCounts = useMemo(() => {
+		const counts = new Map<BeerStyle, number>();
+		allBeerStyles.forEach(beerStyle => {
+			const filtered = getFilteredProductsForOptions(false, false, true, false);
+			const count = filtered.filter(p => 
+				p.category === "Beer" && p.beerStyle === beerStyle
+			).length;
+			counts.set(beerStyle, count);
+		});
+		return counts;
+	}, [allBeerStyles, getFilteredProductsForOptions]);
+	
+	const regionCounts = useMemo(() => {
+		const counts = new Map<string, number>();
+		allRegions.forEach(region => {
+			const filtered = getFilteredProductsForOptions(false, false, false, true);
+			const count = filtered.filter(p => p.region === region).length;
+			counts.set(region, count);
+		});
+		return counts;
+	}, [allRegions, getFilteredProductsForOptions]);
 
 	// Get category counts
 	const categoryCounts = useMemo(() => {
@@ -572,16 +702,20 @@ function ShopPageContent() {
 					maxPrice={maxPrice}
 					setMinPrice={setMinPrice}
 					setMaxPrice={setMaxPrice}
-					regions={regions}
+					allRegions={allRegions}
+					regionCounts={regionCounts}
 					selectedRegions={selectedRegions}
 					setSelectedRegions={setSelectedRegions}
-					wineTypes={wineTypes}
+					allWineTypes={allWineTypes}
+					wineTypeCounts={wineTypeCounts}
 					selectedWineTypes={selectedWineTypes}
 					setSelectedWineTypes={setSelectedWineTypes}
-					spiritTypes={spiritTypes}
+					allSpiritTypes={allSpiritTypes}
+					spiritTypeCounts={spiritTypeCounts}
 					selectedSpiritTypes={selectedSpiritTypes}
 					setSelectedSpiritTypes={setSelectedSpiritTypes}
-					beerStyles={beerStyles}
+					allBeerStyles={allBeerStyles}
+					beerStyleCounts={beerStyleCounts}
 					selectedBeerStyles={selectedBeerStyles}
 					setSelectedBeerStyles={setSelectedBeerStyles}
 					setActiveCategoryTab={setActiveCategoryTab}
@@ -720,7 +854,7 @@ function ShopPageContent() {
 	);
 }
 
-// Collapsible Advanced Filters component
+// Collapsible Advanced Filters component (Zepto/Zomato style)
 function AdvancedFilters({
 	minAvailable,
 	maxAvailable,
@@ -728,16 +862,20 @@ function AdvancedFilters({
 	maxPrice,
 	setMinPrice,
 	setMaxPrice,
-	regions,
+	allRegions,
+	regionCounts,
 	selectedRegions,
 	setSelectedRegions,
-	wineTypes,
+	allWineTypes,
+	wineTypeCounts,
 	selectedWineTypes,
 	setSelectedWineTypes,
-	spiritTypes,
+	allSpiritTypes,
+	spiritTypeCounts,
 	selectedSpiritTypes,
 	setSelectedSpiritTypes,
-	beerStyles,
+	allBeerStyles,
+	beerStyleCounts,
 	selectedBeerStyles,
 	setSelectedBeerStyles,
 	setActiveCategoryTab,
@@ -748,16 +886,20 @@ function AdvancedFilters({
 	maxPrice: number;
 	setMinPrice: (v: number) => void;
 	setMaxPrice: (v: number) => void;
-	regions: string[];
+	allRegions: string[];
+	regionCounts: Map<string, number>;
 	selectedRegions: string[];
 	setSelectedRegions: React.Dispatch<React.SetStateAction<string[]>>;
-	wineTypes: WineType[];
+	allWineTypes: WineType[];
+	wineTypeCounts: Map<WineType, number>;
 	selectedWineTypes: WineType[];
 	setSelectedWineTypes: React.Dispatch<React.SetStateAction<WineType[]>>;
-	spiritTypes: SpiritType[];
+	allSpiritTypes: SpiritType[];
+	spiritTypeCounts: Map<SpiritType, number>;
 	selectedSpiritTypes: SpiritType[];
 	setSelectedSpiritTypes: React.Dispatch<React.SetStateAction<SpiritType[]>>;
-	beerStyles: BeerStyle[];
+	allBeerStyles: BeerStyle[];
+	beerStyleCounts: Map<BeerStyle, number>;
 	selectedBeerStyles: BeerStyle[];
 	setSelectedBeerStyles: React.Dispatch<React.SetStateAction<BeerStyle[]>>;
 	setActiveCategoryTab: React.Dispatch<React.SetStateAction<ProductCategory | "All">>;
@@ -803,17 +945,20 @@ function AdvancedFilters({
 						</div>
 					</div>
 
-					{/* Wine Types */}
-					{wineTypes.length > 0 && (
+					{/* Wine Types - Zepto/Zomato style: show all with counts */}
+					{allWineTypes.length > 0 && (
 						<div className="space-y-2">
 							<p className="text-sm font-medium text-maroon">Wine Types</p>
 							<div className="flex flex-wrap gap-2">
-								{wineTypes.map((t) => {
+								{allWineTypes.map((t) => {
 									const active = selectedWineTypes.includes(t);
+									const count = wineTypeCounts.get(t) || 0;
+									const isDisabled = count === 0;
 									return (
 										<button
 											key={t}
-											onClick={() =>
+											onClick={() => {
+												if (isDisabled) return;
 												setSelectedWineTypes((prev) => {
 													const exists = prev.includes(t);
 													const next = exists ? prev.filter((x) => x !== t) : [...prev, t];
@@ -822,17 +967,23 @@ function AdvancedFilters({
 														setActiveCategoryTab("Wine");
 													}
 													return next;
-												})
-											}
+												});
+											}}
+											disabled={isDisabled}
 											className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
 												active
 													? "border-maroon/30 bg-maroon/5 text-maroon"
+													: isDisabled
+													? "border-maroon/10 bg-gray-100 text-maroon/30 cursor-not-allowed"
 													: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
 											}`}
 											type="button"
 										>
 											<Wine size={12} />
-											{t}
+											<span>{t}</span>
+											<span className={`text-[10px] ${isDisabled ? "text-maroon/20" : "text-maroon/50"}`}>
+												({count})
+											</span>
 										</button>
 									);
 								})}
@@ -840,17 +991,20 @@ function AdvancedFilters({
 						</div>
 					)}
 
-					{/* Spirit Types */}
-					{spiritTypes.length > 0 && (
+					{/* Spirit Types - Zepto/Zomato style: show all with counts */}
+					{allSpiritTypes.length > 0 && (
 						<div className="space-y-2">
 							<p className="text-sm font-medium text-maroon">Spirit Types</p>
 							<div className="flex flex-wrap gap-2">
-								{spiritTypes.map((t) => {
+								{allSpiritTypes.map((t) => {
 									const active = selectedSpiritTypes.includes(t);
+									const count = spiritTypeCounts.get(t) || 0;
+									const isDisabled = count === 0;
 									return (
 										<button
 											key={t}
-											onClick={() =>
+											onClick={() => {
+												if (isDisabled) return;
 												setSelectedSpiritTypes((prev) => {
 													const exists = prev.includes(t);
 													const next = exists ? prev.filter((x) => x !== t) : [...prev, t];
@@ -858,17 +1012,23 @@ function AdvancedFilters({
 														setActiveCategoryTab("Spirit");
 													}
 													return next;
-												})
-											}
+												});
+											}}
+											disabled={isDisabled}
 											className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
 												active
 													? "border-maroon/30 bg-maroon/5 text-maroon"
+													: isDisabled
+													? "border-maroon/10 bg-gray-100 text-maroon/30 cursor-not-allowed"
 													: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
 											}`}
 											type="button"
 										>
 											<Sparkles size={12} />
-											{t}
+											<span>{t}</span>
+											<span className={`text-[10px] ${isDisabled ? "text-maroon/20" : "text-maroon/50"}`}>
+												({count})
+											</span>
 										</button>
 									);
 								})}
@@ -876,17 +1036,20 @@ function AdvancedFilters({
 						</div>
 					)}
 
-					{/* Beer Styles */}
-					{beerStyles.length > 0 && (
+					{/* Beer Styles - Zepto/Zomato style: show all with counts */}
+					{allBeerStyles.length > 0 && (
 						<div className="space-y-2">
 							<p className="text-sm font-medium text-maroon">Beer Styles</p>
 							<div className="flex flex-wrap gap-2">
-								{beerStyles.map((t) => {
+								{allBeerStyles.map((t) => {
 									const active = selectedBeerStyles.includes(t);
+									const count = beerStyleCounts.get(t) || 0;
+									const isDisabled = count === 0;
 									return (
 										<button
 											key={t}
-											onClick={() =>
+											onClick={() => {
+												if (isDisabled) return;
 												setSelectedBeerStyles((prev) => {
 													const exists = prev.includes(t);
 													const next = exists ? prev.filter((x) => x !== t) : [...prev, t];
@@ -894,17 +1057,23 @@ function AdvancedFilters({
 														setActiveCategoryTab("Beer");
 													}
 													return next;
-												})
-											}
+												});
+											}}
+											disabled={isDisabled}
 											className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
 												active
 													? "border-maroon/30 bg-maroon/5 text-maroon"
+													: isDisabled
+													? "border-maroon/10 bg-gray-100 text-maroon/30 cursor-not-allowed"
 													: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
 											}`}
 											type="button"
 										>
 											<Beer size={12} />
-											{t}
+											<span>{t}</span>
+											<span className={`text-[10px] ${isDisabled ? "text-maroon/20" : "text-maroon/50"}`}>
+												({count})
+											</span>
 										</button>
 									);
 								})}
@@ -912,30 +1081,39 @@ function AdvancedFilters({
 						</div>
 					)}
 
-					{/* Regions */}
-					{regions.length > 0 && (
+					{/* Regions - Zepto/Zomato style: show all with counts */}
+					{allRegions.length > 0 && (
 						<div className="space-y-2">
 							<p className="text-sm font-medium text-maroon">Regions</p>
 							<div className="flex flex-wrap gap-2">
-								{regions.map((r) => {
+								{allRegions.map((r) => {
 									const active = selectedRegions.includes(r);
+									const count = regionCounts.get(r) || 0;
+									const isDisabled = count === 0;
 									return (
 										<button
 											key={r}
-											onClick={() =>
+											onClick={() => {
+												if (isDisabled) return;
 												setSelectedRegions((prev) =>
 													prev.includes(r) ? prev.filter((x) => x !== r) : [...prev, r]
-												)
-											}
+												);
+											}}
+											disabled={isDisabled}
 											className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
 												active
 													? "border-maroon/30 bg-maroon/5 text-maroon"
+													: isDisabled
+													? "border-maroon/10 bg-gray-100 text-maroon/30 cursor-not-allowed"
 													: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
 											}`}
 											type="button"
 										>
 											<MapPin size={12} />
-											{r}
+											<span>{r}</span>
+											<span className={`text-[10px] ${isDisabled ? "text-maroon/20" : "text-maroon/50"}`}>
+												({count})
+											</span>
 										</button>
 									);
 								})}
