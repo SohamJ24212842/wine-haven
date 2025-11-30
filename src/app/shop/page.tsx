@@ -945,178 +945,166 @@ function AdvancedFilters({
 						</div>
 					</div>
 
-					{/* Wine Types - Zepto/Zomato style: show all with counts */}
-					{allWineTypes.length > 0 && (
+					{/* Wine Types - Hide options with 0 count */}
+					{allWineTypes.filter(t => (wineTypeCounts.get(t) || 0) > 0).length > 0 && (
 						<div className="space-y-2">
 							<p className="text-sm font-medium text-maroon">Wine Types</p>
 							<div className="flex flex-wrap gap-2">
-								{allWineTypes.map((t) => {
-									const active = selectedWineTypes.includes(t);
-									const count = wineTypeCounts.get(t) || 0;
-									const isDisabled = count === 0;
-									return (
-										<button
-											key={t}
-											onClick={() => {
-												if (isDisabled) return;
-												setSelectedWineTypes((prev) => {
-													const exists = prev.includes(t);
-													const next = exists ? prev.filter((x) => x !== t) : [...prev, t];
-													// If any wine types are selected, focus category on Wine
-													if (next.length > 0) {
-														setActiveCategoryTab("Wine");
-													}
-													return next;
-												});
-											}}
-											disabled={isDisabled}
-											className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
-												active
-													? "border-maroon/30 bg-maroon/5 text-maroon"
-													: isDisabled
-													? "border-maroon/10 bg-gray-100 text-maroon/30 cursor-not-allowed"
-													: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
-											}`}
-											type="button"
-										>
-											<Wine size={12} />
-											<span>{t}</span>
-											<span className={`text-[10px] ${isDisabled ? "text-maroon/20" : "text-maroon/50"}`}>
-												({count})
-											</span>
-										</button>
-									);
-								})}
+								{allWineTypes
+									.filter(t => (wineTypeCounts.get(t) || 0) > 0)
+									.map((t) => {
+										const active = selectedWineTypes.includes(t);
+										const count = wineTypeCounts.get(t) || 0;
+										return (
+											<button
+												key={t}
+												onClick={() => {
+													setSelectedWineTypes((prev) => {
+														const exists = prev.includes(t);
+														const next = exists ? prev.filter((x) => x !== t) : [...prev, t];
+														// If any wine types are selected, focus category on Wine
+														if (next.length > 0) {
+															setActiveCategoryTab("Wine");
+														}
+														return next;
+													});
+												}}
+												className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
+													active
+														? "border-maroon/30 bg-maroon/5 text-maroon"
+														: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
+												}`}
+												type="button"
+											>
+												<Wine size={12} />
+												<span>{t}</span>
+												<span className="text-[10px] text-maroon/50">
+													({count})
+												</span>
+											</button>
+										);
+									})}
 							</div>
 						</div>
 					)}
 
-					{/* Spirit Types - Zepto/Zomato style: show all with counts */}
-					{allSpiritTypes.length > 0 && (
+					{/* Spirit Types - Hide options with 0 count */}
+					{allSpiritTypes.filter(t => (spiritTypeCounts.get(t) || 0) > 0).length > 0 && (
 						<div className="space-y-2">
 							<p className="text-sm font-medium text-maroon">Spirit Types</p>
 							<div className="flex flex-wrap gap-2">
-								{allSpiritTypes.map((t) => {
-									const active = selectedSpiritTypes.includes(t);
-									const count = spiritTypeCounts.get(t) || 0;
-									const isDisabled = count === 0;
-									return (
-										<button
-											key={t}
-											onClick={() => {
-												if (isDisabled) return;
-												setSelectedSpiritTypes((prev) => {
-													const exists = prev.includes(t);
-													const next = exists ? prev.filter((x) => x !== t) : [...prev, t];
-													if (next.length > 0) {
-														setActiveCategoryTab("Spirit");
-													}
-													return next;
-												});
-											}}
-											disabled={isDisabled}
-											className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
-												active
-													? "border-maroon/30 bg-maroon/5 text-maroon"
-													: isDisabled
-													? "border-maroon/10 bg-gray-100 text-maroon/30 cursor-not-allowed"
-													: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
-											}`}
-											type="button"
-										>
-											<Sparkles size={12} />
-											<span>{t}</span>
-											<span className={`text-[10px] ${isDisabled ? "text-maroon/20" : "text-maroon/50"}`}>
-												({count})
-											</span>
-										</button>
-									);
-								})}
+								{allSpiritTypes
+									.filter(t => (spiritTypeCounts.get(t) || 0) > 0)
+									.map((t) => {
+										const active = selectedSpiritTypes.includes(t);
+										const count = spiritTypeCounts.get(t) || 0;
+										return (
+											<button
+												key={t}
+												onClick={() => {
+													setSelectedSpiritTypes((prev) => {
+														const exists = prev.includes(t);
+														const next = exists ? prev.filter((x) => x !== t) : [...prev, t];
+														if (next.length > 0) {
+															setActiveCategoryTab("Spirit");
+														}
+														return next;
+													});
+												}}
+												className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
+													active
+														? "border-maroon/30 bg-maroon/5 text-maroon"
+														: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
+												}`}
+												type="button"
+											>
+												<Sparkles size={12} />
+												<span>{t}</span>
+												<span className="text-[10px] text-maroon/50">
+													({count})
+												</span>
+											</button>
+										);
+									})}
 							</div>
 						</div>
 					)}
 
-					{/* Beer Styles - Zepto/Zomato style: show all with counts */}
-					{allBeerStyles.length > 0 && (
+					{/* Beer Styles - Hide options with 0 count */}
+					{allBeerStyles.filter(t => (beerStyleCounts.get(t) || 0) > 0).length > 0 && (
 						<div className="space-y-2">
 							<p className="text-sm font-medium text-maroon">Beer Styles</p>
 							<div className="flex flex-wrap gap-2">
-								{allBeerStyles.map((t) => {
-									const active = selectedBeerStyles.includes(t);
-									const count = beerStyleCounts.get(t) || 0;
-									const isDisabled = count === 0;
-									return (
-										<button
-											key={t}
-											onClick={() => {
-												if (isDisabled) return;
-												setSelectedBeerStyles((prev) => {
-													const exists = prev.includes(t);
-													const next = exists ? prev.filter((x) => x !== t) : [...prev, t];
-													if (next.length > 0) {
-														setActiveCategoryTab("Beer");
-													}
-													return next;
-												});
-											}}
-											disabled={isDisabled}
-											className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
-												active
-													? "border-maroon/30 bg-maroon/5 text-maroon"
-													: isDisabled
-													? "border-maroon/10 bg-gray-100 text-maroon/30 cursor-not-allowed"
-													: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
-											}`}
-											type="button"
-										>
-											<Beer size={12} />
-											<span>{t}</span>
-											<span className={`text-[10px] ${isDisabled ? "text-maroon/20" : "text-maroon/50"}`}>
-												({count})
-											</span>
-										</button>
-									);
-								})}
+								{allBeerStyles
+									.filter(t => (beerStyleCounts.get(t) || 0) > 0)
+									.map((t) => {
+										const active = selectedBeerStyles.includes(t);
+										const count = beerStyleCounts.get(t) || 0;
+										return (
+											<button
+												key={t}
+												onClick={() => {
+													setSelectedBeerStyles((prev) => {
+														const exists = prev.includes(t);
+														const next = exists ? prev.filter((x) => x !== t) : [...prev, t];
+														if (next.length > 0) {
+															setActiveCategoryTab("Beer");
+														}
+														return next;
+													});
+												}}
+												className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
+													active
+														? "border-maroon/30 bg-maroon/5 text-maroon"
+														: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
+												}`}
+												type="button"
+											>
+												<Beer size={12} />
+												<span>{t}</span>
+												<span className="text-[10px] text-maroon/50">
+													({count})
+												</span>
+											</button>
+										);
+									})}
 							</div>
 						</div>
 					)}
 
-					{/* Regions - Zepto/Zomato style: show all with counts */}
-					{allRegions.length > 0 && (
+					{/* Regions - Hide options with 0 count */}
+					{allRegions.filter(r => (regionCounts.get(r) || 0) > 0).length > 0 && (
 						<div className="space-y-2">
 							<p className="text-sm font-medium text-maroon">Regions</p>
 							<div className="flex flex-wrap gap-2">
-								{allRegions.map((r) => {
-									const active = selectedRegions.includes(r);
-									const count = regionCounts.get(r) || 0;
-									const isDisabled = count === 0;
-									return (
-										<button
-											key={r}
-											onClick={() => {
-												if (isDisabled) return;
-												setSelectedRegions((prev) =>
-													prev.includes(r) ? prev.filter((x) => x !== r) : [...prev, r]
-												);
-											}}
-											disabled={isDisabled}
-											className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
-												active
-													? "border-maroon/30 bg-maroon/5 text-maroon"
-													: isDisabled
-													? "border-maroon/10 bg-gray-100 text-maroon/30 cursor-not-allowed"
-													: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
-											}`}
-											type="button"
-										>
-											<MapPin size={12} />
-											<span>{r}</span>
-											<span className={`text-[10px] ${isDisabled ? "text-maroon/20" : "text-maroon/50"}`}>
-												({count})
-											</span>
-										</button>
-									);
-								})}
+								{allRegions
+									.filter(r => (regionCounts.get(r) || 0) > 0)
+									.map((r) => {
+										const active = selectedRegions.includes(r);
+										const count = regionCounts.get(r) || 0;
+										return (
+											<button
+												key={r}
+												onClick={() => {
+													setSelectedRegions((prev) =>
+														prev.includes(r) ? prev.filter((x) => x !== r) : [...prev, r]
+													);
+												}}
+												className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
+													active
+														? "border-maroon/30 bg-maroon/5 text-maroon"
+														: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
+												}`}
+												type="button"
+											>
+												<MapPin size={12} />
+												<span>{r}</span>
+												<span className="text-[10px] text-maroon/50">
+													({count})
+												</span>
+											</button>
+										);
+									})}
 							</div>
 						</div>
 					)}
