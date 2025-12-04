@@ -136,3 +136,5 @@ The 32GB egress was from:
 
 With these optimizations, egress should drop to **3-5GB/month** (80-90% reduction).
 
+
+

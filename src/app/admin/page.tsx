@@ -793,6 +793,17 @@ function AdminPageContent() {
 					</button>
 					<button
 						onClick={() => {
+							// Download CSV export
+							window.open("/api/products/export-csv", "_blank");
+						}}
+						className="flex items-center gap-2 rounded-md border border-maroon/20 bg-white px-4 py-2 text-sm text-maroon hover:bg-soft-gray transition-colors"
+						title="Export products to CSV for Deliveroo"
+					>
+						<Package size={16} />
+						Export CSV
+					</button>
+					<button
+						onClick={() => {
 							setShowAddForm(true);
 							setEditingProduct(null);
 						}}

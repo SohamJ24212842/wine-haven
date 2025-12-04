@@ -244,7 +244,7 @@ export function ProductCard({ product, allProducts = [] }: ProductCardProps) {
 							{product.onSale && product.salePrice && product.salePrice > 0 ? (
 								<>
 									<span className="text-base font-bold text-red-600">
-										{shouldShowEachForBeer(product) ? "each " : ""}€{product.salePrice.toFixed(2)}
+										€{product.salePrice.toFixed(2)}{shouldShowEachForBeer(product) ? " each" : ""}
 									</span>
 									{product.price && product.price > 0 && (
 										<span className="text-xs text-maroon/50 line-through">€{product.price.toFixed(2)}</span>
@@ -257,7 +257,7 @@ export function ProductCard({ product, allProducts = [] }: ProductCardProps) {
 								</>
 							) : (
 								<span className="text-base font-bold text-maroon">
-									{shouldShowEachForBeer(product) ? "each " : ""}€{(product.price && product.price > 0) ? product.price.toFixed(2) : "0.00"}
+									€{(product.price && product.price > 0) ? product.price.toFixed(2) : "0.00"}{shouldShowEachForBeer(product) ? " each" : ""}
 								</span>
 							)}
 						</div>

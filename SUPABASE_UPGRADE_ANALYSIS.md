@@ -115,3 +115,5 @@
 - **Also make shop page server-side** (ISR) for even better performance
 - **Combined**: You'll get 3-5x faster first load
 
+
+

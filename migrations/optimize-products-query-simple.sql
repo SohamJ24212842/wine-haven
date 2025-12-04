@@ -41,3 +41,5 @@ ANALYZE products;
 -- - Partial indexes (WHERE condition) are smaller and faster for boolean flags
 -- - Composite indexes help with multi-column filters
 
+
+

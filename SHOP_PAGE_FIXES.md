@@ -22,3 +22,5 @@
 1. **Responsive Filters**: Compute available filter options based on current filter state
 2. **Server-Side Conversion**: Create server component that fetches data, pass to client component
 
+
+

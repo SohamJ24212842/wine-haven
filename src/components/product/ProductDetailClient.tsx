@@ -245,7 +245,7 @@ export function ProductDetailClient({ product, discountPercentage, allProducts: 
 						{product.onSale && product.salePrice ? (
 							<>
 								<span className="text-3xl font-bold text-red-600">
-									{shouldShowEachForBeer(product) ? "each " : ""}€{product.salePrice.toFixed(2)}
+									€{product.salePrice.toFixed(2)}{shouldShowEachForBeer(product) ? " each" : ""}
 								</span>
 								<span className="text-xl text-maroon/50 line-through">€{product.price.toFixed(2)}</span>
 								{discountPercentage && (
@@ -259,7 +259,7 @@ export function ProductDetailClient({ product, discountPercentage, allProducts: 
 							</>
 						) : (
 							<span className="text-3xl font-bold text-maroon">
-								{shouldShowEachForBeer(product) ? "each " : ""}€{product.price.toFixed(2)}
+								€{product.price.toFixed(2)}{shouldShowEachForBeer(product) ? " each" : ""}
 							</span>
 						)}
 					</div>
