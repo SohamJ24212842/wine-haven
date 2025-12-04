@@ -169,10 +169,9 @@ function AdminPageContent() {
 	const fetchProducts = async () => {
 		setLoading(true);
 		try {
-			// Use cache: 'no-cache' for admin to ensure fresh data when needed
-			// But API itself is cached, so this is still fast
-			const response = await fetch("/api/products", {
-				cache: 'no-cache', // Admin needs fresh data, but API cache still helps
+			// Force fresh data for admin - add timestamp to bypass cache
+			const response = await fetch(`/api/products?t=${Date.now()}`, {
+				cache: 'no-store', // Force no cache
 			});
 			if (response.ok) {
 				const data = await response.json();
@@ -881,7 +880,10 @@ function AdminPageContent() {
 												alert(message);
 												setShowBulkImport(false);
 												setBulkImportJson("");
-												fetchProducts();
+												// Force refresh with cache busting
+												setTimeout(() => {
+													fetchProducts();
+												}, 500);
 											} else {
 												alert(`Import failed: ${result.error}\n\n${result.details || ""}`);
 											}

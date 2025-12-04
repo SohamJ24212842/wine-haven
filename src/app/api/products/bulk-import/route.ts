@@ -96,9 +96,11 @@ export async function POST(request: NextRequest) {
     console.log(`Bulk import complete: ${results.success.length} success, ${results.skipped.length} skipped, ${results.errors.length} errors`);
 
     // Revalidate homepage and shop page to reflect changes immediately
+    // Also revalidate the products API route to clear cache
     if (results.success.length > 0) {
       revalidatePath('/');
       revalidatePath('/shop');
+      revalidatePath('/api/products'); // Clear API cache
     }
 
     // Show first 10 errors in the response for debugging
