@@ -8,8 +8,9 @@ type Params = Promise<{
   slug: string;
 }>;
 
-// Cache product API responses for 1 hour
-export const revalidate = 3600;
+// Make this route dynamic to avoid build-time validation issues
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET(request: NextRequest, { params }: { params: Params }) {
   try {
