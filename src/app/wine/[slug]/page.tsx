@@ -5,21 +5,23 @@ import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/typography/SectionHeading";
 import { Metadata } from "next";
 
-type Params = { slug: string };
+type Params = Promise<{ slug: string }>;
 
 export async function generateStaticParams() {
 	return wines.map((w) => ({ slug: w.slug }));
 }
 
-export function generateMetadata({ params }: { params: Params }): Metadata {
-	const wine = wines.find((w) => w.slug === params.slug);
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+	const { slug } = await params;
+	const wine = wines.find((w) => w.slug === slug);
 	return {
 		title: wine ? `${wine.name} | Wine Haven` : "Wine | Wine Haven",
 	};
 }
 
-export default function WineDetailPage({ params }: { params: Params }) {
-	const wine = wines.find((w) => w.slug === params.slug);
+export default async function WineDetailPage({ params }: { params: Params }) {
+	const { slug } = await params;
+	const wine = wines.find((w) => w.slug === slug);
 	if (!wine) return notFound();
 
 	return (

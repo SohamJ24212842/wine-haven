@@ -22,10 +22,6 @@ const nextConfig: NextConfig = {
 			},
 		],
 	},
-	turbopack: {
-		// Ensure Turbopack resolves the correct project root when multiple lockfiles exist
-		root: __dirname,
-	},
 	// Optimize video delivery
 	async headers() {
 		return [
