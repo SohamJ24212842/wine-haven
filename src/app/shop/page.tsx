@@ -12,21 +12,7 @@ export const revalidate = 3600;
 
 export default async function ShopPage() {
 	// Fetch products server-side - this is cached by ISR
-	// Handle timeouts gracefully during build - return empty array if query fails
-	let products: Product[] = [];
-	try {
-		// Set a timeout for the query to prevent build failures
-		const productsPromise = getAllProducts();
-		const timeoutPromise = new Promise<Product[]>((_, reject) => 
-			setTimeout(() => reject(new Error('Query timeout')), 30000) // 30 second timeout
-		);
-		
-		products = await Promise.race([productsPromise, timeoutPromise]);
-	} catch (error) {
-		console.error('Error fetching products during build, using empty array:', error);
-		// Return empty array - client will fetch via API on demand
-		products = [];
-	}
+	const products = await getAllProducts();
 	
 	// Pass to client component for filtering/interactivity
 	return (

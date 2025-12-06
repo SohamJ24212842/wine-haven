@@ -342,18 +342,32 @@ export async function getProductBySlug(slugParam: string): Promise<Product | nul
           const product = mapRowToProduct(data);
           setCached(cacheKey, product); // Cache the result
           return product;
+        } else if (error) {
+          console.error(`Product lookup failed for slug "${slugParam}":`, error);
         }
       } catch (error) {
         console.error('Error fetching from Supabase:', error);
+        // Don't throw - fall through to local data fallback
       }
     }
   }
 
   // Fallback to local data - normalized comparison
-  const { products } = await import('@/data/products');
-  const product = products.find(p => normalizeText(p.slug) === normalizedSlug) || null;
-  setCached(cacheKey, product); // Cache even if null (not found)
-  return product;
+  try {
+    const { products } = await import('@/data/products');
+    const product = products.find(p => normalizeText(p.slug) === normalizedSlug) || null;
+    if (!product) {
+      console.error(`Product not found in local data for slug "${slugParam}" (normalized: "${normalizedSlug}")`);
+      // Log available slugs for debugging (first 10)
+      const availableSlugs = products.slice(0, 10).map(p => p.slug);
+      console.error('Sample available slugs:', availableSlugs);
+    }
+    setCached(cacheKey, product); // Cache even if null (not found)
+    return product;
+  } catch (error) {
+    console.error('Error loading local products data:', error);
+    return null;
+  }
 }
 
 // Create product (admin only)

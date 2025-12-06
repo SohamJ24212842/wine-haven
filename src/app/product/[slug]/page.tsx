@@ -27,9 +27,29 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
 		const { slug } = await params;
 		
 		// Fetch product first - this is critical
-		const product = await getProductBySlug(slug);
+		// Add timeout to prevent hanging
+		let product: Product | null = null;
+		try {
+			const productPromise = getProductBySlug(slug);
+			const timeoutPromise = new Promise<Product | null>((_, reject) => 
+				setTimeout(() => reject(new Error('Product lookup timeout')), 10000) // 10 second timeout
+			);
+			product = await Promise.race([productPromise, timeoutPromise]);
+		} catch (error) {
+			console.error(`Error fetching product with slug "${slug}":`, error);
+			// Try one more time with a simpler query
+			try {
+				product = await getProductBySlug(slug);
+			} catch (retryError) {
+				console.error(`Retry failed for slug "${slug}":`, retryError);
+				return notFound();
+			}
+		}
 		
-		if (!product) return notFound();
+		if (!product) {
+			console.error(`Product not found for slug: "${slug}"`);
+			return notFound();
+		}
 
 		// Try to fetch all products for variety detection, but don't fail if it times out
 		let allProducts: Product[] = [];

@@ -22,65 +22,18 @@ export function ShopPageClient({ initialProducts }: ShopPageClientProps) {
 	const router = useRouter();
 	const [products, setProducts] = useState<Product[]>(initialProducts);
 	const [allProducts, setAllProducts] = useState<Product[]>(initialProducts); // For variety detection - use initial products
-	const [loading, setLoading] = useState(initialProducts.length === 0); // Show loading if no initial products
+	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const fetchAbortControllerRef = useRef<AbortController | null>(null);
-	const hasFetchedRef = useRef(false); // Track if we've already fetched products
-
-	// Fetch products from API if initialProducts is empty (server-side fetch failed)
-	useEffect(() => {
-		if (initialProducts.length === 0 && !hasFetchedRef.current) {
-			hasFetchedRef.current = true;
-			const fetchProducts = async () => {
-				if (fetchAbortControllerRef.current) {
-					fetchAbortControllerRef.current.abort();
-				}
-
-				const abortController = new AbortController();
-				fetchAbortControllerRef.current = abortController;
-
-				try {
-					setLoading(true);
-					setError(null);
-					const response = await fetch('/api/products', {
-						signal: abortController.signal,
-					});
-
-					if (response.ok) {
-						const data = await response.json();
-						const productsArray = Array.isArray(data) ? data : (data.products || []);
-						setProducts(productsArray);
-						setAllProducts(productsArray);
-						setError(null);
-					} else {
-						setError(`API error: ${response.status}`);
-					}
-				} catch (err: any) {
-					if (err.name === 'AbortError') return;
-					console.error('Failed to fetch products:', err);
-					setError(err.message || 'Failed to fetch products');
-				} finally {
-					if (!abortController.signal.aborted) {
-						setLoading(false);
-					}
-				}
-			};
-
-			fetchProducts();
-		}
-	}, [initialProducts]);
 
 	// Update products when search query changes (client-side search)
 	useEffect(() => {
 		const searchQuery = searchParams.get("search") || searchParams.get("q");
 		
-		// If no search query, use current products (which may have been fetched from API)
+		// If no search query, use initial products
 		if (!searchQuery) {
-			// Only update if we have products, otherwise keep current state
-			if (initialProducts.length > 0) {
-				setProducts(initialProducts);
-				setAllProducts(initialProducts);
-			}
+			setProducts(initialProducts);
+			setAllProducts(initialProducts);
 			return;
 		}
 
