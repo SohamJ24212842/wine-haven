@@ -19,7 +19,12 @@ export default async function ShopPage() {
 		const timeoutPromise = new Promise<Product[]>((_, reject) => 
 			setTimeout(() => reject(new Error('Query timeout')), 30000) // 30 second timeout
 		);
-		products = await Promise.race([productsPromise, timeoutPromise]) as Product[];
+		const result = await Promise.race([productsPromise, timeoutPromise]);
+		if (Array.isArray(result)) {
+			products = result as Product[];
+		} else {
+			products = [];
+		}
 	} catch (error) {
 		console.error('Error fetching products during build (non-fatal):', error);
 		// Return empty array - page will still work, client will fetch if needed
