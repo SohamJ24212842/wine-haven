@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getProductBySlug, getAllProducts } from "@/lib/db/products";
 import { Metadata } from "next";
 import { ProductDetailClient } from "@/components/product/ProductDetailClient";
+import { Product } from "@/types/product";
 
 type Params = Promise<{ slug: string }>;
 
@@ -25,14 +26,24 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
 	try {
 		const { slug } = await params;
 		
-		// Fetch product and all products in parallel for better performance
-		// Both use in-memory cache, so this is very fast
-		const [product, allProducts] = await Promise.all([
-			getProductBySlug(slug),
-			getAllProducts(), // Always fetch for variety detection (cached, so fast)
-		]);
+		// Fetch product first - this is critical
+		const product = await getProductBySlug(slug);
 		
 		if (!product) return notFound();
+
+		// Try to fetch all products for variety detection, but don't fail if it times out
+		let allProducts: Product[] = [];
+		try {
+			const allProductsPromise = getAllProducts();
+			const timeoutPromise = new Promise<Product[]>((_, reject) => 
+				setTimeout(() => reject(new Error('Query timeout')), 15000) // 15 second timeout
+			);
+			allProducts = await Promise.race([allProductsPromise, timeoutPromise]);
+		} catch (error) {
+			console.error('Error fetching all products for variety detection (non-critical):', error);
+			// Continue without varieties - product page will still work
+			allProducts = [];
+		}
 
 		const discountPercentage = product.onSale && product.salePrice 
 			? calculateDiscountPercentage(product.price, product.salePrice)
@@ -41,7 +52,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
 		return <ProductDetailClient 
 			product={product} 
 			discountPercentage={discountPercentage}
-			allProducts={allProducts} // Always provided from server
+			allProducts={allProducts} // May be empty if fetch failed, but that's okay
 		/>;
 	} catch (error) {
 		console.error('Error loading product page:', error);
