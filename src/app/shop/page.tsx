@@ -20,8 +20,7 @@ export default async function ShopPage() {
 		const timeoutPromise = new Promise<Product[]>((_, reject) => 
 			setTimeout(() => reject(new Error('Query timeout')), 15000) // 15 second timeout
 		);
-		const result = await Promise.race([productsPromise, timeoutPromise]);
-		products = Array.isArray(result) ? result : [];
+		products = await Promise.race([productsPromise, timeoutPromise]) as Product[];
 	} catch (error) {
 		console.error('Error fetching products (non-fatal, will fetch client-side):', error);
 		// Return empty array - ShopPageClient will fetch from API
