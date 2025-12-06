@@ -5,27 +5,15 @@ import { Suspense } from "react";
 import { Container } from "@/components/ui/Container";
 import { Product } from "@/types/product";
 
-// ISR: Revalidate every hour (3600 seconds)
-// This means the page is statically generated and cached for 1 hour
-// After 1 hour, the next request will regenerate the page in the background
-export const revalidate = 3600;
+// Make this page dynamic (not ISR) to avoid build-time timeouts
+// This fetches server-side on each request, which is fast and avoids build failures
+export const dynamic = 'force-dynamic';
+export const revalidate = 0; // No static generation
 
 export default async function ShopPage() {
-	// Fetch products server-side - this is cached by ISR
-	// Handle timeouts gracefully during build to prevent build failures
-	let products: Product[] = [];
-	try {
-		const productsPromise = getAllProducts();
-		const timeoutPromise = new Promise<Product[]>((_, reject) => 
-			setTimeout(() => reject(new Error('Query timeout')), 20000) // 20 second timeout
-		);
-		
-		products = await Promise.race([productsPromise, timeoutPromise]) as Product[];
-	} catch (error) {
-		console.error('Error fetching products during build (non-fatal):', error);
-		// Return empty array - page will still work, products will be fetched client-side if needed
-		products = [];
-	}
+	// Fetch products server-side at request time (not during build)
+	// This is fast because it's server-side and avoids build timeout issues
+	const products = await getAllProducts();
 	
 	// Pass to client component for filtering/interactivity
 	return (
