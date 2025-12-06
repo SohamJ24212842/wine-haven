@@ -5,23 +5,34 @@ import { PromotionalMedia } from "@/components/home/PromotionalMedia";
 import { SectionDivider } from "@/components/ui/SectionDivider";
 import { getFeaturedProducts, getNewProducts, getChristmasGifts } from "@/lib/db/products";
 
-// Aggressive caching to reduce database load and egress
-// Revalidate every 1 hour (3600 seconds) - products don't change frequently
-// This significantly reduces database queries and data transfer
-export const revalidate = 3600;
+// Make homepage dynamic to avoid build-time timeouts
+// Supabase queries are timing out during build, so fetch at runtime instead
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function Home() {
   // Fetch only what we need with optimized queries
-  // This reduces database load significantly
+  // Add timeout handling to prevent hanging during build
   // Use Promise.allSettled to prevent one slow query from blocking the page
   // Note: Promotional media is fetched client-side to avoid bloating the static page
   // (videos/images would make the page too large for Vercel's 19MB limit)
   // Note: allProducts for variety detection is fetched client-side to keep page size under 19MB
+  
+  // Wrap each query with timeout to prevent hanging
+  const createTimeoutPromise = <T,>(promise: Promise<T>, timeoutMs: number): Promise<T> => {
+    return Promise.race([
+      promise,
+      new Promise<T>((_, reject) => 
+        setTimeout(() => reject(new Error('Query timeout')), timeoutMs)
+      )
+    ]);
+  };
+
   const results = await Promise.allSettled([
-    getFeaturedProducts("Wine", 10),
-    getFeaturedProducts("Spirit", 10),
-    getNewProducts(10),
-    getChristmasGifts(10),
+    createTimeoutPromise(getFeaturedProducts("Wine", 10), 20000).catch(() => []),
+    createTimeoutPromise(getFeaturedProducts("Spirit", 10), 20000).catch(() => []),
+    createTimeoutPromise(getNewProducts(10), 20000).catch(() => []),
+    createTimeoutPromise(getChristmasGifts(10), 20000).catch(() => []),
   ]);
 
   // Extract results, defaulting to empty arrays if any query fails
