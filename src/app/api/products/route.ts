@@ -13,7 +13,13 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const search = searchParams.get('search') || undefined;
     
-    const products = await getAllProducts(search);
+    // Add timeout handling to prevent hanging requests
+    const productsPromise = getAllProducts(search);
+    const timeoutPromise = new Promise<Product[]>((_, reject) =>
+      setTimeout(() => reject(new Error('Query timeout')), 45000) // 45 second timeout
+    );
+    
+    const products = await Promise.race([productsPromise, timeoutPromise]) as Product[];
     
     // Aggressive cache headers to reduce egress
     // Cache for 1 hour, allow stale for 24 hours
@@ -30,13 +36,24 @@ export async function GET(request: NextRequest) {
     // Provide more detailed error information
     const errorMessage = error?.message || 'Failed to fetch products';
     const isSupabaseError = errorMessage.includes('Supabase');
+    const isTimeout = errorMessage.includes('timeout');
+    
+    // Log detailed error for debugging
+    console.error('API Products Error Details:', {
+      message: errorMessage,
+      isSupabaseError,
+      isTimeout,
+      stack: error?.stack,
+    });
     
     return NextResponse.json(
       { 
         error: errorMessage,
-        details: isSupabaseError 
-          ? 'Supabase is enabled but query failed. Check your database connection and environment variables.'
-          : 'Failed to fetch products from database'
+        details: isTimeout
+          ? 'Database query timed out. The database may be slow or unavailable.'
+          : isSupabaseError 
+            ? 'Supabase is enabled but query failed. Check your database connection and environment variables.'
+            : 'Failed to fetch products from database'
       },
       { status: 500 }
     );

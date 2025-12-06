@@ -1,5 +1,5 @@
 // Server-side shop page with ISR (Incremental Static Regeneration)
-import { getAllProducts } from "@/lib/db/products";
+import { getProductsForShop } from "@/lib/db/products";
 import { ShopPageClient } from "./ShopPageClient";
 import { Suspense } from "react";
 import { Container } from "@/components/ui/Container";
@@ -11,16 +11,24 @@ import { Product } from "@/types/product";
 export const revalidate = 3600;
 
 export default async function ShopPage() {
-	// Fetch products server-side - this is cached by ISR
-	// Handle timeouts gracefully during build - return empty array if query fails
+	// Fetch optimized products for shop page (removes heavy fields to stay under 19MB)
+	// Removed: images array, taste_profile, food_pairing (not needed for product cards)
 	let products: Product[] = [];
 	try {
-		const productsPromise = getAllProducts();
-		const timeoutPromise = new Promise<Product[]>((_, reject) => 
-			setTimeout(() => reject(new Error('Query timeout')), 30000) // 30 second timeout
-		);
-		const result = await Promise.race([productsPromise, timeoutPromise]);
-		products = (result as Product[]) || [];
+		// Wrap with timeout to prevent hanging during build
+		const createTimeoutPromise = <T,>(promise: Promise<T>, timeoutMs: number): Promise<T> => {
+			return Promise.race([
+				promise,
+				new Promise<T>((_, reject) =>
+					setTimeout(() => reject(new Error('Query timeout')), timeoutMs)
+				)
+			]);
+		};
+		
+		products = await createTimeoutPromise(getProductsForShop(), 30000);
+		if (!Array.isArray(products)) {
+			products = [];
+		}
 	} catch (error) {
 		console.error('Error fetching products during build (non-fatal):', error);
 		// Return empty array - page will still work, client will fetch if needed

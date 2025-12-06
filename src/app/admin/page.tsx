@@ -170,18 +170,41 @@ function AdminPageContent() {
 		setLoading(true);
 		try {
 			// Force fresh data for admin - add timestamp to bypass cache
+			// Add timeout to prevent hanging
+			const controller = new AbortController();
+			const timeoutId = setTimeout(() => controller.abort(), 50000); // 50 second timeout
+			
 			const response = await fetch(`/api/products?t=${Date.now()}`, {
 				cache: 'no-store', // Force no cache
+				signal: controller.signal,
 			});
+			
+			clearTimeout(timeoutId);
+			
 			if (response.ok) {
 				const data = await response.json();
-				setProductsList(data);
+				// Check if response contains error (API might return 200 with error object)
+				if (data.error) {
+					console.error("API returned error:", data);
+					alert(`Failed to fetch products: ${data.error}\n\n${data.details || ''}\n\nFalling back to local data.`);
+					setProductsList(products);
+				} else {
+					setProductsList(Array.isArray(data) ? data : []);
+				}
 			} else {
+				const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+				console.error("API error response:", errorData);
+				alert(`Failed to fetch products: ${errorData.error || 'Unknown error'}\n\nFalling back to local data.`);
 				// Fallback to local data if API fails
 				setProductsList(products);
 			}
-		} catch (error) {
+		} catch (error: any) {
 			console.error("Error fetching products:", error);
+			if (error.name === 'AbortError') {
+				alert('Request timed out. The database may be slow. Falling back to local data.');
+			} else {
+				alert(`Failed to fetch products: ${error.message || 'Network error'}\n\nFalling back to local data.`);
+			}
 			// Fallback to local data
 			setProductsList(products);
 		} finally {

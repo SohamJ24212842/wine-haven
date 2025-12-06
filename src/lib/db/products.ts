@@ -126,6 +126,14 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
     return cached;
   }
 
+  // Log Supabase status for debugging
+  if (!USE_SUPABASE) {
+    console.warn('⚠️ Supabase not enabled. USE_SUPABASE check:', {
+      NEXT_PUBLIC_USE_SUPABASE: process.env.NEXT_PUBLIC_USE_SUPABASE,
+      NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Set' : 'Not set',
+    });
+  }
+
   // Try Supabase if configured
   if (USE_SUPABASE) {
     const supabase = createServerClient();
@@ -175,6 +183,7 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
 
         // If data exists (even if empty), use it
         if (data !== null && data !== undefined) {
+          console.log(`✅ Fetched ${data.length} products from Supabase`);
           let results = data.map(mapRowToProduct);
           
           // Client-side normalization filter as fallback for diacritics
@@ -286,6 +295,95 @@ export async function getAllProducts(searchQuery?: string): Promise<Product[]> {
   // Cache local data results too
   setCached(cacheKey, products);
   return products;
+}
+
+// Get products for shop page ISR - optimized to stay under 19MB
+// Removes heavy fields (images array, taste_profile, food_pairing) that aren't needed for initial display
+export async function getProductsForShop(): Promise<Product[]> {
+  const cacheKey = 'products_for_shop';
+  const cached = getCached<Product[]>(cacheKey);
+  if (cached) {
+    return cached;
+  }
+
+  // Log Supabase status for debugging
+  if (!USE_SUPABASE) {
+    console.warn('⚠️ [getProductsForShop] Supabase not enabled. USE_SUPABASE check:', {
+      NEXT_PUBLIC_USE_SUPABASE: process.env.NEXT_PUBLIC_USE_SUPABASE,
+      NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Set' : 'Not set',
+    });
+  }
+
+  if (USE_SUPABASE) {
+    const supabase = createServerClient();
+    if (supabase) {
+      try {
+        // Fetch only fields needed for shop page display
+        // REMOVED: images (array - can be large), taste_profile, food_pairing (text fields)
+        // These aren't needed for initial product card display
+        const { data, error } = await supabase
+          .from('products')
+          .select('slug, category, name, price, image, country, region, producer, grapes, wine_type, spirit_type, beer_style, abv, volume_ml, featured, new, on_sale, sale_price, stock, christmas_gift, created_at')
+          .order('created_at', { ascending: false })
+          .limit(1000);
+
+        if (error) {
+          console.error('❌ Supabase query error:', {
+            message: error.message,
+            details: error.details,
+            hint: error.hint,
+            code: error.code,
+          });
+          throw new Error(`Supabase query failed: ${error.message}`);
+        }
+
+        if (data !== null && data !== undefined) {
+          console.log(`✅ [getProductsForShop] Fetched ${data.length} products from Supabase`);
+          const results = data.map((row: any) => ({
+            slug: row.slug,
+            category: row.category,
+            name: row.name,
+            price: parseFloat(row.price),
+            image: row.image || '',
+            country: row.country || '',
+            region: row.region || undefined,
+            producer: row.producer || undefined,
+            grapes: Array.isArray(row.grapes) ? row.grapes : (typeof row.grapes === 'string' && row.grapes.length ? row.grapes.split(',').map((g: string) => g.trim()).filter(Boolean) : undefined),
+            wineType: row.wine_type || undefined,
+            spiritType: row.spirit_type || undefined,
+            beerStyle: row.beer_style || undefined,
+            abv: row.abv ? parseFloat(row.abv) : undefined,
+            volumeMl: row.volume_ml || undefined,
+            featured: row.featured === true || row.featured === 'true' || row.featured === 1,
+            new: row.new === true || row.new === 'true' || row.new === 1,
+            onSale: row.on_sale === true || row.on_sale === 'true' || row.on_sale === 1,
+            salePrice: row.sale_price ? parseFloat(row.sale_price) : undefined,
+            stock: row.stock || 0,
+            christmasGift: row.christmas_gift === true || row.christmas_gift === 'true' || row.christmas_gift === 1,
+            // Set defaults for removed fields
+            description: '',
+            images: undefined,
+            tasteProfile: undefined,
+            foodPairing: undefined,
+          } as Product));
+
+          setCached(cacheKey, results);
+          return results;
+        }
+      } catch (error) {
+        console.error('Error fetching products for shop:', error);
+      }
+    }
+  }
+
+  // Fallback to local data
+  const { products } = await import('@/data/products');
+  return products.map(p => ({
+    ...p,
+    images: undefined,
+    tasteProfile: undefined,
+    foodPairing: undefined,
+  }));
 }
 
 // Get product by slug
