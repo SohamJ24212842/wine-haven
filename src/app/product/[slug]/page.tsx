@@ -7,10 +7,8 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 type Params = Promise<{ slug: string }>;
 
-// Make this page dynamic (not ISR) to avoid build-time timeouts
-// This fetches server-side on each request, which is fast and avoids build failures
-export const dynamic = 'force-dynamic';
-export const revalidate = 0; // No static generation
+// ISR: Cache product detail pages for 1 hour to reduce database load
+export const revalidate = 3600;
 
 // Optimize metadata - use generic title to avoid duplicate database query
 // The actual product name is in the page content, so this is fine

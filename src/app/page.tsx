@@ -5,20 +5,18 @@ import { PromotionalMedia } from "@/components/home/PromotionalMedia";
 import { SectionDivider } from "@/components/ui/SectionDivider";
 import { getFeaturedProducts, getNewProducts, getChristmasGifts } from "@/lib/db/products";
 
-// Make homepage dynamic to avoid build-time timeouts
-// Supabase queries are timing out during build, so fetch at runtime instead
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// ISR: Revalidate every hour (3600 seconds) - products don't change frequently
+// This significantly reduces database queries and data transfer
+export const revalidate = 3600;
 
 export default async function Home() {
   // Fetch only what we need with optimized queries
-  // Add timeout handling to prevent hanging during build
-  // Use Promise.allSettled to prevent one slow query from blocking the page
+  // Use Promise.allSettled with timeouts to prevent one slow query from blocking the page
   // Note: Promotional media is fetched client-side to avoid bloating the static page
   // (videos/images would make the page too large for Vercel's 19MB limit)
   // Note: allProducts for variety detection is fetched client-side to keep page size under 19MB
   
-  // Wrap each query with timeout to prevent hanging
+  // Wrap each query with timeout to prevent hanging during build
   const createTimeoutPromise = <T,>(promise: Promise<T>, timeoutMs: number): Promise<T> => {
     return Promise.race([
       promise,
@@ -29,10 +27,10 @@ export default async function Home() {
   };
 
   const results = await Promise.allSettled([
-    createTimeoutPromise(getFeaturedProducts("Wine", 10), 20000).catch(() => []),
-    createTimeoutPromise(getFeaturedProducts("Spirit", 10), 20000).catch(() => []),
-    createTimeoutPromise(getNewProducts(10), 20000).catch(() => []),
-    createTimeoutPromise(getChristmasGifts(10), 20000).catch(() => []),
+    createTimeoutPromise(getFeaturedProducts("Wine", 10), 30000).catch(() => []),
+    createTimeoutPromise(getFeaturedProducts("Spirit", 10), 30000).catch(() => []),
+    createTimeoutPromise(getNewProducts(10), 30000).catch(() => []),
+    createTimeoutPromise(getChristmasGifts(10), 30000).catch(() => []),
   ]);
 
   // Extract results, defaulting to empty arrays if any query fails
