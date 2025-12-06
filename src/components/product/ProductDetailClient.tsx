@@ -14,7 +14,7 @@ import { shouldShowEachForBeer } from "@/lib/utils/beer-pricing";
 type ProductDetailClientProps = {
 	product: Product;
 	discountPercentage: number | null;
-	allProducts?: Product[]; // Passed from server to avoid client-side fetch
+	allProducts?: Product[]; // Always provided from server now
 };
 
 export function ProductDetailClient({ product, discountPercentage, allProducts: serverProducts }: ProductDetailClientProps) {
@@ -27,41 +27,31 @@ export function ProductDetailClient({ product, discountPercentage, allProducts: 
 	const [zoomOrigin, setZoomOrigin] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
 	const lastUpdateRef = useRef<number | null>(null);
 	
-	// Use server-provided products or fetch on client as fallback
-	const [clientProducts, setClientProducts] = useState<Product[]>(serverProducts || []);
-	
-	useEffect(() => {
-		// Only fetch if server didn't provide products
-		if (!serverProducts || serverProducts.length === 0) {
-			fetch('/api/products')
-				.then(r => r.json())
-				.then(data => {
-					const productsArray = Array.isArray(data) ? data : (data.products || []);
-					setClientProducts(productsArray);
-				})
-				.catch(() => {
-					// Silently fail, keep empty array
-				});
-		}
-	}, [serverProducts]);
-	
-	const allProducts = (serverProducts && serverProducts.length > 0) ? serverProducts : clientProducts;
+	// Use server-provided products (always provided now, so no client-side fetch needed)
+	const allProducts = serverProducts || [];
 	
 	// Memoize variety detection to avoid recalculating on every render
+	// Use try-catch to prevent errors from breaking the page
 	const { hasVarieties, varieties, sortedVarieties } = useMemo(() => {
-		if (allProducts.length === 0) {
+		try {
+			if (!allProducts || allProducts.length === 0) {
+				return { hasVarieties: false, varieties: [], sortedVarieties: [product] };
+			}
+			const has = hasMultipleVarietiesEnhanced(product, allProducts);
+			const vars = has ? findProductVarietiesEnhanced(product, allProducts) : [];
+			const allVars = has ? [product, ...vars] : [product];
+			const sorted = [...allVars].sort((a, b) => {
+				if (a.volumeMl && b.volumeMl) {
+					return a.volumeMl - b.volumeMl;
+				}
+				return a.price - b.price;
+			});
+			return { hasVarieties: has, varieties: vars, sortedVarieties: sorted };
+		} catch (error) {
+			console.error('Error detecting varieties:', error);
+			// Return safe defaults if variety detection fails
 			return { hasVarieties: false, varieties: [], sortedVarieties: [product] };
 		}
-		const has = hasMultipleVarietiesEnhanced(product, allProducts);
-		const vars = has ? findProductVarietiesEnhanced(product, allProducts) : [];
-		const allVars = has ? [product, ...vars] : [product];
-		const sorted = [...allVars].sort((a, b) => {
-			if (a.volumeMl && b.volumeMl) {
-				return a.volumeMl - b.volumeMl;
-			}
-			return a.price - b.price;
-		});
-		return { hasVarieties: has, varieties: vars, sortedVarieties: sorted };
 	}, [product, allProducts]);
 
 	// Prevent page scroll when zoomed
@@ -138,7 +128,7 @@ export function ProductDetailClient({ product, discountPercentage, allProducts: 
 								className="absolute inset-0"
 							>
 								<Image
-									src={images[selectedImage]}
+									src={images[selectedImage] || product.image || '/placeholder.png'}
 									alt={product.name}
 									fill
 									className={`object-contain p-6 transition-transform duration-200 ${
@@ -174,6 +164,13 @@ export function ProductDetailClient({ product, discountPercentage, allProducts: 
 									}}
 									sizes="(max-width: 768px) 100vw, 50vw"
 									priority
+									onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+										// Fallback to placeholder if image fails to load
+										const target = e.currentTarget;
+										if (target.src && !target.src.includes('placeholder.png')) {
+											target.src = '/placeholder.png';
+										}
+									}}
 								/>
 							</motion.div>
 						</AnimatePresence>

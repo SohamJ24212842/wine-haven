@@ -572,8 +572,17 @@ export function ShopPageClient({ initialProducts }: ShopPageClientProps) {
 					onFocus={() => setIsTyping(true)}
 					onBlur={() => setIsTyping(false)}
 					onKeyDown={(e) => {
-						if (e.key === "Enter") e.preventDefault();
+						if (e.key === "Enter") {
+							e.preventDefault();
+							e.stopPropagation();
+						}
 					}}
+					autoComplete="off"
+					autoCorrect="off"
+					autoCapitalize="off"
+					spellCheck="false"
+					role="searchbox"
+					aria-label="Search products"
 				/>
 					<select
 					className="w-full md:w-64 rounded-full border border-maroon/20 bg-white px-4 py-2 outline-none focus:border-maroon/40 transition-colors"

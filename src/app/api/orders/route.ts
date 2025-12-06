@@ -109,6 +109,77 @@ export async function POST(request: NextRequest) {
               // Format order email for store
               const emailSubject = `New Click & Collect Order #${order.id.substring(0, 8)}`;
               
+              const storeEmailBodyHTML = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .header { background-color: #8B0000; color: white; padding: 20px; text-align: center; }
+    .content { padding: 20px; }
+    .section { margin-bottom: 20px; }
+    .item { display: flex; gap: 15px; margin-bottom: 15px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+    .item-image { width: 80px; height: 100px; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
+    .item-details { flex: 1; }
+    .item-name { font-weight: bold; margin-bottom: 5px; }
+    .total { font-size: 18px; font-weight: bold; color: #8B0000; margin-top: 20px; padding-top: 20px; border-top: 2px solid #ddd; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>New Click & Collect Order Received</h1>
+  </div>
+  <div class="content">
+    <div class="section">
+      <h2>Order Information</h2>
+      <p><strong>Order ID:</strong> ${order.id}</p>
+      <p><strong>Date:</strong> ${new Date().toLocaleString('en-IE', { timeZone: 'Europe/Dublin' })}</p>
+    </div>
+    
+    <div class="section">
+      <h2>Customer Details</h2>
+      <p><strong>Name:</strong> ${customer_name}</p>
+      <p><strong>Email:</strong> ${customer_email}</p>
+      <p><strong>Phone:</strong> ${customer_phone}</p>
+    </div>
+    
+    <div class="section">
+      <h2>Collection Details</h2>
+      <p><strong>Date:</strong> ${collection_date}</p>
+      <p><strong>Time:</strong> ${collection_time}</p>
+      ${notes ? `<p><strong>Notes:</strong> ${notes}</p>` : ''}
+    </div>
+    
+    <div class="section">
+      <h2>Order Items</h2>
+      ${items.map((item: any, index: number) => `
+        <div class="item">
+          <img src="${item.product_image || 'https://via.placeholder.com/80x100'}" alt="${item.product_name}" class="item-image" />
+          <div class="item-details">
+            <div class="item-name">${index + 1}. ${item.product_name}</div>
+            <div>Quantity: ${item.quantity}</div>
+            <div>Price: €${item.product_price.toFixed(2)} each</div>
+            <div><strong>Subtotal: €${item.subtotal.toFixed(2)}</strong></div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    
+    <div class="total">
+      <p>Total: €${total.toFixed(2)}</p>
+    </div>
+    
+    <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;" />
+    <p style="color: #666; font-size: 12px;">
+      This is an automated notification from Wine Haven website.<br>
+      Please contact the customer to confirm their collection time.
+    </p>
+  </div>
+</body>
+</html>
+              `.trim();
+              
               const storeEmailBody = `
 New Click & Collect Order Received
 
@@ -137,17 +208,94 @@ This is an automated notification from Wine Haven website.
 Please contact the customer to confirm their collection time.
               `.trim();
 
-              // Send email to store
+              // Send email to store (HTML with images)
               await resend.emails.send({
                 from: FROM_EMAIL,
                 to: STORE_EMAIL,
                 subject: emailSubject,
-                text: storeEmailBody,
+                html: storeEmailBodyHTML,
+                text: storeEmailBody, // Fallback for email clients that don't support HTML
               });
               console.log('Store notification email sent successfully to', STORE_EMAIL);
 
               // Format customer confirmation email
               const customerEmailSubject = `Your Click & Collect Order #${order.id.substring(0, 8)} - Wine Haven`;
+              
+              const customerEmailBodyHTML = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .header { background-color: #8B0000; color: white; padding: 20px; text-align: center; }
+    .content { padding: 20px; }
+    .section { margin-bottom: 20px; }
+    .item { display: flex; gap: 15px; margin-bottom: 15px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+    .item-image { width: 80px; height: 100px; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
+    .item-details { flex: 1; }
+    .item-name { font-weight: bold; margin-bottom: 5px; }
+    .total { font-size: 18px; font-weight: bold; color: #8B0000; margin-top: 20px; padding-top: 20px; border-top: 2px solid #ddd; }
+    .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Thank You for Your Order!</h1>
+  </div>
+  <div class="content">
+    <p>Dear ${customer_name},</p>
+    <p>We've received your Click & Collect order and will have it ready for you.</p>
+    
+    <div class="section">
+      <h2>Order Details</h2>
+      <p><strong>Order ID:</strong> ${order.id}</p>
+      <p><strong>Date:</strong> ${new Date().toLocaleString('en-IE', { timeZone: 'Europe/Dublin' })}</p>
+    </div>
+    
+    <div class="section">
+      <h2>Collection Details</h2>
+      <p><strong>Date:</strong> ${collection_date}</p>
+      <p><strong>Time:</strong> ${collection_time}</p>
+      <p><strong>Location:</strong> 47, George's Street Upper, Dún Laoghaire, Dublin, A96 K2H2</p>
+    </div>
+    
+    <div class="section">
+      <h2>Your Order</h2>
+      ${items.map((item: any, index: number) => `
+        <div class="item">
+          <img src="${item.product_image || 'https://via.placeholder.com/80x100'}" alt="${item.product_name}" class="item-image" />
+          <div class="item-details">
+            <div class="item-name">${index + 1}. ${item.product_name}</div>
+            <div>Quantity: ${item.quantity}</div>
+            <div>Price: €${item.product_price.toFixed(2)} each</div>
+            <div><strong>Subtotal: €${item.subtotal.toFixed(2)}</strong></div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    
+    <div class="total">
+      <p>Total: €${total.toFixed(2)}</p>
+    </div>
+    
+    ${notes ? `<div class="section"><p><strong>Your Notes:</strong> ${notes}</p></div>` : ''}
+    
+    <p>We'll contact you at ${customer_phone} to confirm your collection time. If you have any questions, please don't hesitate to reach out to us.</p>
+    <p>Looking forward to seeing you soon!</p>
+    
+    <div class="footer">
+      <p><strong>Best regards,</strong><br>The Wine Haven Team</p>
+      <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;" />
+      <p><strong>Wine Haven</strong><br>
+      47, George's Street Upper, Dún Laoghaire, Dublin, A96 K2H2<br>
+      Phone: +353 89 4581875 | (01) 564 4028<br>
+      Email: mahajanwinehaven24@gmail.com</p>
+    </div>
+  </div>
+</body>
+</html>
+              `.trim();
               
               const customerEmailBody = `
 Dear ${customer_name},
@@ -186,12 +334,13 @@ Phone: +353 89 4581875 | (01) 564 4028
 Email: mahajanwinehaven24@gmail.com
               `.trim();
 
-              // Send confirmation email to customer
+              // Send confirmation email to customer (HTML with images)
               await resend.emails.send({
                 from: FROM_EMAIL,
                 to: customer_email,
                 subject: customerEmailSubject,
-                text: customerEmailBody,
+                html: customerEmailBodyHTML,
+                text: customerEmailBody, // Fallback for email clients that don't support HTML
               });
               console.log('Customer confirmation email sent successfully to', customer_email);
             } catch (emailError: any) {

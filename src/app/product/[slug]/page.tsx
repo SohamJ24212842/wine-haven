@@ -22,28 +22,31 @@ function calculateDiscountPercentage(originalPrice: number, salePrice: number): 
 }
 
 export default async function ProductDetailPage({ params }: { params: Params }) {
-	const { slug } = await params;
-	
-	// Fetch product - now uses in-memory cache for faster responses
-	const product = await getProductBySlug(slug);
-	
-	if (!product) return notFound();
+	try {
+		const { slug } = await params;
+		
+		// Fetch product and all products in parallel for better performance
+		// Both use in-memory cache, so this is very fast
+		const [product, allProducts] = await Promise.all([
+			getProductBySlug(slug),
+			getAllProducts(), // Always fetch for variety detection (cached, so fast)
+		]);
+		
+		if (!product) return notFound();
 
-	const discountPercentage = product.onSale && product.salePrice 
-		? calculateDiscountPercentage(product.price, product.salePrice)
-		: null;
+		const discountPercentage = product.onSale && product.salePrice 
+			? calculateDiscountPercentage(product.price, product.salePrice)
+			: null;
 
-	// Only fetch all products if product might have varieties (check description)
-	// This reduces database load for most product pages
-	const needsVarieties = product.description?.includes('Also available:') || 
-	                      product.description?.includes('also available:');
-	const allProducts = needsVarieties ? await getAllProducts() : undefined;
-
-	return <ProductDetailClient 
-		product={product} 
-		discountPercentage={discountPercentage}
-		allProducts={allProducts} // Pass if needed, otherwise undefined
-	/>;
+		return <ProductDetailClient 
+			product={product} 
+			discountPercentage={discountPercentage}
+			allProducts={allProducts} // Always provided from server
+		/>;
+	} catch (error) {
+		console.error('Error loading product page:', error);
+		return notFound();
+	}
 }
 
 

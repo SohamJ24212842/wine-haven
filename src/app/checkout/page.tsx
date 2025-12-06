@@ -41,6 +41,7 @@ export default function CheckoutPage() {
 				items: items.map((item) => ({
 					product_slug: item.product.slug,
 					product_name: item.product.name,
+					product_image: item.product.image || '',
 					product_price: item.product.onSale && item.product.salePrice 
 						? item.product.salePrice 
 						: item.product.price,
