@@ -25,6 +25,32 @@ export function ShopPageClient({ initialProducts }: ShopPageClientProps) {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const fetchAbortControllerRef = useRef<AbortController | null>(null);
+	const hasFetchedRef = useRef(false);
+
+	// If initialProducts is empty (server-side fetch failed), fetch from API
+	useEffect(() => {
+		if (initialProducts.length === 0 && !hasFetchedRef.current) {
+			hasFetchedRef.current = true;
+			const fetchProducts = async () => {
+				try {
+					setLoading(true);
+					const response = await fetch('/api/products');
+					if (response.ok) {
+						const data = await response.json();
+						const productsArray = Array.isArray(data) ? data : (data.products || []);
+						setProducts(productsArray);
+						setAllProducts(productsArray);
+					}
+				} catch (err) {
+					console.error('Failed to fetch products:', err);
+					setError('Failed to load products. Please refresh the page.');
+				} finally {
+					setLoading(false);
+				}
+			};
+			fetchProducts();
+		}
+	}, [initialProducts.length]);
 
 	// Update products when search query changes (client-side search)
 	useEffect(() => {

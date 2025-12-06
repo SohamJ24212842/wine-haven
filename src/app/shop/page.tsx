@@ -12,8 +12,21 @@ export const revalidate = 0; // No static generation
 
 export default async function ShopPage() {
 	// Fetch products server-side at request time (not during build)
-	// This is fast because it's server-side and avoids build timeout issues
-	const products = await getAllProducts();
+	// Add timeout to prevent hanging - if it times out, return empty array
+	// Client will fetch from API as fallback
+	let products: Product[] = [];
+	try {
+		const productsPromise = getAllProducts();
+		const timeoutPromise = new Promise<Product[]>((_, reject) => 
+			setTimeout(() => reject(new Error('Query timeout')), 15000) // 15 second timeout
+		);
+		const result = await Promise.race([productsPromise, timeoutPromise]);
+		products = Array.isArray(result) ? result : [];
+	} catch (error) {
+		console.error('Error fetching products (non-fatal, will fetch client-side):', error);
+		// Return empty array - ShopPageClient will fetch from API
+		products = [];
+	}
 	
 	// Pass to client component for filtering/interactivity
 	return (
