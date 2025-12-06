@@ -4,10 +4,9 @@ import { revalidatePath } from 'next/cache';
 import { getAllProducts, createProduct } from '@/lib/db/products';
 import { Product } from '@/types/product';
 
-// Aggressive caching to reduce database load and egress
-// Products don't change frequently, so we can cache much longer
-// Cache for 1 hour (3600 seconds), allow stale-while-revalidate for 24 hours
-export const revalidate = 3600;
+// Make this route dynamic to avoid build-time validation issues
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET(request: NextRequest) {
   try {

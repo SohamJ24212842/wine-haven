@@ -2,12 +2,19 @@
 import { NextResponse } from 'next/server';
 import { getAllProducts } from '@/lib/db/products';
 
-// Cache menu data for 1 hour - it doesn't change frequently
-export const revalidate = 3600;
+// Make this route dynamic to avoid build-time validation issues
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET() {
   try {
-    const products = await getAllProducts();
+    // Add timeout to prevent hanging
+    const productsPromise = getAllProducts();
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Query timeout')), 15000) // 15 second timeout
+    );
+    
+    const products = await Promise.race([productsPromise, timeoutPromise]) as Awaited<ReturnType<typeof getAllProducts>>;
 
     // Extract unique values from products
     const countries = Array.from(new Set(products.map(p => p.country).filter(Boolean))).sort();
