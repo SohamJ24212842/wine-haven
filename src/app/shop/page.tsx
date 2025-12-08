@@ -20,18 +20,26 @@ export default async function ShopPage() {
 			return Promise.race([
 				promise,
 				new Promise<T>((_, reject) =>
-					setTimeout(() => reject(new Error('Query timeout')), timeoutMs)
+					setTimeout(() => reject(new Error('Query timeout')), 30000) // 30 second timeout
 				)
 			]);
 		};
 		
 		products = await createTimeoutPromise(getProductsForShop(), 30000);
 		if (!Array.isArray(products)) {
+			console.warn('⚠️ [ShopPage] getProductsForShop returned non-array:', products);
 			products = [];
+		} else {
+			console.log(`✅ [ShopPage] Server-side fetched ${products.length} products`);
 		}
-	} catch (error) {
-		console.error('Error fetching products during build (non-fatal):', error);
+	} catch (error: any) {
+		console.error('❌ [ShopPage] Error fetching products during build:', {
+			message: error?.message,
+			isTimeout: error?.message?.includes('timeout'),
+			stack: error?.stack,
+		});
 		// Return empty array - page will still work, client will fetch if needed
+		// Client-side ShopPageClient will fetch from /api/products if initialProducts is empty
 		products = [];
 	}
 	

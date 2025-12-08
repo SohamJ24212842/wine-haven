@@ -328,12 +328,13 @@ export async function getProductsForShop(): Promise<Product[]> {
           .limit(1000);
 
         if (error) {
-          console.error('❌ Supabase query error:', {
+          console.error('❌ [getProductsForShop] Supabase query error:', {
             message: error.message,
             details: error.details,
             hint: error.hint,
             code: error.code,
           });
+          // Don't silently fall back - throw so caller knows Supabase failed
           throw new Error(`Supabase query failed: ${error.message}`);
         }
 
@@ -369,10 +370,20 @@ export async function getProductsForShop(): Promise<Product[]> {
 
           setCached(cacheKey, results);
           return results;
+        } else {
+          console.warn('⚠️ [getProductsForShop] Supabase returned null/undefined data');
+          throw new Error('Supabase returned null data');
         }
-      } catch (error) {
-        console.error('Error fetching products for shop:', error);
+      } catch (error: any) {
+        console.error('❌ [getProductsForShop] Error fetching from Supabase:', {
+          message: error?.message,
+          stack: error?.stack,
+        });
+        // Re-throw to prevent silent fallback - let caller decide what to do
+        throw error;
       }
+    } else {
+      console.warn('⚠️ [getProductsForShop] Supabase client creation failed');
     }
   }
 

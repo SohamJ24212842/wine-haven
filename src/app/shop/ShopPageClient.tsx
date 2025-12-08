@@ -28,27 +28,39 @@ export function ShopPageClient({ initialProducts }: ShopPageClientProps) {
 	const hasFetchedRef = useRef(false);
 
 	// If initialProducts is empty (server-side fetch failed), fetch from API
+	// Also check if we got local data (has description but no Supabase data) and refetch
 	useEffect(() => {
-		if (initialProducts.length === 0 && !hasFetchedRef.current) {
+		const hasLocalDataFallback = initialProducts.length > 0 && 
+			initialProducts.some(p => p.description && p.description.length > 0 && !p.images);
+		
+		if ((initialProducts.length === 0 || hasLocalDataFallback) && !hasFetchedRef.current) {
 			hasFetchedRef.current = true;
 			const fetchProducts = async () => {
 				try {
 					setLoading(true);
+					console.log('🔄 [ShopPageClient] Fetching products from API (server-side fetch failed or local data detected)');
 					const response = await fetch('/api/products');
 					if (response.ok) {
 						const data = await response.json();
 						const productsArray = Array.isArray(data) ? data : (data.products || []);
+						console.log(`✅ [ShopPageClient] Fetched ${productsArray.length} products from API`);
 						setProducts(productsArray);
 						setAllProducts(productsArray);
+					} else {
+						const errorData = await response.json().catch(() => ({}));
+						console.error('❌ [ShopPageClient] API error:', response.status, errorData);
+						setError('Failed to load products. Please refresh the page.');
 					}
 				} catch (err) {
-					console.error('Failed to fetch products:', err);
+					console.error('❌ [ShopPageClient] Failed to fetch products:', err);
 					setError('Failed to load products. Please refresh the page.');
 				} finally {
 					setLoading(false);
 				}
 			};
 			fetchProducts();
+		} else if (initialProducts.length > 0) {
+			console.log(`✅ [ShopPageClient] Using ${initialProducts.length} products from server-side`);
 		}
 	}, [initialProducts.length]);
 
