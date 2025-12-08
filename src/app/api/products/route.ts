@@ -1,7 +1,7 @@
 // API route for products (GET all, POST create)
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
-import { getAllProducts, createProduct } from '@/lib/db/products';
+import { getAllProducts, getProductsForShop, createProduct } from '@/lib/db/products';
 import { Product } from '@/types/product';
 
 // Make this route dynamic to avoid build-time validation issues
@@ -12,9 +12,15 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const search = searchParams.get('search') || undefined;
+    const full = searchParams.get('full') === 'true'; // Use lightweight by default
     
-    // Add timeout handling to prevent hanging requests
-    const productsPromise = getAllProducts(search);
+    // Use lightweight query by default (excludes images array, taste_profile, food_pairing)
+    // This significantly reduces payload size and query time
+    // Pass ?full=true to get all fields (for admin editing)
+    const productsPromise = full 
+      ? getAllProducts(search)  // Full data when needed
+      : getProductsForShop();   // Lightweight by default (much faster)
+    
     const timeoutPromise = new Promise<Product[]>((_, reject) =>
       setTimeout(() => reject(new Error('Query timeout')), 45000) // 45 second timeout
     );

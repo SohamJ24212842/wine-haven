@@ -1,6 +1,6 @@
 // API route to get dynamic menu data from products
 import { NextResponse } from 'next/server';
-import { getAllProducts } from '@/lib/db/products';
+import { getProductsForShop } from '@/lib/db/products';
 
 // Make this route dynamic to avoid build-time validation issues
 export const dynamic = 'force-dynamic';
@@ -8,13 +8,14 @@ export const revalidate = 0;
 
 export async function GET() {
   try {
-    // Add timeout to prevent hanging
-    const productsPromise = getAllProducts();
-    const timeoutPromise = new Promise((_, reject) => 
+    // Use lightweight query - menu data only needs basic fields (category, country, region, etc.)
+    // Doesn't need images array, taste_profile, or food_pairing
+    const productsPromise = getProductsForShop();
+    const timeoutPromise = new Promise<Awaited<ReturnType<typeof getProductsForShop>>>((_, reject) => 
       setTimeout(() => reject(new Error('Query timeout')), 15000) // 15 second timeout
     );
     
-    const products = await Promise.race([productsPromise, timeoutPromise]) as Awaited<ReturnType<typeof getAllProducts>>;
+    const products = await Promise.race([productsPromise, timeoutPromise]);
 
     // Extract unique values from products
     const countries = Array.from(new Set(products.map(p => p.country).filter(Boolean))).sort();

@@ -174,7 +174,8 @@ function AdminPageContent() {
 			const controller = new AbortController();
 			const timeoutId = setTimeout(() => controller.abort(), 50000); // 50 second timeout
 			
-			const response = await fetch(`/api/products?t=${Date.now()}`, {
+			// Use ?full=true to get all fields (including taste_profile, food_pairing) for admin editing
+			const response = await fetch(`/api/products?t=${Date.now()}&full=true`, {
 				cache: 'no-store', // Force no cache
 				signal: controller.signal,
 			});
