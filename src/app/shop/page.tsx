@@ -1,56 +1,17 @@
-// Server-side shop page with ISR (Incremental Static Regeneration)
-import { getProductsForShop } from "@/lib/db/products";
+// Dynamic shop page - products fetched client-side to avoid 19MB ISR limit
+// The /api/products route is optimized and cached (1 hour), so it's fast
 import { ShopPageClient } from "./ShopPageClient";
-import { Suspense } from "react";
 import { Container } from "@/components/ui/Container";
-import { Product } from "@/types/product";
 
-// ISR: Revalidate every hour (3600 seconds)
-// This means the page is statically generated and cached for 1 hour
-// After 1 hour, the next request will regenerate the page in the background
-export const revalidate = 3600;
+// Force dynamic rendering - no ISR to avoid build-time size limits
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
-export default async function ShopPage() {
-	// Fetch optimized products for shop page (removes heavy fields to stay under 19MB)
-	// Removed: images array, taste_profile, food_pairing (not needed for product cards)
-	let products: Product[] = [];
-	try {
-		// Wrap with timeout to prevent hanging during build
-		const createTimeoutPromise = <T,>(promise: Promise<T>, timeoutMs: number): Promise<T> => {
-			return Promise.race([
-				promise,
-				new Promise<T>((_, reject) =>
-					setTimeout(() => reject(new Error('Query timeout')), 30000) // 30 second timeout
-				)
-			]);
-		};
-		
-		products = await createTimeoutPromise(getProductsForShop(), 30000);
-		if (!Array.isArray(products)) {
-			console.warn('⚠️ [ShopPage] getProductsForShop returned non-array:', products);
-			products = [];
-		} else {
-			console.log(`✅ [ShopPage] Server-side fetched ${products.length} products`);
-		}
-	} catch (error: any) {
-		console.error('❌ [ShopPage] Error fetching products during build:', {
-			message: error?.message,
-			isTimeout: error?.message?.includes('timeout'),
-			stack: error?.stack,
-		});
-		// Return empty array - page will still work, client will fetch if needed
-		// Client-side ShopPageClient will fetch from /api/products if initialProducts is empty
-		products = [];
-	}
-	
-	// Pass to client component for filtering/interactivity
+export default function ShopPage() {
+	// Don't fetch products server-side - let client fetch immediately
+	// This keeps the page under 19MB and avoids build failures
+	// The /api/products route is cached (1 hour) so it's fast
 	return (
-		<Suspense fallback={
-			<Container className="py-12">
-				<div className="text-center text-maroon/60">Loading shop...</div>
-			</Container>
-		}>
-			<ShopPageClient initialProducts={products} />
-		</Suspense>
+		<ShopPageClient initialProducts={[]} />
 	);
 }

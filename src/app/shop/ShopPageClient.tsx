@@ -27,18 +27,15 @@ export function ShopPageClient({ initialProducts }: ShopPageClientProps) {
 	const fetchAbortControllerRef = useRef<AbortController | null>(null);
 	const hasFetchedRef = useRef(false);
 
-	// If initialProducts is empty (server-side fetch failed), fetch from API
-	// Also check if we got local data (has description but no Supabase data) and refetch
+	// Always fetch products from API on mount (server-side doesn't fetch to avoid 19MB limit)
+	// The /api/products route is optimized and cached (1 hour), so it's fast
 	useEffect(() => {
-		const hasLocalDataFallback = initialProducts.length > 0 && 
-			initialProducts.some(p => p.description && p.description.length > 0 && !p.images);
-		
-		if ((initialProducts.length === 0 || hasLocalDataFallback) && !hasFetchedRef.current) {
+		if (!hasFetchedRef.current) {
 			hasFetchedRef.current = true;
 			const fetchProducts = async () => {
 				try {
 					setLoading(true);
-					console.log('🔄 [ShopPageClient] Fetching products from API (server-side fetch failed or local data detected)');
+					console.log('🔄 [ShopPageClient] Fetching products from cached API...');
 					const response = await fetch('/api/products');
 					if (response.ok) {
 						const data = await response.json();
@@ -59,10 +56,8 @@ export function ShopPageClient({ initialProducts }: ShopPageClientProps) {
 				}
 			};
 			fetchProducts();
-		} else if (initialProducts.length > 0) {
-			console.log(`✅ [ShopPageClient] Using ${initialProducts.length} products from server-side`);
 		}
-	}, [initialProducts.length]);
+	}, []);
 
 	// Update products when search query changes (client-side search)
 	useEffect(() => {
