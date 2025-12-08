@@ -26,117 +26,333 @@ function updatePrice(price, category) {
   }
 }
 
-// Generate description based on product data
+// Enhanced description generation with tasting notes, food pairings, and rich language
 function generateDescription(csvRow, existingProduct) {
-  // If existing product has a description, use it as base
+  // If existing product has a good description, preserve it
   let description = existingProduct?.description || '';
   
-  // If description is empty or minimal, create one
-  if (!description || description.trim().length < 20) {
-    const parts = [];
-    
-    // Add category-specific info
-    if (csvRow.Category === 'Wine') {
-      if (csvRow['Wine Type']) {
-        parts.push(`A premium ${csvRow['Wine Type'].toLowerCase()} wine`);
-      } else {
-        parts.push('A premium wine');
-      }
-      
-      if (csvRow.Region) {
-        parts.push(`from the renowned ${csvRow.Region} region`);
-      }
-      
-      if (csvRow.Country) {
-        parts.push(`in ${csvRow.Country}`);
-      }
-      
-      if (csvRow.Producer) {
-        parts.push(`crafted by ${csvRow.Producer}`);
-      }
-      
-      if (csvRow.ABV) {
-        parts.push(`with ${csvRow.ABV}% ABV`);
-      }
-    } else if (csvRow.Category === 'Spirit') {
-      if (csvRow['Spirit Type']) {
-        parts.push(`A premium ${csvRow['Spirit Type'].toLowerCase()}`);
-      } else {
-        parts.push('A premium spirit');
-      }
-      
-      if (csvRow.Country) {
-        parts.push(`from ${csvRow.Country}`);
-      }
-      
-      if (csvRow.Producer) {
-        parts.push(`by ${csvRow.Producer}`);
-      }
-      
-      if (csvRow.ABV) {
-        parts.push(`at ${csvRow.ABV}% ABV`);
-      }
-      
-      if (csvRow['Volume (ml)']) {
-        parts.push(`(${csvRow['Volume (ml)']}ml)`);
-      }
-    } else if (csvRow.Category === 'Beer') {
-      if (csvRow['Beer Style']) {
-        parts.push(`A premium ${csvRow['Beer Style']} beer`);
-      } else {
-        parts.push('A premium beer');
-      }
-      
-      if (csvRow.Country) {
-        parts.push(`from ${csvRow.Country}`);
-      }
-      
-      if (csvRow.Producer) {
-        parts.push(`by ${csvRow.Producer}`);
-      }
-      
-      if (csvRow.ABV) {
-        parts.push(`with ${csvRow.ABV}% ABV`);
-      }
-    }
-    
-    description = parts.join(' ') + '.';
-    
-    // Add price information if multiple products are mentioned in name
-    // Check if name contains multiple product indicators
-    const name = csvRow.Name;
-    const price = parseFloat(csvRow.Price);
+  // If description is empty or minimal, create a rich one
+  if (!description || description.trim().length < 50) {
+    const name = csvRow.Name.toLowerCase();
+    const wineType = csvRow['Wine Type']?.toLowerCase() || '';
+    const spiritType = csvRow['Spirit Type']?.toLowerCase() || '';
+    const beerStyle = csvRow['Beer Style']?.toLowerCase() || '';
+    const region = csvRow.Region || '';
+    const country = csvRow.Country || '';
+    const producer = csvRow.Producer || '';
     const updatedPrice = updatePrice(csvRow.Price, csvRow.Category);
     
-    // Check for gift boxes, packs, etc.
-    if (name.toLowerCase().includes('gift box') || 
-        name.toLowerCase().includes('pack') ||
-        name.toLowerCase().includes('variety pack') ||
-        name.toLowerCase().includes('4-pack') ||
-        name.toLowerCase().includes('discovery box')) {
-      description += ` Available at €${updatedPrice}.`;
-    } else {
-      description += ` Priced at €${updatedPrice}.`;
+    if (csvRow.Category === 'Wine') {
+      description = generateWineDescription(csvRow, name, wineType, region, country, producer, updatedPrice);
+    } else if (csvRow.Category === 'Spirit') {
+      description = generateSpiritDescription(csvRow, name, spiritType, country, producer, updatedPrice);
+    } else if (csvRow.Category === 'Beer') {
+      description = generateBeerDescription(csvRow, name, beerStyle, country, producer, updatedPrice);
     }
   } else {
-    // Existing description - check if it mentions multiple products
-    // If it does, add price info
-    const name = csvRow.Name;
+    // Existing description - just ensure price is mentioned if it's a pack/gift box
+    const name = csvRow.Name.toLowerCase();
     const updatedPrice = updatePrice(csvRow.Price, csvRow.Category);
     
-    if (name.toLowerCase().includes('gift box') || 
-        name.toLowerCase().includes('pack') ||
-        name.toLowerCase().includes('variety pack') ||
-        name.toLowerCase().includes('4-pack') ||
-        name.toLowerCase().includes('discovery box')) {
-      // Check if price is already mentioned
-      if (!description.includes('€') && !description.includes('price')) {
-        description += ` Available at €${updatedPrice}.`;
-      }
+    if ((name.includes('gift box') || name.includes('pack') || name.includes('variety pack') || 
+         name.includes('4-pack') || name.includes('discovery box')) &&
+        !description.includes('€') && !description.includes('price')) {
+      description += ` Available at €${updatedPrice}.`;
     }
   }
   
   return description.trim();
+}
+
+// Generate rich wine descriptions
+function generateWineDescription(csvRow, name, wineType, region, country, producer, price) {
+  const parts = [];
+  const tastingNotes = [];
+  const foodPairings = [];
+  
+  // Base description with region/producer
+  if (wineType === 'sparkling' || wineType === 'prosecco' || name.includes('champagne') || name.includes('brut') || name.includes('cuvée')) {
+    parts.push('Elegant and refined');
+    if (region && region.toLowerCase() === 'champagne') {
+      parts.push('Champagne');
+    } else if (wineType === 'prosecco') {
+      parts.push('Prosecco');
+    } else {
+      parts.push('sparkling wine');
+    }
+    tastingNotes.push('fine bubbles', 'crisp acidity', 'citrus notes', 'green apple', 'toast');
+    foodPairings.push('seafood', 'oysters', 'celebrations', 'aperitifs');
+  } else if (wineType === 'red' || name.includes('red')) {
+    parts.push('Rich and full-bodied');
+    if (region) {
+      if (region.toLowerCase().includes('bordeaux')) {
+        parts.push('Bordeaux');
+        tastingNotes.push('cassis', 'cedar', 'fine-grained tannins', 'blackcurrant');
+        foodPairings.push('roast meats', 'aged cheeses', 'lamb');
+      } else if (region.toLowerCase().includes('rioja')) {
+        parts.push('Rioja');
+        tastingNotes.push('ripe cherry', 'vanilla', 'sweet spice', 'American oak');
+        foodPairings.push('tapas', 'chorizo', 'manchego cheese');
+      } else if (region.toLowerCase().includes('tuscany') || region.toLowerCase().includes('chianti')) {
+        parts.push('Tuscan red');
+        tastingNotes.push('sour cherry', 'leather', 'savoury notes', 'herbs');
+        foodPairings.push('pasta', 'tomato-based dishes', 'grilled meats');
+      } else if (region.toLowerCase().includes('mendoza') || country.toLowerCase() === 'argentina') {
+        parts.push('Argentine red');
+        tastingNotes.push('blackberry', 'plum', 'cocoa', 'smooth finish');
+        foodPairings.push('steak', 'barbecue', 'grilled meats');
+      } else {
+        parts.push('red wine');
+        tastingNotes.push('dark fruits', 'spice', 'balanced tannins');
+        foodPairings.push('red meats', 'pasta', 'cheese');
+      }
+    } else {
+      parts.push('red wine');
+      tastingNotes.push('dark fruits', 'spice', 'balanced tannins');
+      foodPairings.push('red meats', 'pasta', 'cheese');
+    }
+  } else if (wineType === 'white' || name.includes('white') || name.includes('chardonnay') || name.includes('sauvignon')) {
+    parts.push('Crisp and refreshing');
+    if (name.includes('chardonnay')) {
+      parts.push('Chardonnay');
+      tastingNotes.push('green apple', 'citrus', 'buttery notes', 'oak');
+      foodPairings.push('chicken', 'seafood', 'creamy sauces');
+    } else if (name.includes('sauvignon')) {
+      parts.push('Sauvignon Blanc');
+      tastingNotes.push('zesty citrus', 'passionfruit', 'fresh-cut herbs', 'gooseberry');
+      foodPairings.push('goat cheese', 'seafood', 'salads');
+    } else if (name.includes('albariño') || name.includes('albarino')) {
+      parts.push('Albariño');
+      tastingNotes.push('sea-breeze minerality', 'peach', 'lime', 'citrus');
+      foodPairings.push('seafood', 'shellfish', 'tapas');
+    } else {
+      parts.push('white wine');
+      tastingNotes.push('citrus', 'stone fruits', 'crisp acidity');
+      foodPairings.push('seafood', 'poultry', 'light dishes');
+    }
+  } else if (wineType === 'rosé' || name.includes('rosé') || name.includes('rose')) {
+    parts.push('Delicate and elegant');
+    parts.push('rosé');
+    tastingNotes.push('strawberry', 'raspberry', 'floral notes', 'mineral finish');
+    foodPairings.push('salads', 'light seafood', 'summer dishes', 'aperitifs');
+  } else if (name.includes('porto') || name.includes('port')) {
+    parts.push('Rich and luscious');
+    parts.push('Port');
+    tastingNotes.push('dark fruits', 'caramel', 'spice', 'sweet finish');
+    foodPairings.push('blue cheese', 'chocolate', 'desserts');
+  } else if (name.includes('sherry')) {
+    parts.push('Complex and nutty');
+    parts.push('Sherry');
+    tastingNotes.push('almond', 'caramel', 'oxidative notes');
+    foodPairings.push('tapas', 'nuts', 'cured meats');
+  } else {
+    parts.push('Premium wine');
+  }
+  
+  // Add origin
+  if (region && country) {
+    parts.push(`from the renowned ${region} region in ${country}`);
+  } else if (country) {
+    parts.push(`from ${country}`);
+  }
+  
+  // Add producer
+  if (producer) {
+    parts.push(`crafted by ${producer}`);
+  }
+  
+  // Build full description
+  let fullDesc = parts.join(' ') + '. ';
+  
+  // Add tasting notes
+  if (tastingNotes.length > 0) {
+    const notes = tastingNotes.slice(0, 3).join(', ');
+    fullDesc += `Features notes of ${notes}. `;
+  }
+  
+  // Add food pairing
+  if (foodPairings.length > 0) {
+    const pairing = foodPairings[0];
+    fullDesc += `Perfect with ${pairing}.`;
+  }
+  
+  return fullDesc;
+}
+
+// Generate rich spirit descriptions
+function generateSpiritDescription(csvRow, name, spiritType, country, producer, price) {
+  const parts = [];
+  const tastingNotes = [];
+  const servingSuggestions = [];
+  
+  if (spiritType === 'whiskey' || spiritType === 'whisky' || name.includes('whiskey') || name.includes('whisky')) {
+    if (name.includes('irish') || country.toLowerCase() === 'ireland') {
+      parts.push('Smooth and approachable');
+      parts.push('Irish whiskey');
+      tastingNotes.push('honey', 'vanilla', 'smooth finish', 'light spice');
+      servingSuggestions.push('neat', 'on the rocks', 'in cocktails');
+    } else if (name.includes('scotch') || name.includes('scotch') || country.toLowerCase() === 'scotland') {
+      parts.push('Complex and peaty');
+      parts.push('Scotch whisky');
+      tastingNotes.push('smoke', 'peat', 'caramel', 'oak');
+      servingSuggestions.push('neat', 'with a drop of water');
+    } else if (name.includes('bourbon') || name.includes('tennessee')) {
+      parts.push('Rich and bold');
+      parts.push('American whiskey');
+      tastingNotes.push('vanilla', 'caramel', 'oak', 'sweet corn');
+      servingSuggestions.push('neat', 'in cocktails', 'on the rocks');
+    } else {
+      parts.push('Premium whiskey');
+      tastingNotes.push('complex', 'smooth', 'well-balanced');
+    }
+  } else if (spiritType === 'gin' || name.includes('gin')) {
+    parts.push('Botanical and aromatic');
+    parts.push('gin');
+    tastingNotes.push('juniper', 'citrus', 'herbs', 'botanicals');
+    servingSuggestions.push('in a G&T', 'in cocktails', 'with tonic');
+  } else if (spiritType === 'vodka' || name.includes('vodka')) {
+    parts.push('Clean and smooth');
+    parts.push('vodka');
+    tastingNotes.push('crisp', 'neutral', 'smooth finish');
+    servingSuggestions.push('in cocktails', 'on the rocks', 'in martinis');
+  } else if (spiritType === 'tequila' || name.includes('tequila')) {
+    parts.push('Authentic and vibrant');
+    parts.push('tequila');
+    if (name.includes('reposado')) {
+      tastingNotes.push('agave', 'vanilla', 'oak', 'smooth');
+    } else if (name.includes('añejo') || name.includes('anejo')) {
+      tastingNotes.push('caramel', 'vanilla', 'oak', 'complex');
+    } else {
+      tastingNotes.push('agave', 'citrus', 'pepper', 'crisp');
+    }
+    servingSuggestions.push('in margaritas', 'neat', 'with lime');
+  } else if (spiritType === 'rum' || name.includes('rum')) {
+    parts.push('Rich and warming');
+    parts.push('rum');
+    tastingNotes.push('caramel', 'vanilla', 'spice', 'smooth');
+    servingSuggestions.push('in cocktails', 'neat', 'with cola');
+  } else if (spiritType === 'liqueur' || name.includes('liqueur') || name.includes('cognac')) {
+    parts.push('Smooth and elegant');
+    if (name.includes('cognac')) {
+      parts.push('Cognac');
+      tastingNotes.push('dried fruits', 'oak', 'spice', 'smooth');
+    } else {
+      parts.push('liqueur');
+      tastingNotes.push('sweet', 'aromatic', 'smooth');
+    }
+    servingSuggestions.push('neat', 'in cocktails', 'as a digestif');
+  } else {
+    parts.push('Premium spirit');
+  }
+  
+  // Add origin
+  if (country) {
+    parts.push(`from ${country}`);
+  }
+  
+  // Add producer
+  if (producer) {
+    parts.push(`by ${producer}`);
+  }
+  
+  // Add ABV and volume
+  if (csvRow.ABV) {
+    parts.push(`at ${csvRow.ABV}% ABV`);
+  }
+  if (csvRow['Volume (ml)']) {
+    parts.push(`(${csvRow['Volume (ml)']}ml)`);
+  }
+  
+  // Build full description
+  let fullDesc = parts.join(' ') + '. ';
+  
+  // Add tasting notes
+  if (tastingNotes.length > 0) {
+    const notes = tastingNotes.slice(0, 3).join(', ');
+    fullDesc += `Features ${notes}. `;
+  }
+  
+  // Add serving suggestion
+  if (servingSuggestions.length > 0) {
+    fullDesc += `Best enjoyed ${servingSuggestions[0]}.`;
+  }
+  
+  return fullDesc;
+}
+
+// Generate rich beer descriptions
+function generateBeerDescription(csvRow, name, beerStyle, country, producer, price) {
+  const parts = [];
+  const tastingNotes = [];
+  const foodPairings = [];
+  
+  if (beerStyle === 'ipa' || name.includes('ipa')) {
+    parts.push('Bold and hoppy');
+    parts.push('IPA');
+    tastingNotes.push('citrus', 'pine', 'tropical fruits', 'bitter finish');
+    foodPairings.push('spicy foods', 'burgers', 'curries');
+  } else if (beerStyle === 'lager' || name.includes('lager')) {
+    parts.push('Crisp and refreshing');
+    parts.push('lager');
+    tastingNotes.push('clean', 'light', 'crisp', 'refreshing');
+    foodPairings.push('pizza', 'grilled foods', 'light meals');
+  } else if (beerStyle === 'wheat beer' || name.includes('weissbier') || name.includes('wheat')) {
+    parts.push('Light and fruity');
+    parts.push('wheat beer');
+    tastingNotes.push('banana', 'clove', 'citrus', 'cloudy');
+    foodPairings.push('seafood', 'salads', 'light dishes');
+  } else if (beerStyle === 'pilsner' || name.includes('pilsner')) {
+    parts.push('Crisp and golden');
+    parts.push('pilsner');
+    tastingNotes.push('hops', 'clean', 'refreshing', 'light bitterness');
+    foodPairings.push('sausages', 'grilled foods', 'pub fare');
+  } else if (name.includes('ginger beer')) {
+    parts.push('Spicy and refreshing');
+    parts.push('ginger beer');
+    tastingNotes.push('ginger', 'spice', 'refreshing', 'zesty');
+    foodPairings.push('spicy foods', 'Asian cuisine', 'as a mixer');
+  } else {
+    parts.push('Premium beer');
+    tastingNotes.push('balanced', 'flavorful', 'refreshing');
+    foodPairings.push('pub fare', 'grilled foods');
+  }
+  
+  // Add origin
+  if (country) {
+    parts.push(`from ${country}`);
+  }
+  
+  // Add producer
+  if (producer) {
+    parts.push(`by ${producer}`);
+  }
+  
+  // Add ABV
+  if (csvRow.ABV) {
+    parts.push(`with ${csvRow.ABV}% ABV`);
+  }
+  
+  // Build full description
+  let fullDesc = parts.join(' ') + '. ';
+  
+  // Add tasting notes
+  if (tastingNotes.length > 0) {
+    const notes = tastingNotes.slice(0, 3).join(', ');
+    fullDesc += `Features ${notes}. `;
+  }
+  
+  // Add food pairing
+  if (foodPairings.length > 0) {
+    fullDesc += `Perfect with ${foodPairings[0]}.`;
+  }
+  
+  // Special handling for packs/gift boxes
+  if (name.includes('gift box') || name.includes('pack') || name.includes('variety pack') || 
+      name.includes('4-pack') || name.includes('discovery box')) {
+    fullDesc += ` Available at €${price}.`;
+  }
+  
+  return fullDesc;
 }
 
 // Normalize name for matching
