@@ -27,37 +27,58 @@ export function ShopPageClient({ initialProducts }: ShopPageClientProps) {
 	const fetchAbortControllerRef = useRef<AbortController | null>(null);
 	const hasFetchedRef = useRef(false);
 
-	// Always fetch products from API on mount (server-side doesn't fetch to avoid 19MB limit)
+	// Always fetch all products from API on mount (even if we have initial products)
+	// Initial products provide instant render, full fetch ensures complete data
 	// The /api/products route is optimized and cached (1 hour), so it's fast
 	useEffect(() => {
 		if (!hasFetchedRef.current) {
 			hasFetchedRef.current = true;
+			const hasInitialProducts = initialProducts.length > 0;
+			
+			// If we have initial products, display them immediately (instant render)
+			if (hasInitialProducts) {
+				setProducts(initialProducts);
+				setAllProducts(initialProducts);
+				console.log(`✅ [ShopPageClient] Using ${initialProducts.length} initial products for instant render`);
+			} else {
+				// No initial products - show loading spinner
+				setLoading(true);
+			}
+			
 			const fetchProducts = async () => {
 				try {
-					setLoading(true);
-					console.log('🔄 [ShopPageClient] Fetching products from cached API...');
+					console.log('🔄 [ShopPageClient] Fetching all products from cached API...');
 					const response = await fetch('/api/products');
 					if (response.ok) {
 						const data = await response.json();
 						const productsArray = Array.isArray(data) ? data : (data.products || []);
 						console.log(`✅ [ShopPageClient] Fetched ${productsArray.length} products from API`);
+						
+						// Replace initial products with full data
 						setProducts(productsArray);
 						setAllProducts(productsArray);
+						setLoading(false);
 					} else {
 						const errorData = await response.json().catch(() => ({}));
 						console.error('❌ [ShopPageClient] API error:', response.status, errorData);
-						setError('Failed to load products. Please refresh the page.');
+						// Only show error if we don't have initial products to display
+						if (!hasInitialProducts) {
+							setError('Failed to load products. Please refresh the page.');
+						}
+						setLoading(false);
 					}
 				} catch (err) {
 					console.error('❌ [ShopPageClient] Failed to fetch products:', err);
-					setError('Failed to load products. Please refresh the page.');
-				} finally {
+					// Only show error if we don't have initial products to display
+					if (!hasInitialProducts) {
+						setError('Failed to load products. Please refresh the page.');
+					}
 					setLoading(false);
 				}
 			};
 			fetchProducts();
 		}
-	}, []);
+	}, [initialProducts]);
 
 	// Update products when search query changes (client-side search)
 	useEffect(() => {

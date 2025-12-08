@@ -397,6 +397,111 @@ export async function getProductsForShop(): Promise<Product[]> {
   }));
 }
 
+// Get initial products for shop page (minimal fields, small subset for instant render)
+// This keeps the server-side HTML small (~60KB) while providing instant initial content
+export async function getProductsForShopInitial(limit: number = 30): Promise<Product[]> {
+  const cacheKey = `products_for_shop_initial_${limit}`;
+  const cached = getCached<Product[]>(cacheKey);
+  if (cached) {
+    return cached;
+  }
+
+  // Log Supabase status for debugging
+  if (!USE_SUPABASE) {
+    console.warn('⚠️ [getProductsForShopInitial] Supabase not enabled. USE_SUPABASE check:', {
+      NEXT_PUBLIC_USE_SUPABASE: process.env.NEXT_PUBLIC_USE_SUPABASE,
+      NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Set' : 'Not set',
+    });
+  }
+
+  if (USE_SUPABASE) {
+    const supabase = createServerClient();
+    if (supabase) {
+      try {
+        // Fetch only minimal fields for initial render - just enough to show product cards
+        // This keeps the server-side HTML small (~60KB for 30 products)
+        const { data, error } = await supabase
+          .from('products')
+          .select('slug, category, name, price, image, country, featured, new, on_sale, sale_price, christmas_gift, created_at')
+          .order('created_at', { ascending: false })
+          .limit(limit);
+
+        if (error) {
+          console.error('❌ [getProductsForShopInitial] Supabase query error:', {
+            message: error.message,
+            details: error.details,
+            hint: error.hint,
+            code: error.code,
+          });
+          throw new Error(`Supabase query failed: ${error.message}`);
+        }
+
+        if (data !== null && data !== undefined) {
+          console.log(`✅ [getProductsForShopInitial] Fetched ${data.length} products from Supabase`);
+          const results = data.map((row: any) => ({
+            slug: row.slug,
+            category: row.category,
+            name: row.name,
+            price: parseFloat(row.price),
+            image: row.image || '',
+            country: row.country || '',
+            featured: row.featured === true || row.featured === 'true' || row.featured === 1,
+            new: row.new === true || row.new === 'true' || row.new === 1,
+            onSale: row.on_sale === true || row.on_sale === 'true' || row.on_sale === 1,
+            salePrice: row.sale_price ? parseFloat(row.sale_price) : undefined,
+            christmasGift: row.christmas_gift === true || row.christmas_gift === 'true' || row.christmas_gift === 1,
+            // Minimal fields only - rest will be fetched client-side
+            description: '',
+            images: undefined,
+            tasteProfile: undefined,
+            foodPairing: undefined,
+            region: undefined,
+            producer: undefined,
+            grapes: undefined,
+            wineType: undefined,
+            spiritType: undefined,
+            beerStyle: undefined,
+            abv: undefined,
+            volumeMl: undefined,
+            stock: 0,
+          } as Product));
+
+          setCached(cacheKey, results);
+          return results;
+        } else {
+          console.warn('⚠️ [getProductsForShopInitial] Supabase returned null/undefined data');
+          throw new Error('Supabase returned null data');
+        }
+      } catch (error: any) {
+        console.error('❌ [getProductsForShopInitial] Error fetching from Supabase:', {
+          message: error?.message,
+          stack: error?.stack,
+        });
+        throw error;
+      }
+    } else {
+      console.warn('⚠️ [getProductsForShopInitial] Supabase client creation failed');
+    }
+  }
+
+  // Fallback to local data (first N products)
+  const { products } = await import('@/data/products');
+  return products.slice(0, limit).map(p => ({
+    ...p,
+    images: undefined,
+    tasteProfile: undefined,
+    foodPairing: undefined,
+    region: undefined,
+    producer: undefined,
+    grapes: undefined,
+    wineType: undefined,
+    spiritType: undefined,
+    beerStyle: undefined,
+    abv: undefined,
+    volumeMl: undefined,
+  }));
+}
+
 // Get product by slug
 export async function getProductBySlug(slugParam: string): Promise<Product | null> {
 	// Check cache first - this significantly reduces database queries
