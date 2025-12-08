@@ -476,8 +476,23 @@ async function main() {
     
     // Process each CSV row
     const updatedProducts = [];
+    const newProducts = [];
     const matchedProducts = [];
     const unmatchedProducts = [];
+    
+    // Slugify function (simplified version)
+    function slugify(text) {
+      return text
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/\p{Diacritic}/gu, '')
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w\-]+/g, '')
+        .replace(/\-\-+/g, '-')
+        .replace(/^-+/, '')
+        .replace(/-+$/, '');
+    }
     
     for (const csvRow of csvRows) {
       const existingProduct = findMatchingProduct(csvRow, existingProducts);
@@ -520,36 +535,78 @@ async function main() {
         
         updatedProducts.push(updatedProduct);
       } else {
+        // Create new product for unmatched items
         unmatchedProducts.push(csvRow.Name);
+        
+        const newProduct = {
+          slug: slugify(csvRow.Name),
+          category: csvRow.Category,
+          name: csvRow.Name,
+          price: parseFloat(updatePrice(csvRow.Price, csvRow.Category)),
+          description: generateDescription(csvRow, null), // Generate new description
+          image: '', // Will need to be added later
+          country: csvRow.Country || '',
+          region: csvRow.Region || undefined,
+          producer: csvRow.Producer || undefined,
+          wineType: csvRow['Wine Type'] || undefined,
+          spiritType: csvRow['Spirit Type'] || undefined,
+          beerStyle: csvRow['Beer Style'] || undefined,
+          abv: csvRow.ABV ? parseFloat(csvRow.ABV) : undefined,
+          volumeMl: csvRow['Volume (ml)'] ? parseInt(csvRow['Volume (ml)']) : undefined,
+          stock: 0,
+          featured: false,
+          new: true, // Mark as new product
+          onSale: false,
+          christmasGift: false,
+        };
+        
+        newProducts.push(newProduct);
       }
     }
     
     console.log(`\n📊 Results:`);
-    console.log(`✅ Matched: ${matchedProducts.length} products`);
-    console.log(`❌ Unmatched: ${unmatchedProducts.length} products`);
+    console.log(`✅ Matched & Updated: ${matchedProducts.length} products`);
+    console.log(`🆕 New Products: ${newProducts.length} products`);
+    console.log(`📦 Total Products: ${updatedProducts.length + newProducts.length} products`);
     
     if (unmatchedProducts.length > 0) {
-      console.log(`\n⚠️  Unmatched products (first 10):`);
+      console.log(`\n🆕 New products to be created (first 10):`);
       unmatchedProducts.slice(0, 10).forEach(name => console.log(`   - ${name}`));
     }
     
-    // Show example
+    // Show example of updated product
     if (updatedProducts.length > 0) {
       const example = updatedProducts[0];
       const csvExample = csvRows.find(r => normalizeName(r.Name) === normalizeName(example.name));
+      const oldProduct = existingProducts.find(p => p.slug === example.slug);
       
-      console.log(`\n📝 Example Update:`);
+      console.log(`\n📝 Example Updated Product:`);
       console.log(`   Product: ${example.name}`);
-      console.log(`   Old Price: €${csvExample?.Price || 'N/A'}`);
+      console.log(`   Old Price: €${csvExample?.Price || oldProduct?.price || 'N/A'}`);
       console.log(`   New Price: €${example.price}`);
-      console.log(`   Old Description: ${existingProducts.find(p => p.slug === example.slug)?.description || 'Empty'}`);
-      console.log(`   New Description: ${example.description}`);
+      console.log(`   Old Description: ${oldProduct?.description || 'Empty'}`);
+      console.log(`   New Description: ${example.description.substring(0, 100)}...`);
     }
     
-    // Save updated products to JSON file
+    // Show example of new product
+    if (newProducts.length > 0) {
+      const example = newProducts[0];
+      console.log(`\n📝 Example New Product:`);
+      console.log(`   Product: ${example.name}`);
+      console.log(`   Price: €${example.price}`);
+      console.log(`   Description: ${example.description.substring(0, 100)}...`);
+      console.log(`   Slug: ${example.slug}`);
+    }
+    
+    // Combine updated and new products
+    const allProducts = [...updatedProducts, ...newProducts];
+    
+    // Save all products to JSON file
     const outputPath = path.join(__dirname, '../updated-products.json');
-    fs.writeFileSync(outputPath, JSON.stringify(updatedProducts, null, 2));
-    console.log(`\n💾 Saved ${updatedProducts.length} updated products to: ${outputPath}`);
+    fs.writeFileSync(outputPath, JSON.stringify(allProducts, null, 2));
+    console.log(`\n💾 Saved ${allProducts.length} products to: ${outputPath}`);
+    console.log(`   - ${updatedProducts.length} updated products`);
+    console.log(`   - ${newProducts.length} new products`);
     console.log(`\n✅ Next step: Use the admin panel to bulk import this JSON file`);
     
   } catch (error) {
