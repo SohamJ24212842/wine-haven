@@ -77,6 +77,14 @@ export function Footer() {
 					</ul>
 				</div>
 			</Container>
+			<div className="mt-6 pt-6 border-t border-gold/20">
+				<Container>
+					<p className="text-xs text-cream/80 text-center">
+						Also available on <strong className="text-gold">Deliveroo</strong>
+						<span className="text-cream/60"> (Prices are higher than original via here)</span>
+					</p>
+				</Container>
+			</div>
 			<div className="border-t border-gold/20">
 				<Container className="py-6 text-xs text-cream/70 text-center">
 					© {new Date().getFullYear()} Wine Haven. All rights reserved.

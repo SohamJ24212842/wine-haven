@@ -11,7 +11,9 @@
 		"wineType": "Sparkling",
 		"abv": 12,
 		"volumeMl": 750,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 112.5
 	},
 	{
 		"name": "Veuve Clicquot Brut",
@@ -25,7 +27,9 @@
 		"wineType": "Sparkling",
 		"abv": 12,
 		"volumeMl": 750,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 58.5
 	},
 	{
 		"name": "Moët & Chandon Impérial Brut",
@@ -39,7 +43,9 @@
 		"wineType": "Sparkling",
 		"abv": 12,
 		"volumeMl": 750,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 62.1
 	},
 	{
 		"name": "Ruinart Champagne",
@@ -53,7 +59,9 @@
 		"wineType": "Sparkling",
 		"abv": 12,
 		"volumeMl": 750,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 72
 	},
 	{
 		"name": "Ruinart Blanc de Blancs",
@@ -67,7 +75,9 @@
 		"wineType": "Sparkling",
 		"abv": 12,
 		"volumeMl": 750,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 111.6
 	},
 	{
 		"name": "Laurent-Perrier La Cuvée",
@@ -81,7 +91,9 @@
 		"wineType": "Sparkling",
 		"abv": 12,
 		"volumeMl": 750,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 76.5
 	},
 	{
 		"name": "Moët & Chandon Rosé Impérial",
@@ -95,7 +107,9 @@
 		"wineType": "Rosé",
 		"abv": 12.5,
 		"volumeMl": 750,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 76.5
 	},
 	{
 		"name": "Bollinger Special Cuvée",
@@ -109,7 +123,9 @@
 		"wineType": "Sparkling",
 		"abv": 12,
 		"volumeMl": 750,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 70.2
 	},
 	{
 		"name": "Krug Grande Cuvée",
@@ -123,7 +139,9 @@
 		"wineType": "Sparkling",
 		"abv": 12.5,
 		"volumeMl": 750,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 279
 	},
 	{
 		"name": "Dom Pérignon Vintage 2013",
@@ -137,7 +155,9 @@
 		"wineType": "Sparkling",
 		"abv": 12.5,
 		"volumeMl": 750,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 265.5
 	},
 	{
 		"name": "Moët & Chandon Grand Vintage Rosé 2016",
@@ -151,7 +171,9 @@
 		"wineType": "Rosé",
 		"abv": 12.5,
 		"volumeMl": 750,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 76.5
 	},
 	{
 		"name": "Hennessy Very Special Cognac",
@@ -165,7 +187,9 @@
 		"spiritType": "Liqueur",
 		"abv": 40,
 		"volumeMl": 700,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 43.2
 	},
 	{
 		"name": "Grey Goose Vodka",
@@ -178,7 +202,9 @@
 		"spiritType": "Vodka",
 		"abv": 40,
 		"volumeMl": 700,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 55.8
 	},
 	{
 		"name": "Grey Goose L'Orange Vodka",
@@ -191,7 +217,9 @@
 		"spiritType": "Vodka",
 		"abv": 40,
 		"volumeMl": 700,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 57.6
 	},
 	{
 		"name": "i.Stil Craft Irish Vodka 38",
@@ -204,7 +232,9 @@
 		"spiritType": "Vodka",
 		"abv": 38,
 		"volumeMl": 700,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 35.55
 	},
 	{
 		"name": "i.Stil Pot Still Vanilla Vodka 38",
@@ -217,7 +247,9 @@
 		"spiritType": "Vodka",
 		"abv": 38,
 		"volumeMl": 700,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 35.06
 	},
 	{
 		"name": "Belvedere Vodka",
@@ -230,7 +262,9 @@
 		"spiritType": "Vodka",
 		"abv": 40,
 		"volumeMl": 700,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 55.8
 	},
 	{
 		"name": "Corralejo Reposado Tequila",
@@ -243,7 +277,9 @@
 		"spiritType": "Tequila",
 		"abv": 38,
 		"volumeMl": 700,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 54
 	},
 	{
 		"name": "Planteray Barbados Rum XO 20th Anniversary",
@@ -256,7 +292,9 @@
 		"spiritType": "Rum",
 		"abv": 40,
 		"volumeMl": 700,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 61.16
 	},
 	{
 		"name": "Drumshanbo Single Pot Still Irish Whiskey",
@@ -269,7 +307,9 @@
 		"spiritType": "Whiskey",
 		"abv": 43,
 		"volumeMl": 700,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 54
 	},
 	{
 		"name": "Teeling Revival 14-Year-Old Single Malt Irish Whiskey",
@@ -282,7 +322,9 @@
 		"spiritType": "Whiskey",
 		"abv": 46,
 		"volumeMl": 700,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 220.5
 	},
 	{
 		"name": "Tullamore D.E.W. 14-Year-Old Single Malt Irish Whiskey",
@@ -295,7 +337,9 @@
 		"spiritType": "Whiskey",
 		"abv": 41.3,
 		"volumeMl": 700,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 103.5
 	},
 	{
 		"name": "Bushmills Single Malt Irish Whiskey 1995 Marsala Casks",
@@ -308,7 +352,9 @@
 		"spiritType": "Whiskey",
 		"abv": 57.8,
 		"volumeMl": 700,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 445.5
 	},
 	{
 		"name": "Writer's Tears Red Head",
@@ -321,7 +367,9 @@
 		"spiritType": "Whiskey",
 		"abv": 46,
 		"volumeMl": 700,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 68.4
 	},
 	{
 		"name": "Writer's Tears Copper Pot",
@@ -334,7 +382,9 @@
 		"spiritType": "Whiskey",
 		"abv": 40,
 		"volumeMl": 700,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 37.8
 	},
 	{
 		"name": "Writer's Tears Double Oak",
@@ -347,14 +397,18 @@
 		"spiritType": "Whiskey",
 		"abv": 46,
 		"volumeMl": 700,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 55.8
 	},
 	{
 		"name": "Midleton Very Rare",
 		"slug": "midleton-very-rare",
 		"category": "Spirit",
 		"price": 310,
-		"description": "The pinnacle of Irish whiskey. A blend of the finest single pot still and single malt whiskeys. Exceptionally rare and refined.",
+		"salePrice": 279,
+		"onSale": true,
+		"description": "The Pinnacle of Irish Whiskey\n\nDescription\n\nThe pinnacle of Irish whiskey craftsmanship. Midleton Very Rare is a blend of the finest single pot still and single malt whiskeys, each carefully selected from the distillery's most exceptional casks. This annual release represents the very best of what Irish whiskey can achieve—exceptional rarity, refinement, and complexity. Each bottle is individually numbered and represents a unique expression of Midleton's artisanal approach to whiskey making.\n\nLanguage of Wine\n\nRich golden amber color with brilliant clarity. Elegant aromas of vanilla, toasted oak, honey, and warm spices with hints of citrus, dried fruit, and gentle floral notes. Smooth and refined on the palate with layers of flavor including vanilla, honey, toasted almonds, and gentle oak. Notes of citrus zest, dried apricot, and subtle spice emerge beautifully. Exceptionally smooth and balanced with a long, elegant finish that lingers with hints of oak, vanilla, and gentle warmth.\n\nFood Pairing\n\nBest enjoyed neat or with a single drop of water to release its complex aromas. Perfect for special occasions, celebrations, or as a contemplative sipping whiskey. Pairs beautifully with dark chocolate, aged cheeses, or enjoyed on its own as a refined digestif.",
 		"country": "Ireland",
 		"producer": "Midleton",
 		"spiritType": "Whiskey",
@@ -373,7 +427,9 @@
 		"spiritType": "Whiskey",
 		"abv": 40,
 		"volumeMl": 700,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 256.5
 	},
 	{
 		"name": "Glenmorangie Signet",
@@ -387,7 +443,9 @@
 		"spiritType": "Whiskey",
 		"abv": 46,
 		"volumeMl": 700,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 256.5
 	},
 	{
 		"name": "Glenmorangie Quinta Ruban 14 Years",
@@ -401,7 +459,9 @@
 		"spiritType": "Whiskey",
 		"abv": 46,
 		"volumeMl": 700,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 69.3
 	},
 	{
 		"name": "Glenmorangie The Lasanta 12 Years",
@@ -415,7 +475,9 @@
 		"spiritType": "Whiskey",
 		"abv": 43,
 		"volumeMl": 700,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 64.8
 	},
 	{
 		"name": "Glenfiddich 18-Year-Old Single Malt",
@@ -429,14 +491,18 @@
 		"spiritType": "Whiskey",
 		"abv": 40,
 		"volumeMl": 700,
-		"image": ""
+		"image": "",
+		"onSale": true,
+		"salePrice": 125.1
 	},
 	{
 		"name": "Midleton Very Rare Barry Crockett",
 		"slug": "midleton-very-rare-barry-crockett",
 		"category": "Spirit",
 		"price": 340,
-		"description": "A rare and exceptional Irish whiskey named after Master Distiller Barry Crockett. The pinnacle of Irish whiskey craftsmanship with exceptional complexity and refinement.",
+		"salePrice": 306,
+		"onSale": true,
+		"description": "Master Distiller's Legacy\n\nDescription\n\nA rare and exceptional Irish whiskey named after Master Distiller Barry Crockett, who dedicated over 40 years to the Midleton Distillery. This limited edition release represents the pinnacle of Irish whiskey craftsmanship, showcasing exceptional complexity and refinement. Each bottle is individually numbered and presented in a luxurious wooden case, making it a true collector's piece. This whiskey honors the legacy of one of Ireland's most respected distillers and represents the finest expression of Midleton's artisanal approach to whiskey making.\n\nLanguage of Wine\n\nRich golden amber color with exceptional clarity. Complex aromas of rich vanilla, toasted oak, honey, and subtle spice with hints of dried fruit, orange zest, and warm baking spices. Full-bodied and velvety on the palate with layers of flavor including vanilla, honey, toasted almonds, and gentle oak. Notes of citrus, dried apricot, and a whisper of cinnamon emerge mid-palate. Exceptionally smooth and refined with a long, elegant finish that lingers beautifully on the palate with hints of oak, vanilla, and gentle spice.\n\nFood Pairing\n\nBest enjoyed neat or with a single drop of water to release its complex aromas. Perfect for special occasions and as a digestif after fine dining. Pairs beautifully with dark chocolate, aged cheeses, or enjoyed on its own as a contemplative sipping whiskey.",
 		"country": "Ireland",
 		"producer": "Midleton",
 		"spiritType": "Whiskey",
@@ -445,4 +511,3 @@
 		"image": ""
 	}
 ]
-

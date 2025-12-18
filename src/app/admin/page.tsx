@@ -6,7 +6,7 @@ import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/typography/SectionHeading";
 import { Plus, Edit, Trash2, Eye, EyeOff, Tag, Star, Sparkles, LayoutDashboard, Package, ShoppingCart, Settings, Search, Filter, Upload, X, Gift, Video, Image as ImageIcon, ArrowUp, ArrowDown } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { SearchableSelect } from "@/components/admin/SearchableSelect";
 
 const ADMIN_PASSWORD = "winehaven2024"; // Change this in production!
@@ -22,6 +22,7 @@ function AdminPageContent() {
 	// Hooks must be called in the same order on every render
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
+	const router = useRouter();
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
@@ -169,43 +170,20 @@ function AdminPageContent() {
 	const fetchProducts = async () => {
 		setLoading(true);
 		try {
-			// Force fresh data for admin - add timestamp to bypass cache
-			// Add timeout to prevent hanging
-			const controller = new AbortController();
-			const timeoutId = setTimeout(() => controller.abort(), 50000); // 50 second timeout
-			
-			// Use ?full=true to get all fields (including taste_profile, food_pairing) for admin editing
-			const response = await fetch(`/api/products?t=${Date.now()}&full=true`, {
-				cache: 'no-store', // Force no cache
-				signal: controller.signal,
+			// Use cache: 'no-cache' for admin to ensure fresh data when needed
+			// But API itself is cached, so this is still fast
+			const response = await fetch("/api/products", {
+				cache: 'no-cache', // Admin needs fresh data, but API cache still helps
 			});
-			
-			clearTimeout(timeoutId);
-			
 			if (response.ok) {
 				const data = await response.json();
-				// Check if response contains error (API might return 200 with error object)
-				if (data.error) {
-					console.error("API returned error:", data);
-					alert(`Failed to fetch products: ${data.error}\n\n${data.details || ''}\n\nFalling back to local data.`);
-					setProductsList(products);
-				} else {
-					setProductsList(Array.isArray(data) ? data : []);
-				}
+				setProductsList(data);
 			} else {
-				const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-				console.error("API error response:", errorData);
-				alert(`Failed to fetch products: ${errorData.error || 'Unknown error'}\n\nFalling back to local data.`);
 				// Fallback to local data if API fails
 				setProductsList(products);
 			}
-		} catch (error: any) {
+		} catch (error) {
 			console.error("Error fetching products:", error);
-			if (error.name === 'AbortError') {
-				alert('Request timed out. The database may be slow. Falling back to local data.');
-			} else {
-				alert(`Failed to fetch products: ${error.message || 'Network error'}\n\nFalling back to local data.`);
-			}
 			// Fallback to local data
 			setProductsList(products);
 		} finally {
@@ -791,6 +769,7 @@ function AdminPageContent() {
 										
 										alert(message);
 										fetchProducts();
+										router.refresh(); // Force refresh to clear cache
 									} else {
 										alert(`Import failed: ${result.error}\n\n${result.details || ""}`);
 									}
@@ -813,17 +792,6 @@ function AdminPageContent() {
 					>
 						<Upload size={16} />
 						Bulk Import JSON
-					</button>
-					<button
-						onClick={() => {
-							// Download CSV export
-							window.open("/api/products/export-csv", "_blank");
-						}}
-						className="flex items-center gap-2 rounded-md border border-maroon/20 bg-white px-4 py-2 text-sm text-maroon hover:bg-soft-gray transition-colors"
-						title="Export products to CSV for Deliveroo"
-					>
-						<Package size={16} />
-						Export CSV
 					</button>
 					<button
 						onClick={() => {
@@ -904,10 +872,8 @@ function AdminPageContent() {
 												alert(message);
 												setShowBulkImport(false);
 												setBulkImportJson("");
-												// Force refresh with cache busting
-												setTimeout(() => {
-													fetchProducts();
-												}, 500);
+												fetchProducts();
+												router.refresh(); // Force refresh to clear cache
 											} else {
 												alert(`Import failed: ${result.error}\n\n${result.details || ""}`);
 											}
