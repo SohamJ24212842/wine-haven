@@ -80,65 +80,8 @@ export function ShopPageClient({ initialProducts }: ShopPageClientProps) {
 		}
 	}, [initialProducts]);
 
-	// Update products when search query changes (client-side search)
-	useEffect(() => {
-		const searchQuery = searchParams.get("search") || searchParams.get("q");
-		
-		// If no search query, use initial products (or fetched products)
-		if (!searchQuery) {
-			if (initialProducts.length > 0) {
-				setProducts(initialProducts);
-				setAllProducts(initialProducts);
-			}
-			return;
-		}
-
-		// If search query exists, fetch filtered products
-		const fetchFilteredProducts = async () => {
-			if (fetchAbortControllerRef.current) {
-				fetchAbortControllerRef.current.abort();
-			}
-
-			const abortController = new AbortController();
-			fetchAbortControllerRef.current = abortController;
-
-			try {
-				setLoading(true);
-				setError(null);
-				const url = `/api/products?search=${encodeURIComponent(searchQuery)}`;
-				const response = await fetch(url, {
-					signal: abortController.signal,
-				});
-
-				if (response.ok) {
-					const data = await response.json();
-					const productsArray = Array.isArray(data) ? data : (data.products || []);
-					setProducts(productsArray);
-					setError(null);
-				} else {
-					setError(`API error: ${response.status}`);
-					setProducts(initialProducts);
-				}
-			} catch (err: any) {
-				if (err.name === 'AbortError') return;
-				console.error('Failed to fetch filtered products:', err);
-				setError(err.message || 'Failed to fetch products');
-				setProducts(initialProducts);
-			} finally {
-				if (!abortController.signal.aborted) {
-					setLoading(false);
-				}
-			}
-		};
-
-		fetchFilteredProducts();
-
-		return () => {
-			if (fetchAbortControllerRef.current) {
-				fetchAbortControllerRef.current.abort();
-			}
-		};
-	}, [searchParams, initialProducts]);
+	// Search is now handled client-side only (no API calls needed)
+	// All products are already loaded, so filtering happens instantly in filteredSorted
 
 	// Memoize price calculations to keep dependency array stable
 	const prices = useMemo(() => products.map((p) => (p.onSale && p.salePrice ? p.salePrice : (p.price || 0))).filter(p => p > 0), [products]);
@@ -243,9 +186,15 @@ export function ShopPageClient({ initialProducts }: ShopPageClientProps) {
 	}, [products.length, minAvailable, maxAvailable]);
 
 	// Debounced URL update to prevent excessive re-renders
+	// Optimized: Search query has shorter debounce (150ms) for better responsiveness
+	// Other filters use longer debounce (300ms) to reduce URL churn
 	useEffect(() => {
 		// Don't overwrite incoming URL filters until we've hydrated from them once
 		if (!hydratedRef.current) return;
+		
+		// Use shorter debounce for search (150ms) vs other filters (300ms)
+		const debounceTime = query ? 150 : 300;
+		
 		const timeoutId = setTimeout(() => {
 			const params = new URLSearchParams();
 			if (query) params.set("q", query);
@@ -265,7 +214,7 @@ export function ShopPageClient({ initialProducts }: ShopPageClientProps) {
 
 			const newUrl = params.toString() ? `?${params.toString()}` : "/shop";
 			router.replace(newUrl, { scroll: false });
-		}, 300); // 300ms debounce
+		}, debounceTime);
 
 		return () => clearTimeout(timeoutId);
 	}, [query, selectedWineTypes, selectedSpiritTypes, selectedBeerStyles, selectedRegions, selectedCountries, minPrice, maxPrice, sortBy, activeCategoryTab, christmasGift, onSale, newOnly, featuredOnly, router, minAvailable, maxAvailable]);
@@ -427,89 +376,83 @@ export function ShopPageClient({ initialProducts }: ShopPageClientProps) {
 		return { all, wine, beer, spirit };
 	}, [products]);
 
+	// Optimized normalize function - simple and fast
+	const normalize = (s?: string): string => {
+		if (!s) return "";
+		return s.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
+	};
+
+	// Pre-compute normalized search query for performance (only compute once per query change)
+	const normalizedQuery = useMemo(() => normalize(query.trim()), [query]);
+
 	const filteredSorted = useMemo(() => {
-		const normalize = (s?: string) =>
-			(s || "")
-				.toLowerCase()
-				.normalize("NFD")
-				.replace(/\p{Diacritic}/gu, "");
+		// Early exit if no products
+		if (products.length === 0) return [];
 
 		let filtered = products.filter((p) => {
+			// Fast filters first (cheapest checks)
 			// Category filter
 			if (activeCategoryTab !== "All" && p.category !== activeCategoryTab) return false;
 
-			// Christmas Gift filter
+			// Boolean filters
 			if (christmasGift && !p.christmasGift) return false;
-
-			// On Sale filter
 			if (onSale && !p.onSale) return false;
-
-			// New filter
 			if (newOnly && !p.new) return false;
-
-			// Featured filter
 			if (featuredOnly && !p.featured) return false;
 
 			// Country filter
 			if (selectedCountries.length > 0 && !selectedCountries.includes(p.country)) return false;
 
-			const q = normalize(query.trim());
-			const matchesQuery =
-				q.length === 0 ||
-				normalize(p.name).includes(q) ||
-				normalize(p.slug).includes(q) ||
-				normalize(p.country).includes(q) ||
-				normalize(p.region).includes(q) ||
-				normalize(p.description).includes(q) ||
-				normalize(p.producer).includes(q) ||
-				normalize(p.tasteProfile).includes(q) ||
-				normalize(p.foodPairing).includes(q) ||
-				normalize((p.grapes || []).join(", ")).includes(q);
-
-			const matchesWineType =
-				p.category !== "Wine" || selectedWineTypes.length === 0 || (p.wineType ? selectedWineTypes.includes(p.wineType) : false);
-			const matchesSpiritType =
-				p.category !== "Spirit" || selectedSpiritTypes.length === 0 || (p.spiritType ? selectedSpiritTypes.includes(p.spiritType) : false);
-			const matchesBeerStyle =
-				p.category !== "Beer" || selectedBeerStyles.length === 0 || (p.beerStyle ? selectedBeerStyles.includes(p.beerStyle) : false);
-
-			const matchesRegion = selectedRegions.length === 0 || (p.region ? selectedRegions.includes(p.region) : false);
-			
-			// Price filter - use sale price if on sale
+			// Price filter - use sale price if on sale (fast numeric comparison)
 			const productPrice = p.onSale && p.salePrice ? p.salePrice : p.price;
-			const matchesPrice = productPrice >= minPrice && productPrice <= maxPrice;
+			if (productPrice < minPrice || productPrice > maxPrice) return false;
 
-			return (
-				matchesQuery &&
-				matchesWineType &&
-				matchesSpiritType &&
-				matchesBeerStyle &&
-				matchesRegion &&
-				matchesPrice
-			);
+			// Type filters
+			if (p.category === "Wine" && selectedWineTypes.length > 0 && (!p.wineType || !selectedWineTypes.includes(p.wineType))) return false;
+			if (p.category === "Spirit" && selectedSpiritTypes.length > 0 && (!p.spiritType || !selectedSpiritTypes.includes(p.spiritType))) return false;
+			if (p.category === "Beer" && selectedBeerStyles.length > 0 && (!p.beerStyle || !selectedBeerStyles.includes(p.beerStyle))) return false;
+
+			// Region filter
+			if (selectedRegions.length > 0 && (!p.region || !selectedRegions.includes(p.region))) return false;
+
+			// Search query (most expensive, so do last)
+			if (normalizedQuery.length > 0) {
+				const matchesQuery =
+					normalize(p.name).includes(normalizedQuery) ||
+					normalize(p.slug).includes(normalizedQuery) ||
+					normalize(p.country).includes(normalizedQuery) ||
+					normalize(p.region).includes(normalizedQuery) ||
+					normalize(p.description).includes(normalizedQuery) ||
+					normalize(p.producer).includes(normalizedQuery) ||
+					normalize(p.tasteProfile).includes(normalizedQuery) ||
+					normalize(p.foodPairing).includes(normalizedQuery) ||
+					normalize((p.grapes || []).join(", ")).includes(normalizedQuery);
+				if (!matchesQuery) return false;
+			}
+
+			return true;
 		});
 
-		switch (sortBy) {
-			case "price-asc":
-				return [...filtered].sort((a, b) => {
-					const priceA = a.onSale && a.salePrice ? a.salePrice : a.price;
-					const priceB = b.onSale && b.salePrice ? b.salePrice : b.price;
-					return priceA - priceB;
-				});
-			case "price-desc":
-				return [...filtered].sort((a, b) => {
-					const priceA = a.onSale && a.salePrice ? a.salePrice : a.price;
-					const priceB = b.onSale && b.salePrice ? b.salePrice : b.price;
-					return priceB - priceA;
-				});
-			case "name-asc":
-				return [...filtered].sort((a, b) => a.name.localeCompare(b.name));
-			case "name-desc":
-				return [...filtered].sort((a, b) => b.name.localeCompare(a.name));
-			default:
-				return filtered;
+		// Optimized sorting - pre-compute prices to avoid repeated calculations
+		if (sortBy === "price-asc" || sortBy === "price-desc") {
+			const sorted = [...filtered].map(p => ({
+				product: p,
+				price: p.onSale && p.salePrice ? p.salePrice : p.price
+			}));
+			sorted.sort((a, b) => sortBy === "price-asc" ? a.price - b.price : b.price - a.price);
+			return sorted.map(item => item.product);
 		}
-	}, [query, selectedWineTypes, selectedSpiritTypes, selectedBeerStyles, selectedRegions, selectedCountries, minPrice, maxPrice, sortBy, activeCategoryTab, christmasGift, onSale, newOnly, featuredOnly, products]);
+		
+		if (sortBy === "name-asc") {
+			return [...filtered].sort((a, b) => a.name.localeCompare(b.name));
+		}
+		
+		if (sortBy === "name-desc") {
+			return [...filtered].sort((a, b) => b.name.localeCompare(a.name));
+		}
+		
+		return filtered;
+	}, [normalizedQuery, selectedWineTypes, selectedSpiritTypes, selectedBeerStyles, selectedRegions, selectedCountries, minPrice, maxPrice, sortBy, activeCategoryTab, christmasGift, onSale, newOnly, featuredOnly, products]);
 
 	const clearAll = () => {
 		setQuery("");
@@ -620,17 +563,32 @@ export function ShopPageClient({ initialProducts }: ShopPageClientProps) {
 				className="mt-6 flex flex-col md:flex-row md:items-center gap-4"
 			>
 				<input
-					type="text"
+					type="search"
 					placeholder="Search by name, country, region, producer, food…"
 					className="flex-1 rounded-full border border-maroon/20 bg-white px-4 py-2 outline-none focus:border-maroon/40 transition-colors"
 					value={query}
-					onChange={(e) => setQuery(e.target.value)}
+					onChange={(e) => {
+						setQuery(e.target.value);
+						setIsTyping(true);
+					}}
 					onFocus={() => setIsTyping(true)}
-					onBlur={() => setIsTyping(false)}
+					onBlur={() => {
+						setTimeout(() => setIsTyping(false), 200);
+					}}
 					onKeyDown={(e) => {
+						// Prevent any form submission, mailto:, or default browser behavior
 						if (e.key === "Enter") {
 							e.preventDefault();
 							e.stopPropagation();
+							// Blur to remove focus and trigger debounced update
+							e.currentTarget.blur();
+							return false;
+						}
+						// Prevent Escape from triggering any navigation
+						if (e.key === "Escape") {
+							e.preventDefault();
+							e.stopPropagation();
+							return false;
 						}
 					}}
 					autoComplete="off"
@@ -639,6 +597,7 @@ export function ShopPageClient({ initialProducts }: ShopPageClientProps) {
 					spellCheck="false"
 					role="searchbox"
 					aria-label="Search products"
+					form=""
 				/>
 					<select
 					className="w-full md:w-64 rounded-full border border-maroon/20 bg-white px-4 py-2 outline-none focus:border-maroon/40 transition-colors"
@@ -1017,6 +976,71 @@ function AdvancedFilters({
 														}
 														return next;
 													});
+												}}
+												className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
+													active
+														? "border-maroon/30 bg-maroon/5 text-maroon"
+														: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
+												}`}
+												type="button"
+											>
+												<Beer size={12} />
+												<span>{t}</span>
+												<span className="text-[10px] text-maroon/50">
+													({count})
+												</span>
+											</button>
+										);
+									})}
+							</div>
+						</div>
+					)}
+
+					{/* Regions - Hide options with 0 count */}
+					{allRegions.filter(r => (regionCounts.get(r) || 0) > 0).length > 0 && (
+						<div className="space-y-2">
+							<p className="text-sm font-medium text-maroon">Regions</p>
+							<div className="flex flex-wrap gap-2">
+								{allRegions
+									.filter(r => (regionCounts.get(r) || 0) > 0)
+									.map((r) => {
+										const active = selectedRegions.includes(r);
+										const count = regionCounts.get(r) || 0;
+										return (
+											<button
+												key={r}
+												onClick={() => {
+													setSelectedRegions((prev) =>
+														prev.includes(r) ? prev.filter((x) => x !== r) : [...prev, r]
+													);
+												}}
+												className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
+													active
+														? "border-maroon/30 bg-maroon/5 text-maroon"
+														: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
+												}`}
+												type="button"
+											>
+												<MapPin size={12} />
+												<span>{r}</span>
+												<span className="text-[10px] text-maroon/50">
+													({count})
+												</span>
+											</button>
+										);
+									})}
+							</div>
+						</div>
+					)}
+				</div>
+			)}
+		</div>
+	);
+}
+
+
+
+
 												}}
 												className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
 													active

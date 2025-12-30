@@ -681,10 +681,23 @@ function AdminPageContent() {
 				<div className="flex-1 relative">
 					<Search className="absolute left-3 top-1/2 -translate-y-1/2 text-maroon/40" size={18} />
 					<input
-						type="text"
+						type="search"
 						placeholder="Search products by name, country, region..."
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
+						onKeyDown={(e) => {
+							// Prevent any form submission, mailto:, or default browser behavior
+							if (e.key === "Enter") {
+								e.preventDefault();
+								e.stopPropagation();
+								return false;
+							}
+						}}
+						autoComplete="off"
+						autoCorrect="off"
+						autoCapitalize="off"
+						spellCheck="false"
+						form=""
 						className="w-full pl-10 pr-8 py-2 rounded-md border border-maroon/20 bg-white text-sm outline-none focus:border-gold"
 					/>
 					{searchQuery && (
