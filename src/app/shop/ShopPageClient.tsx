@@ -5,7 +5,7 @@
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/typography/SectionHeading";
 import { ProductCard } from "@/components/shop/ProductCard";
-import { useMemo, useState, useEffect, useRef } from "react";
+import { useMemo, useState, useEffect, useRef, startTransition } from "react";
 import { ProductCategory, BeerStyle, SpiritType, WineType, Product } from "@/types/product";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -188,14 +188,21 @@ export function ShopPageClient({ initialProducts }: ShopPageClientProps) {
 	// Debounced URL update to prevent excessive re-renders
 	// Optimized: Search query has shorter debounce (150ms) for better responsiveness
 	// Other filters use longer debounce (300ms) to reduce URL churn
+	// IMPORTANT: Don't update URL while user is actively typing to prevent loading indicators
 	useEffect(() => {
 		// Don't overwrite incoming URL filters until we've hydrated from them once
 		if (!hydratedRef.current) return;
+		
+		// Don't update URL while user is actively typing (prevents loading indicators)
+		if (isTyping) return;
 		
 		// Use shorter debounce for search (150ms) vs other filters (300ms)
 		const debounceTime = query ? 150 : 300;
 		
 		const timeoutId = setTimeout(() => {
+			// Double-check user is not typing before updating URL
+			if (isTyping) return;
+			
 			const params = new URLSearchParams();
 			if (query) params.set("q", query);
 			if (selectedWineTypes.length) params.set("wineType", selectedWineTypes.join(","));
@@ -213,11 +220,14 @@ export function ShopPageClient({ initialProducts }: ShopPageClientProps) {
 			if (featuredOnly) params.set("featured", "true");
 
 			const newUrl = params.toString() ? `?${params.toString()}` : "/shop";
-			router.replace(newUrl, { scroll: false });
+			// Use startTransition to mark URL update as non-urgent, preventing loading indicators
+			startTransition(() => {
+				router.replace(newUrl, { scroll: false });
+			});
 		}, debounceTime);
 
 		return () => clearTimeout(timeoutId);
-	}, [query, selectedWineTypes, selectedSpiritTypes, selectedBeerStyles, selectedRegions, selectedCountries, minPrice, maxPrice, sortBy, activeCategoryTab, christmasGift, onSale, newOnly, featuredOnly, router, minAvailable, maxAvailable]);
+	}, [query, selectedWineTypes, selectedSpiritTypes, selectedBeerStyles, selectedRegions, selectedCountries, minPrice, maxPrice, sortBy, activeCategoryTab, christmasGift, onSale, newOnly, featuredOnly, router, minAvailable, maxAvailable, isTyping]);
 
 	// Helper function to get products matching current filters (excluding specific filter types)
 	// This is used to compute available filter options based on current filter state
@@ -1037,71 +1047,3 @@ function AdvancedFilters({
 		</div>
 	);
 }
-
-
-
-
-												}}
-												className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
-													active
-														? "border-maroon/30 bg-maroon/5 text-maroon"
-														: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
-												}`}
-												type="button"
-											>
-												<Beer size={12} />
-												<span>{t}</span>
-												<span className="text-[10px] text-maroon/50">
-													({count})
-												</span>
-											</button>
-										);
-									})}
-							</div>
-						</div>
-					)}
-
-					{/* Regions - Hide options with 0 count */}
-					{allRegions.filter(r => (regionCounts.get(r) || 0) > 0).length > 0 && (
-						<div className="space-y-2">
-							<p className="text-sm font-medium text-maroon">Regions</p>
-							<div className="flex flex-wrap gap-2">
-								{allRegions
-									.filter(r => (regionCounts.get(r) || 0) > 0)
-									.map((r) => {
-										const active = selectedRegions.includes(r);
-										const count = regionCounts.get(r) || 0;
-										return (
-											<button
-												key={r}
-												onClick={() => {
-													setSelectedRegions((prev) =>
-														prev.includes(r) ? prev.filter((x) => x !== r) : [...prev, r]
-													);
-												}}
-												className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs transition-colors ${
-													active
-														? "border-maroon/30 bg-maroon/5 text-maroon"
-														: "border-maroon/20 bg-white text-maroon/70 hover:bg-soft-gray"
-												}`}
-												type="button"
-											>
-												<MapPin size={12} />
-												<span>{r}</span>
-												<span className="text-[10px] text-maroon/50">
-													({count})
-												</span>
-											</button>
-										);
-									})}
-							</div>
-						</div>
-					)}
-				</div>
-			)}
-		</div>
-	);
-}
-
-
-
