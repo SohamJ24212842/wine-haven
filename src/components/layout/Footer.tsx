@@ -80,7 +80,15 @@ export function Footer() {
 			<div className="mt-6 pt-6 border-t border-gold/20">
 				<Container>
 					<p className="text-xs text-cream/80 text-center">
-						Also available on <strong className="text-gold">Deliveroo</strong>
+						Also available on{" "}
+						<a
+							href="https://deliveroo.ie/menu/Dublin/dun-laoghaire/mahajan-wine-haven/?day=today&geohash=gc7xhnp19qmr&time=ASAP&fulfillment_method=DELIVERY&timestamp=1767094419"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="font-semibold text-gold hover:text-gold/80 hover:underline transition-colors"
+						>
+							Deliveroo
+						</a>
 						<span className="text-cream/60"> (Prices are higher than original via here)</span>
 					</p>
 				</Container>

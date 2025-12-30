@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { Sparkles, X } from "lucide-react";
 import { useState } from "react";
@@ -25,12 +24,18 @@ export function PromoBanner() {
 			
 			<div className="container mx-auto flex items-center justify-center gap-3 relative z-10">
 				<Sparkles className="w-4 h-4 text-gold flex-shrink-0" />
-				<Link
-					href="/shop"
-					className="text-sm md:text-base font-semibold text-center hover:underline transition-all"
-				>
-					✨ 10% off all Wines & Spirits — Shop the full selection →
-				</Link>
+				<p className="text-sm md:text-base font-semibold text-center">
+					Also available on{" "}
+					<a
+						href="https://deliveroo.ie/menu/Dublin/dun-laoghaire/mahajan-wine-haven/?day=today&geohash=gc7xhnp19qmr&time=ASAP&fulfillment_method=DELIVERY&timestamp=1767094419"
+						target="_blank"
+						rel="noopener noreferrer"
+						className="text-gold hover:text-gold/80 hover:underline transition-colors"
+					>
+						Deliveroo
+					</a>
+					<span className="text-gold/80"> (Prices are higher than original via here)</span>
+				</p>
 				<button
 					onClick={() => setIsVisible(false)}
 					className="ml-auto text-gold/80 hover:text-gold transition-colors p-1"
