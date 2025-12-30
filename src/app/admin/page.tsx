@@ -110,7 +110,8 @@ function AdminPageContent() {
 					return response.json();
 				}
 
-				// Handle update actions
+				// Handle update actions - only send the fields being updated
+				// This prevents accidentally clearing other fields like description
 				let updates: Partial<Product> = {};
 				if (action === "feature") updates = { featured: true };
 				if (action === "unfeature") updates = { featured: false };
@@ -119,10 +120,12 @@ function AdminPageContent() {
 				if (action === "sale-on") updates = { onSale: true };
 				if (action === "sale-off") updates = { onSale: false };
 
+				// Only send the updates, not the entire product object
+				// The API will merge these with the existing product
 				const response = await fetch(`/api/products/${slug}`, {
 					method: "PUT",
 					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ ...product, ...updates }),
+					body: JSON.stringify(updates),
 				});
 
 				if (!response.ok) {

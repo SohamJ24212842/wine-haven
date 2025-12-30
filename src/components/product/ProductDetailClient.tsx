@@ -275,14 +275,10 @@ export function ProductDetailClient({ product, discountPercentage, allProducts: 
 						)}
 					</div>
 					
-					{/* Description Section - Make it more prominent */}
-					{product.description && product.description.trim() && (
-						<div className="mt-6 pt-6 border-t border-maroon/10">
-							<h3 className="text-lg font-semibold text-maroon mb-3">Description</h3>
-							<p className="text-maroon/90 leading-relaxed text-base whitespace-pre-line">
-								{product.description}
-							</p>
-						</div>
+					{product.description && (
+						<p className="mt-6 text-maroon/90 leading-relaxed text-lg whitespace-pre-line">
+							{product.description}
+						</p>
 					)}
 					
 					{/* Show related products at bottom if available */}
