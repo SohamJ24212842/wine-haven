@@ -2,6 +2,7 @@
 // Uses Supabase with fallback to local data
 import { createServerClient, createAdminClient } from '@/lib/supabase';
 import { Product } from '@/types/product';
+import { toSlug } from '@/lib/slug';
 
 // Check if Supabase is configured
 const USE_SUPABASE = !!process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -9,7 +10,7 @@ const USE_SUPABASE = !!process.env.NEXT_PUBLIC_SUPABASE_URL;
 // Map database row to Product type (for Supabase)
 function mapRowToProduct(row: any): Product {
   return {
-    slug: row.slug,
+    slug: (row.slug ? String(row.slug) : toSlug(String(row.name || ""))).trim(),
     category: row.category,
     name: row.name,
     price: parseFloat(row.price),
@@ -84,6 +85,9 @@ export async function getAllProducts(): Promise<Product[]> {
 
 // Get product by slug
 export async function getProductBySlug(slug: string): Promise<Product | null> {
+  const normalizedSlug = String(slug || '').trim();
+  const slugified = toSlug(normalizedSlug);
+
   // Try Supabase if configured
   if (USE_SUPABASE) {
     const supabase = createServerClient();
@@ -92,11 +96,24 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
         const { data, error } = await supabase
           .from('products')
           .select('*')
-          .eq('slug', slug)
+          .eq('slug', normalizedSlug)
           .single();
 
         if (!error && data) {
           return mapRowToProduct(data);
+        }
+
+        // Fallback: if someone navigated using a name-like slug, try slugified.
+        if (slugified && slugified !== normalizedSlug) {
+          const { data: data2, error: error2 } = await supabase
+            .from('products')
+            .select('*')
+            .eq('slug', slugified)
+            .single();
+
+          if (!error2 && data2) {
+            return mapRowToProduct(data2);
+          }
         }
       } catch (error) {
         console.error('Error fetching from Supabase:', error);
@@ -106,7 +123,11 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
 
   // Fallback to local data
   const { products } = await import('@/data/products');
-  return products.find(p => p.slug === slug) || null;
+  return (
+    products.find(p => p.slug === normalizedSlug) ||
+    (slugified && slugified !== normalizedSlug ? products.find(p => p.slug === slugified) : null) ||
+    null
+  );
 }
 
 // Create product (admin only)

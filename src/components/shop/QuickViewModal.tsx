@@ -6,6 +6,7 @@ import { useCart } from "@/contexts/CartContext";
 import { X, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
+import { normalizeSlugForHref, toSlug } from "@/lib/slug";
 
 type QuickViewModalProps = {
 	product: Product | null;
@@ -22,6 +23,8 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 	const [quantity, setQuantity] = useState(1);
 
 	if (!product) return null;
+
+	const hrefSlug = normalizeSlugForHref(product.slug) || toSlug(product.name);
 
 	const discountPercentage = product.onSale && product.salePrice 
 		? calculateDiscountPercentage(product.price, product.salePrice)
@@ -170,7 +173,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 
 									{/* View More Details Link */}
 									<Link
-										href={`/product/${product.slug}`}
+										href={`/product/${hrefSlug}`}
 										onClick={onClose}
 										className="text-center text-sm text-maroon/70 hover:text-maroon underline transition-colors"
 									>

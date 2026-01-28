@@ -8,6 +8,7 @@ import { ShoppingCart, Eye } from "lucide-react";
 import { useState } from "react";
 import { QuickViewModal } from "./QuickViewModal";
 import { CountryFlag } from "@/components/ui/CountryFlag";
+import { normalizeSlugForHref, toSlug } from "@/lib/slug";
 
 type ProductCardProps = {
 	product: Product;
@@ -28,6 +29,8 @@ export function ProductCard({ product }: ProductCardProps) {
 	const { addItem } = useCart();
 	const [isHovered, setIsHovered] = useState(false);
 	const [showQuickView, setShowQuickView] = useState(false);
+
+	const hrefSlug = normalizeSlugForHref(product.slug) || toSlug(product.name);
 
 	const discountPercentage = product.onSale && product.salePrice 
 		? calculateDiscountPercentage(product.price, product.salePrice)
@@ -55,7 +58,7 @@ export function ProductCard({ product }: ProductCardProps) {
 			viewport={{ once: true, amount: 0.2 }}
 			transition={{ duration: 0.4 }}
 		>
-			<Link href={`/product/${product.slug}`} className="block">
+			<Link href={`/product/${hrefSlug}`} className="block">
 				<motion.div 
 					className={`overflow-hidden rounded-lg border border-maroon/10 bg-white transition-all duration-300 ${
 						isHovered ? "shadow-xl" : "shadow-sm"
