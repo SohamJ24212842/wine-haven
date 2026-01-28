@@ -5,7 +5,7 @@ import { Product } from "@/types/product";
 import { useCart } from "@/contexts/CartContext";
 import { X, ShoppingCart } from "lucide-react";
 import { useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type QuickViewModalProps = {
 	product: Product | null;
@@ -19,6 +19,7 @@ function calculateDiscountPercentage(originalPrice: number, salePrice: number): 
 
 export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps) {
 	const { addItem } = useCart();
+	const router = useRouter();
 	const [quantity, setQuantity] = useState(1);
 
 	if (!product) return null;
@@ -168,14 +169,20 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 										Add to Cart
 									</button>
 
-									{/* View More Details Link */}
-									<Link
-										href={`/product/${product.slug}`}
-										onClick={onClose}
-										className="text-center text-sm text-maroon/70 hover:text-maroon underline transition-colors"
-									>
-										View More Details
-									</Link>
+								{/* View More Details Button */}
+								<button
+									onClick={() => {
+										// Close modal first, then navigate
+										onClose();
+										// Use setTimeout to ensure modal close animation doesn't interfere
+										setTimeout(() => {
+											router.push(`/product/${product.slug}`);
+										}, 50);
+									}}
+									className="text-center text-sm text-maroon/70 hover:text-maroon underline transition-colors"
+								>
+									View More Details
+								</button>
 								</div>
 							</div>
 						</motion.div>

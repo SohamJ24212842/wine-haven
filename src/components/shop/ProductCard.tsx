@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Product } from "@/types/product";
 import { useCart } from "@/contexts/CartContext";
 import { ShoppingCart, Eye } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { QuickViewModal } from "./QuickViewModal";
 import { CountryFlag } from "@/components/ui/CountryFlag";
 
@@ -28,28 +28,47 @@ export function ProductCard({ product }: ProductCardProps) {
 	const { addItem } = useCart();
 	const [isHovered, setIsHovered] = useState(false);
 	const [showQuickView, setShowQuickView] = useState(false);
+	const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+	// Detect touch device on mount
+	useEffect(() => {
+		setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+	}, []);
 
 	const discountPercentage = product.onSale && product.salePrice 
 		? calculateDiscountPercentage(product.price, product.salePrice)
 		: null;
 
-	const handleAddToCart = (e: React.MouseEvent) => {
+	const handleAddToCart = (e: React.MouseEvent | React.TouchEvent) => {
 		e.preventDefault();
 		e.stopPropagation();
 		addItem(product);
 	};
 
-	const handleQuickView = (e: React.MouseEvent) => {
+	const handleQuickView = (e: React.MouseEvent | React.TouchEvent) => {
 		e.preventDefault();
 		e.stopPropagation();
 		setShowQuickView(true);
 	};
 
+	// On touch devices, don't use hover state - let taps navigate directly
+	const handleMouseEnter = () => {
+		if (!isTouchDevice) {
+			setIsHovered(true);
+		}
+	};
+
+	const handleMouseLeave = () => {
+		if (!isTouchDevice) {
+			setIsHovered(false);
+		}
+	};
+
 	return (
 		<motion.div
 			className="group relative"
-			onMouseEnter={() => setIsHovered(true)}
-			onMouseLeave={() => setIsHovered(false)}
+			onMouseEnter={handleMouseEnter}
+			onMouseLeave={handleMouseLeave}
 			initial={{ opacity: 0, y: 20 }}
 			whileInView={{ opacity: 1, y: 0 }}
 			viewport={{ once: true, amount: 0.2 }}
@@ -125,36 +144,60 @@ export function ProductCard({ product }: ProductCardProps) {
 							}`} />
 						</motion.div>
 						
-						{/* Enhanced Quick View and Add to Cart Buttons Overlay */}
-						<motion.div
-							initial={{ opacity: 0 }}
-							animate={{ 
-								opacity: isHovered ? 1 : 0,
-								transition: { duration: 0.2 }
-							}}
-							className={`absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/30 backdrop-blur-sm transition-all duration-300 ${
-								isHovered ? "pointer-events-auto" : "pointer-events-none"
-							}`}
-						>
-							<motion.button
-								onClick={handleQuickView}
-								whileHover={{ scale: 1.05 }}
-								whileTap={{ scale: 0.95 }}
-								className="flex items-center gap-2 rounded-full bg-white/95 px-5 py-2.5 text-sm font-semibold text-maroon shadow-xl hover:bg-white transition-all"
+						{/* Desktop: Enhanced Quick View and Add to Cart Buttons Overlay (hover only) */}
+						{!isTouchDevice && (
+							<motion.div
+								initial={{ opacity: 0 }}
+								animate={{ 
+									opacity: isHovered ? 1 : 0,
+									transition: { duration: 0.2 }
+								}}
+								className={`absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/30 backdrop-blur-sm transition-all duration-300 ${
+									isHovered ? "pointer-events-auto" : "pointer-events-none"
+								}`}
 							>
-								<Eye size={16} />
-								Quick Look
-							</motion.button>
-							<motion.button
-								onClick={handleAddToCart}
-								whileHover={{ scale: 1.05 }}
-								whileTap={{ scale: 0.95 }}
-								className="flex items-center gap-2 rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-maroon shadow-xl hover:brightness-110 transition-all"
-							>
-								<ShoppingCart size={16} />
-								Add to Cart
-							</motion.button>
-						</motion.div>
+								<motion.button
+									onClick={handleQuickView}
+									whileHover={{ scale: 1.05 }}
+									whileTap={{ scale: 0.95 }}
+									className="flex items-center gap-2 rounded-full bg-white/95 px-5 py-2.5 text-sm font-semibold text-maroon shadow-xl hover:bg-white transition-all"
+								>
+									<Eye size={16} />
+									Quick Look
+								</motion.button>
+								<motion.button
+									onClick={handleAddToCart}
+									whileHover={{ scale: 1.05 }}
+									whileTap={{ scale: 0.95 }}
+									className="flex items-center gap-2 rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-maroon shadow-xl hover:brightness-110 transition-all"
+								>
+									<ShoppingCart size={16} />
+									Add to Cart
+								</motion.button>
+							</motion.div>
+						)}
+
+						{/* Mobile: Always visible action buttons at bottom */}
+						{isTouchDevice && (
+							<div className="absolute bottom-2 left-2 right-2 flex gap-2 z-10">
+								<motion.button
+									onClick={handleQuickView}
+									whileTap={{ scale: 0.95 }}
+									className="flex-1 flex items-center justify-center gap-1.5 rounded-full bg-white/95 px-3 py-2 text-xs font-semibold text-maroon shadow-lg"
+								>
+									<Eye size={14} />
+									Quick Look
+								</motion.button>
+								<motion.button
+									onClick={handleAddToCart}
+									whileTap={{ scale: 0.95 }}
+									className="flex-1 flex items-center justify-center gap-1.5 rounded-full bg-gold px-3 py-2 text-xs font-semibold text-maroon shadow-lg"
+								>
+									<ShoppingCart size={14} />
+									Add
+								</motion.button>
+							</div>
+						)}
 					</div>
 					<div className="p-4">
 						<div className="flex items-start justify-between">
