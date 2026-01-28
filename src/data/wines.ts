@@ -445,6 +445,18 @@ export const wines: Wine[] = [
 		image:
 			"https://images.unsplash.com/photo-1577985759186-0854dfd3f218?auto=format&fit=crop&w=1200&q=60",
 	},
+	{
+		slug: "3-wooly-sheep-sauvignon-blanc",
+		name: "3 Wooly Sheep Sauvignon Blanc",
+		type: "White",
+		country: "New Zealand",
+		region: "Marlborough",
+		price: 20.99,
+		description:
+			"Fresh Sauvignon Blanc with citrus, passionfruit, and herbs. Crisp and vibrant.",
+		image:
+			"https://images.unsplash.com/photo-1551024709-8f23befc6cf7?auto=format&fit=crop&w=1200&q=60",
+	},
 ];
 
 
