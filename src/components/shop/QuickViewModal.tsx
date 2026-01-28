@@ -168,7 +168,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 										Add to Cart
 									</button>
 
-									{/* View More Details Link - Removed as per request
+									{/* View More Details Link */}
 									<Link
 										href={`/product/${product.slug}`}
 										onClick={onClose}
@@ -176,7 +176,6 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 									>
 										View More Details
 									</Link>
-									*/}
 								</div>
 							</div>
 						</motion.div>
